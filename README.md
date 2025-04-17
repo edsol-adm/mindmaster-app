@@ -1,12 +1,22 @@
 # MindMaster: Psychology Literacy App for Mental Resilience
 
-**MindMaster** is an open-source educational platform designed to equip children with essential psychological knowledge and tools to strengthen their mental resilience. Through gamified learning, digital journaling, and interactive lessons, children explore key concepts like self-efficacy, mindfulness, and emotional regulation—all in an age-appropriate and engaging format.
+**MindMaster** is developed for all children in **Primary Grades 1–6**—but is especially valuable for **girls**, who often face heightened emotional, social, and structural challenges that affect their mental well-being.
+
+It is an open-source educational platform designed to equip primary-level learners—particularly girls and those in underserved communities—with foundational psychological knowledge and emotional tools to build mental resilience.
+
+Through gamified lessons, interactive reflection, and digital journaling, MindMaster helps children explore concepts like self-efficacy, mindfulness, and emotional regulation in an age-appropriate and inclusive way.
+
+Girls often face unique emotional and structural challenges—ranging from higher risks of anxiety and depression to barriers in accessing mental health support. MindMaster is designed to address these inequities early, empowering girls with tools to build confidence, express emotions safely, and develop psychological resilience.
+
+To ensure broad accessibility, the platform can be deployed **online or offline via Local Server Deployment**, enabling use in low-connectivity environments such as rural schools or community centers. This makes MindMaster a powerful, scalable solution for advancing gender equity in mental health literacy and early emotional support.
 
 ---
 
 ## 🌱 Purpose
 
-MindMaster promotes emotional wellbeing, mental health literacy, and academic resilience among primary school-aged children. The app is designed with inclusivity and accessibility in mind, enabling use in low-resource settings with limited internet or device access.
+MindMaster promotes emotional wellbeing, psychological literacy, and academic resilience among children aged 6–12. By combining technology with evidence-based pedagogy, the platform supports early intervention and lifelong mental health awareness.
+
+The solution is intentionally designed to serve girls and marginalized children who often face systemic barriers to mental health support. To address the digital divide, MindMaster is designed to operate in both **online and offline modes**—using **Local Server Deployment** technology to function without internet access. This ensures children—especially girls in marginalized and remote communities—can benefit from quality digital learning environments, regardless of infrastructure limitations. The platform supports caregivers, educators, and humanitarian organizations in nurturing emotional growth with tools that are inclusive, adaptable, and community-ready.
 
 ---
 
@@ -43,12 +53,13 @@ These are translated into relatable experiences to help young learners internali
 
 ## 👩‍🏫 Target Audience
 
-- Children aged 6–12 (Primary Grades 1–6), especially in underserved communities  
-- Educators and school counselors implementing social-emotional learning (SEL)  
-- NGOs and development agencies supporting child mental health and well-being  
-- Parents and caregivers seeking digital tools to nurture emotional resilience  
-- Girls and children from marginalized or at-risk populations, in line with UNICEF’s equity and inclusion priorities
-
+- **Girls in Primary Year Grades 1-6** in underserved and marginalized communities, including rural, migrant, and low-income settings, who face unequal access to mental health and educational resources  
+- **Children of all genders** at the beginning of education at primary level, particularly those at risk of exclusion, trauma, or psychosocial stress  
+- **Educators, school counselors, and frontline workers** delivering SEL and gender-responsive mental health programs in low-resource environments  
+- **NGOs, development agencies, and CBOs** working at the intersection of gender equity, education, and child mental wellbeing  
+- **Parents and caregivers**, particularly women and female guardians, seeking practical tools to support children’s emotional growth at home  
+- **Children with disabilities** and those from minority language communities, reflecting UNICEF’s localization and accessibility priorities
+  
 ---
 
 ## 🛠️ Tech Stack
