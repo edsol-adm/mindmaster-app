@@ -12,7 +12,7 @@ This curriculum outline provides a structured, progressive framework to develop 
 
 ---
 
-## A Selection of themes to be taught in MINDMASTER app (this is not the complete curriculum):
+## A Selection of themes to be taught in MindMaster app (this is not the complete curriculum):
 
 ### Year 1 (Ages 5–6): 
 1. What Are the Five Senses? (Observation and exploration)
