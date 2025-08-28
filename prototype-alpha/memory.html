@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindMaster Memory Game</title>
+  <style>
+    body{
+      font-family: 'Comic Neue', sans-serif;
+      background:#FFB6C1;
+      margin:0; padding:0;
+      display:flex; flex-direction:column;
+      align-items:center; min-height:100vh;
+    }
+    h1{ margin:24px 0 8px; font-size:2.4rem; }
+    .sub{ margin:0 0 12px; }
+    .feedback{ min-height:1.6rem; margin:8px 0 12px; font-size:1.2rem; }
+    .hidden{ display:none; }
+    .controls{ margin:10px 0; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    button{
+      background:#FFD700; color:#000;
+      padding:10px 18px; border:none; border-radius:12px;
+      font-size:1rem; cursor:pointer;
+    }
+    .mode-btn{ background:#fff; border:2px solid #FFD700; }
+    .mode-btn.active{ background:#FFD700; }
+    /* Boards */
+    .game-board{ display:grid; gap:12px; margin:12px auto 24px; }
+    .easy-board { grid-template-columns: repeat(4, 100px); }
+    .hard-board { grid-template-columns: repeat(6, 90px); }
+    .card{
+      width:100px; height:100px;
+      position:relative; perspective:1000px;
+      overflow:hidden;
+    }
+    .hard-board .card{ width:90px; height:90px; }
+    .card-inner{
+      position:absolute; inset:0;
+      transform-style:preserve-3d;
+      transition: transform 0.45s ease;
+    }
+    .card.flipped .card-inner{ transform: rotateY(180deg); }
+    .face{
+      position:absolute; inset:0;
+      backface-visibility:hidden;
+      border-radius:12px;
+      object-fit: cover;
+      width:100%; height:100%;
+    }
+    .front{ transform: rotateY(180deg); }
+    .shake{ animation:shake 0.35s; }
+    @keyframes shake{
+      0%{ transform:translateX(0); }
+      25%{ transform:translateX(-5px); }
+      50%{ transform:translateX(5px); }
+      75%{ transform:translateX(-5px); }
+      100%{ transform:translateX(0); }
+    }
+    .matched{ opacity:0; pointer-events:none; transition: opacity 0.25s ease; }
+    #end{ text-align:center; margin-top:20px; }
+  </style>
+</head>
+<body>
+  <h1>Memory Game</h1>
+
+  <div id="instructions">
+    <p class="sub">Can you find all the matching pairs?</p>
+    <div class="controls">
+      <button id="easyBtn" class="mode-btn active">Easy (4×4)</button>
+      <button id="hardBtn" class="mode-btn">Hard (6×4)</button>
+      <button id="startBtn">Start</button>
+    </div>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="feedback" id="feedback"></div>
+    <div id="gameBoard" class="game-board easy-board"></div>
+  </div>
+
+  <div id="end" class="hidden">
+    <h2>You found all the pairs! Your memory is amazing.</h2>
+    <p>Your brain is like a treasure chest for memories!</p>
+    <div class="controls">
+      <button id="playAgainBtn">Play Again</button>
+      <button id="homeBtn">Home</button>
+    </div>
+  </div>
+
+  <audio id="bgm" src="assets/audio/memory-bgm.mp3" loop></audio>
+
+  <script>
+    // --- Base names (no extension) ---
+    const EASY_BASES = [
+      'assets/memory/easy/emotion-1',
+      'assets/memory/easy/emotion-2',
+      'assets/memory/easy/emotion-3',
+      'assets/memory/easy/emotion-4',
+      'assets/memory/easy/animal-1',
+      'assets/memory/easy/animal-2',
+      'assets/memory/easy/animal-3',
+      'assets/memory/easy/animal-4',
+    ];
+    const EASY_BACK = 'assets/memory/easy/card-back';
+
+    const HARD_BASES = [
+      'assets/memory/hard/object-1',
+      'assets/memory/hard/object-2',
+      'assets/memory/hard/object-3',
+      'assets/memory/hard/object-4',
+      'assets/memory/hard/pattern-1',
+      'assets/memory/hard/pattern-2',
+      'assets/memory/hard/pattern-3',
+      'assets/memory/hard/pattern-4',
+      'assets/memory/hard/shape-1',
+      'assets/memory/hard/shape-2',
+      'assets/memory/hard/shape-3',
+      'assets/memory/hard/shape-4',
+    ];
+    const HARD_BACK = 'assets/memory/hard/card-back';
+
+    function smartImg(srcBase, cls){
+      const img = document.createElement('img');
+      img.className = 'face ' + cls;
+      img.src = srcBase + '.png';
+      img.alt = cls;
+      img.onerror = () => { img.onerror = null; img.src = srcBase; };
+      return img;
+    }
+
+    // Elements
+    const instructionsEl = document.getElementById('instructions');
+    const gameEl = document.getElementById('game');
+    const endEl = document.getElementById('end');
+    const boardEl = document.getElementById('gameBoard');
+    const feedbackEl = document.getElementById('feedback');
+    const bgm = document.getElementById('bgm');
+
+    // Controls
+    const easyBtn = document.getElementById('easyBtn');
+    const hardBtn = document.getElementById('hardBtn');
+    const startBtn = document.getElementById('startBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+
+    // Mode state
+    let mode = 'easy'; // 'easy' | 'hard'
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let totalPairs = 0;
+    let matchedPairs = 0;
+
+    easyBtn.addEventListener('click', () => { mode = 'easy'; easyBtn.classList.add('active'); hardBtn.classList.remove('active'); });
+    hardBtn.addEventListener('click', () => { mode = 'hard'; hardBtn.classList.add('active'); easyBtn.classList.remove('active'); });
+    startBtn.addEventListener('click', startGame);
+    if (homeBtn) homeBtn.addEventListener('click', goHome);
+    if (playAgainBtn) playAgainBtn.addEventListener('click', restartGame);
+
+    function startGame(){
+      instructionsEl.classList.add('hidden');
+      endEl.classList.add('hidden');
+      gameEl.classList.remove('hidden');
+
+      bgm.currentTime = 0;
+      bgm.play().catch(()=>{});
+
+      initBoard();
+    }
+
+    function initBoard(){
+      boardEl.innerHTML = '';
+      feedbackEl.textContent = '';
+      firstCard = secondCard = null;
+      lockBoard = false;
+      matchedPairs = 0;
+
+      const BASES = mode === 'hard' ? HARD_BASES : EASY_BASES;
+      const BACK = mode === 'hard' ? HARD_BACK : EASY_BACK;
+
+      // adjust board sizing
+      boardEl.className = 'game-board ' + (mode === 'hard' ? 'hard-board' : 'easy-board');
+
+      // Build deck
+      const deck = [...BASES, ...BASES]
+        .map((b) => ({ base: b, id: b }))
+        .sort(() => Math.random() - 0.5);
+
+      totalPairs = BASES.length;
+
+      deck.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.key = item.id;
+
+        const inner = document.createElement('div');
+        inner.className = 'card-inner';
+
+        const front = smartImg(item.base, 'front');
+        const back = smartImg(BACK, 'back');
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        card.appendChild(inner);
+
+        card.addEventListener('click', onCardClick);
+        boardEl.appendChild(card);
+      });
+    }
+
+    function onCardClick(e){
+      const card = e.currentTarget;
+      if (lockBoard || card === firstCard || card.classList.contains('matched')) return;
+      card.classList.add('flipped');
+      if (!firstCard){ firstCard = card; return; }
+      secondCard = card;
+      lockBoard = true;
+      checkForMatch();
+    }
+
+    function checkForMatch(){
+      const isMatch = firstCard.dataset.key === secondCard.dataset.key;
+
+      if (isMatch){
+        feedbackEl.textContent = "Good job! That's a match.";
+        setTimeout(() => {
+          firstCard.classList.add('matched');
+          secondCard.classList.add('matched');
+          resetPick();
+          matchedPairs++;
+          if (matchedPairs === totalPairs) endGame();
+        }, 200);
+      } else {
+        feedbackEl.textContent = 'Not quite – try again.';
+        firstCard.classList.add('shake');
+        secondCard.classList.add('shake');
+        setTimeout(() => {
+          firstCard.classList.remove('flipped', 'shake');
+          secondCard.classList.remove('flipped', 'shake');
+          resetPick();
+        }, 650);
+      }
+    }
+
+    function resetPick(){ [firstCard, secondCard, lockBoard] = [null, null, false]; }
+
+    function endGame(){
+      gameEl.classList.add('hidden');
+      endEl.classList.remove('hidden');
+    }
+
+    function restartGame(){ startGame(); }
+
+    function goHome(){
+      try { bgm.pause(); bgm.currentTime = 0; } catch(e){}
+      window.location.href = 'home.html';
+    }
+  </script>
+</body>
+</html>

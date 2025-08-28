@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Attention</title>
+<style>
+  :root{
+    --bg:#FFB6C1;          /* light pink background for consistency */
+    --btn:#FFD700;         /* bright yellow buttons */
+    --text:#222;
+    --good:#1f9d55;        /* green */
+    --bad:#e3342f;         /* red */
+    --card:#ffffff;
+    --shadow: 0 10px 20px rgba(0,0,0,0.12);
+  }
+  html,body{
+    margin:0; padding:0; height:100%; background:var(--bg); color:var(--text);
+    font-family: "Comic Neue", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  }
+  .screen{ display:none; height:100%; width:100%; position:relative; }
+  .screen.active{ display:block; }
+
+  .center-card{
+    position:absolute; inset:0; margin:auto;
+    width:min(900px, 92vw); max-height:90vh; overflow:auto;
+    background:var(--card); border-radius:24px; box-shadow:var(--shadow);
+    padding:24px 24px 28px;
+  }
+  h1{ margin:8px 0 6px; font-weight:800; font-size:clamp(28px, 4vw, 42px); }
+  p{ line-height:1.45; font-size:clamp(16px, 2.2vw, 18px); }
+
+  .btn-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .btn{
+    background:var(--btn); color:var(--text); border:none; border-radius:14px;
+    padding:12px 18px; font-weight:700; font-size:16px; cursor:pointer;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, filter .2s ease;
+  }
+  .btn:hover{ transform: translateY(-1px) scale(0.99); filter:brightness(0.98); }
+  .btn:active{ transform: translateY(0) scale(0.97); }
+
+  /* Game HUD */
+  .hud{
+    position:absolute; top:8px; left:8px; right:8px; display:flex; justify-content:space-between; align-items:center; gap:8px;
+    z-index:50;
+  }
+  .hud-pill{
+    background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:999px; box-shadow:var(--shadow);
+    font-weight:700; min-width:90px; text-align:center;
+  }
+  .hud a.home-link{ text-decoration:none; color:var(--text); }
+  .hud .title{ font-weight:800; }
+
+  /* Playfield */
+  .play-area{
+    position:absolute; inset:0; overflow:hidden; border-radius:18px;
+    background-size:cover; background-position:center;
+  }
+
+  /* Sprites */
+  .sprite{
+    position:absolute; width:100px; height:100px; user-select:none; -webkit-user-drag:none; cursor:pointer;
+    transition: transform 0.15s ease;
+  }
+  .sprite:active{ transform: scale(0.95); }
+
+  /* Feedback */
+  .feedback{
+    position:absolute; left:50%; transform:translateX(-50%);
+    bottom:30px; font-weight:900; font-size:28px; pointer-events:none; z-index:60;
+    opacity:0;
+  }
+  .feedback.show{ opacity:1; animation: fadeUp .6s ease; }
+  .feedback.good{ color:var(--good); }
+  .feedback.bad{ color:var(--bad); }
+
+  @keyframes fadeUp{
+    0%{ transform:translateX(-50%) translateY(8px); opacity:0;}
+    20%{ opacity:1;}
+    100%{ transform:translateX(-50%) translateY(-6px); opacity:0;}
+  }
+
+  .shake{ animation: shake .35s linear; }
+  @keyframes shake{
+    0%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    50%{ transform:translateX(6px); }
+    75%{ transform:translateX(-4px); }
+    100%{ transform:translateX(0); }
+  }
+
+  .fade-out{ animation: sprFade .8s ease forwards; }
+  @keyframes sprFade{
+    from{ opacity:1; }
+    to{ opacity:0; transform: translateY(8px); }
+  }
+
+  .big-score{
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight:900;
+    margin: 10px 0 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<section id="start" class="screen active">
+  <div class="center-card">
+    <h1>Attention</h1>
+    <p>Tap only the <strong>positive</strong> items. Ignore the rest. You’ll have 30 seconds per level.</p>
+    <div class="btn-row">
+      <button class="btn" id="btnStartProgressive">Start (Behaviors → Emotions → Thoughts)</button>
+      <button class="btn" id="btnChaos">Bonus: Chaos Round (all mixed)</button>
+      <a class="btn" href="home.html">Home</a>
+    </div>
+    <p style="opacity:.75; font-size:14px; margin-top:8px;">Images drift in and out. Keep your brain’s spotlight on the positives!</p>
+  </div>
+</section>
+
+<!-- INSTRUCTION SCREEN -->
+<section id="instruction" class="screen">
+  <div class="center-card">
+    <h1 id="instrTitle">Level 1: Behaviors</h1>
+    <p id="instrText">Tap only the <strong>positive behaviors</strong>. Ignore the negative ones.</p>
+    <div class="btn-row">
+      <button class="btn" id="btnBeginRound">Start Level</button>
+      <a class="btn" href="home.html">Home</a>
+    </div>
+  </div>
+</section>
+
+<!-- GAMEPLAY SCREEN -->
+<section id="game" class="screen">
+  <div class="hud">
+    <div class="hud-pill title" id="hudLevel">Behaviors</div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <div class="hud-pill" id="hudTimer">20s</div>
+      <div class="hud-pill" id="hudScore">Score: 0</div>
+      <a class="hud-pill home-link" href="home.html">Home</a>
+    </div>
+  </div>
+  <div id="playArea" class="play-area"></div>
+  <div id="feedback" class="feedback">Nice!</div>
+</section>
+
+<!-- END SCREEN -->
+<section id="end" class="screen">
+  <div class="center-card">
+    <h1>Great focus!</h1>
+    <p>Attention is like a spotlight in your brain — you can choose what to focus on!</p>
+    <div class="big-score" id="finalScore">You scored 0 points.</div>
+    <div class="btn-row" style="margin-top:16px;">
+      <button class="btn" id="btnPlayNext">Next</button>
+      <button class="btn" id="btnReplay">Play Again</button>
+      <a class="btn" href="home.html">Home</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ---------------------------
+   CONFIG (prototype-simple)
+--------------------------- */
+const ROUND_DURATION_MS = 20000;       // 30s
+const SPRITE_SIZE = 120;               // fixed 100x100 for prototype
+const ACTIVE_SPRITES = 5;              // always 5 on screen
+const SPRITE_LIFETIME_MS = 4500;       // ~4.5s drift lifetime
+const GRID_ROWS = 3, GRID_COLS = 3;    // spawn grid
+const JITTER = 20;                     // px jitter inside cell
+const POSITIVE_SPAWN_RATIO = 0.5;      // ~50/50 positive vs negative
+
+// Use relative paths so file:// works locally
+const AUDIO = {
+  bgm: 'assets/audio/attention-bgm.mp3',
+  tapGood: 'assets/audio/tap-correct.mp3',
+  tapBad: 'assets/audio/tap-wrong.mp3'
+};
+const BG_IMAGE = 'assets/attention/background.png'; // optional
+const ASSET_ROOT = 'assets/attention/';
+
+// Level definitions
+const LEVELS = [
+  {
+    key: 'behaviors',
+    title: 'Level 1: Behaviors',
+    hud: 'Behaviors',
+    instruction: 'Tap only the positive behaviors. Ignore the negative ones.',
+    positives: Array.from({length:4}, (_,i)=>`behaviors/behavior-pos-${i+1}.png`),
+    negatives: Array.from({length:4}, (_,i)=>`behaviors/behavior-neg-${i+1}.png`),
+  },
+  {
+    key: 'emotions',
+    title: 'Level 2: Emotions',
+    hud: 'Emotions',
+    instruction: 'Tap only the positive emotions. Ignore the negative ones.',
+    positives: Array.from({length:4}, (_,i)=>`emotions/emotion-pos-${i+1}.png`),
+    negatives: Array.from({length:4}, (_,i)=>`emotions/emotion-neg-${i+1}.png`),
+  },
+  {
+    key: 'thoughts',
+    title: 'Level 3: Thoughts',
+    hud: 'Thoughts',
+    instruction: 'Tap only the positive thoughts. Ignore the negative ones.',
+    positives: Array.from({length:4}, (_,i)=>`thoughts/thought-pos-${i+1}.png`),
+    negatives: Array.from({length:4}, (_,i)=>`thoughts/thought-neg-${i+1}.png`),
+  }
+];
+
+/* ---------------------------
+   STATE
+--------------------------- */
+let mode = 'progressive'; // 'progressive' | 'chaos'
+let levelIndex = 0;
+let score = 0;
+let roundStart = 0;
+let rafId = null;
+let timerId = null;
+const sprites = new Set();     // set of sprite records
+const imgCache = new Map();    // path -> {ok, img}
+const audio = { bgm:null, tapGood:null, tapBad:null };
+
+/* ---------------------------
+   HELPERS
+--------------------------- */
+const $ = (sel)=>document.querySelector(sel);
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $('#'+id).classList.add('active');
+}
+
+function preloadImage(path){
+  return new Promise(resolve=>{
+    const key = ASSET_ROOT + path;
+    if(imgCache.has(key)){ resolve(imgCache.get(key)); return; }
+    const img = new Image();
+    img.onload = ()=>{ const val={ok:true, img}; imgCache.set(key,val); resolve(val); };
+    img.onerror = ()=>{ const val={ok:false}; imgCache.set(key,val); resolve(val); };
+    img.src = key;
+  });
+}
+
+async function preloadPool(pool){
+  await Promise.all(pool.map(p=>preloadImage(p.src)));
+}
+
+function setupAudio(){
+  try{ audio.bgm = new Audio(AUDIO.bgm); audio.bgm.loop = true; audio.bgm.volume = 0.35; }catch{}
+  try{ audio.tapGood = new Audio(AUDIO.tapGood); audio.tapGood.volume = 0.7; }catch{}
+  try{ audio.tapBad  = new Audio(AUDIO.tapBad ); audio.tapBad .volume = 0.6; }catch{}
+}
+function playSfx(which){
+  const el = audio[which];
+  if(!el) return;
+  try{ el.currentTime = 0; el.play().catch(()=>{}); }catch{}
+}
+
+function gridCenters(areaW, areaH){
+  const cellW = areaW / GRID_COLS;
+  const cellH = areaH / GRID_ROWS;
+  const centers = [];
+  for(let r=0;r<GRID_ROWS;r++){
+    for(let c=0;c<GRID_COLS;c++){
+      centers.push({x: c*cellW + cellW/2, y: r*cellH + cellH/2});
+    }
+  }
+  return {centers, cellW, cellH};
+}
+
+function nonOverlappingPosition(centers, areaW, areaH){
+  // Try a few times to avoid overlapping existing sprites
+  for(let attempt=0; attempt<12; attempt++){
+    const idx = Math.floor(Math.random()*centers.length);
+    const base = centers[idx];
+    let x = base.x - SPRITE_SIZE/2 + (Math.random()*2-1)*JITTER;
+    let y = base.y - SPRITE_SIZE/2 + (Math.random()*2-1)*JITTER;
+    // clamp
+    x = Math.max(0, Math.min(areaW - SPRITE_SIZE, x));
+    y = Math.max(0, Math.min(areaH - SPRITE_SIZE, y));
+    // check distance from existing
+    let ok = true;
+    for(const s of sprites){
+      const dx = (s.x + SPRITE_SIZE/2) - (x + SPRITE_SIZE/2);
+      const dy = (s.y + SPRITE_SIZE/2) - (y + SPRITE_SIZE/2);
+      const dist = Math.hypot(dx,dy);
+      if(dist < SPRITE_SIZE*0.9){ ok = false; break; }
+    }
+    if(ok) return {x,y};
+  }
+  // fallback random
+  return {
+    x: Math.random()*(areaW - SPRITE_SIZE),
+    y: Math.random()*(areaH - SPRITE_SIZE)
+  };
+}
+
+function showFeedback(text, good){
+  const el = $('#feedback');
+  el.textContent = text;
+  el.classList.remove('good','bad','show','shake');
+  el.classList.add(good ? 'good':'bad', 'show');
+  if(!good){ el.classList.add('shake'); }
+}
+
+/* ---------------------------
+   ROUND MANAGEMENT
+--------------------------- */
+let currentPool = []; // array of {src, positive}
+let playArea, hudTimer, hudScore, hudLevel;
+
+function buildPoolForLevel(lv){
+  const items = [];
+  lv.positives.forEach(p=>items.push({src:p, positive:true}));
+  lv.negatives.forEach(p=>items.push({src:p, positive:false}));
+  return items;
+}
+function buildChaosPool(){
+  const items = [];
+  LEVELS.forEach(lv=>{
+    lv.positives.forEach(p=>items.push({src:p, positive:true}));
+    lv.negatives.forEach(p=>items.push({src:p, positive:false}));
+  });
+  return items;
+}
+
+async function startInstruction(){
+  // Configure instruction text based on current level or chaos
+  if(mode === 'progressive'){
+    const lv = LEVELS[levelIndex];
+    $('#instrTitle').textContent = lv.title;
+    $('#instrText').innerHTML = lv.instruction.replace('positive', '<strong>positive</strong>');
+  }else{
+    $('#instrTitle').textContent = 'Bonus: Chaos Round';
+    $('#instrText').innerHTML = 'All mixed together! Tap only the <strong>positive</strong> items.';
+  }
+  showScreen('instruction');
+}
+
+async function startRound(){
+  playArea = $('#playArea'); hudTimer = $('#hudTimer'); hudScore = $('#hudScore'); hudLevel = $('#hudLevel');
+  playArea.style.backgroundImage = `url("${BG_IMAGE}")`; // if missing, browser just shows none
+
+  // Build pool
+  currentPool = (mode === 'progressive')
+    ? buildPoolForLevel(LEVELS[levelIndex])
+    : buildChaosPool();
+
+  // Preload & filter to available images
+  await preloadPool(currentPool);
+  currentPool = currentPool.filter(p=>{
+    const key = ASSET_ROOT + p.src;
+    return imgCache.get(key)?.ok;
+  });
+
+  // If pool empty, just end
+  if(currentPool.length === 0){
+    alert('No images found for this level. Please check assets/attention/ folders.');
+    endRound();
+    return;
+  }
+
+  // HUD setup
+  score = 0;
+  hudScore.textContent = 'Score: 0';
+  hudLevel.textContent = (mode === 'progressive') ? LEVELS[levelIndex].hud : 'Chaos';
+  $('#feedback').classList.remove('good','bad','show','shake');
+  showScreen('game');
+
+  // Audio: start bgm on user-initiated action
+  try{ audio.bgm && audio.bgm.play().catch(()=>{});}catch{}
+
+  // Reset state
+  sprites.forEach(s=>s.el.remove());
+  sprites.clear();
+  roundStart = performance.now();
+
+  // Start loops
+  const areaRect = playArea.getBoundingClientRect();
+  const {centers} = gridCenters(areaRect.width, areaRect.height);
+
+  // Spawn initial sprites
+  while(sprites.size < ACTIVE_SPRITES){
+    spawnSprite(centers, areaRect.width, areaRect.height);
+  }
+
+  // RAF move loop
+  let last = performance.now();
+  const step = (now)=>{
+    rafId = requestAnimationFrame(step);
+    const dt = now - last; last = now;
+    updateSprites(dt, areaRect.width, areaRect.height);
+  };
+  rafId = requestAnimationFrame(step);
+
+  // Timer loop
+  timerId = setInterval(()=>{
+    const elapsed = performance.now() - roundStart;
+    const remain = Math.max(0, ROUND_DURATION_MS - elapsed);
+    hudTimer.textContent = Math.ceil(remain/1000) + 's';
+    if(remain <= 0){ endRound(); }
+  }, 100);
+}
+
+function spawnSprite(centers, areaW, areaH){
+  if(currentPool.length === 0) return;
+
+  // Decide positive vs negative to keep ~50/50
+  const wantPositive = Math.random() < POSITIVE_SPAWN_RATIO;
+  const candidates = currentPool.filter(p=>p.positive === wantPositive);
+  const choiceArr = candidates.length ? candidates : currentPool;
+  const data = choiceArr[Math.floor(Math.random()*choiceArr.length)];
+  const key = ASSET_ROOT + data.src;
+  const cached = imgCache.get(key);
+  if(!cached?.ok) return;
+
+  const pos = nonOverlappingPosition(centers, areaW, areaH);
+  const el = document.createElement('img');
+  el.className = 'sprite';
+  el.src = key;
+  el.style.left = pos.x + 'px';
+  el.style.top  = pos.y + 'px';
+  el.width = SPRITE_SIZE; el.height = SPRITE_SIZE;
+
+  const record = {
+    el,
+    positive: data.positive,
+    x: pos.x, y: pos.y,
+    dx: (Math.random()*40 - 20) / 1000,  // px/ms
+    dy: (Math.random()*40 - 20) / 1000,  // px/ms
+    born: performance.now(),
+    ttl: SPRITE_LIFETIME_MS,
+    removed: false
+  };
+
+  el.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(record.removed) return;
+    if(record.positive){
+      score += 1;
+      hudScore.textContent = 'Score: ' + score;
+      showFeedback('Nice!', true);
+      playSfx('tapGood');
+      removeSprite(record, true);
+    }else{
+      showFeedback('Oops – try again', false);
+      playSfx('tapBad');
+      // keep sprite on wrong tap (gentle learning)
+    }
+  });
+
+  playArea.appendChild(el);
+  sprites.add(record);
+}
+
+function updateSprites(dt, areaW, areaH){
+  const now = performance.now();
+  let needSpawn = 0;
+
+  for(const s of Array.from(sprites)){
+    if(s.removed) continue;
+    // move
+    s.x += s.dx * dt * 60/60;  // keep values small & gentle
+    s.y += s.dy * dt * 60/60;
+
+    // clamp within area (soft drift)
+    if(s.x < 0 || s.x > areaW - SPRITE_SIZE) s.dx *= -1;
+    if(s.y < 0 || s.y > areaH - SPRITE_SIZE) s.dy *= -1;
+    s.x = Math.max(0, Math.min(areaW - SPRITE_SIZE, s.x));
+    s.y = Math.max(0, Math.min(areaH - SPRITE_SIZE, s.y));
+
+    s.el.style.left = s.x + 'px';
+    s.el.style.top  = s.y + 'px';
+
+    // lifetime check
+    if(now - s.born > s.ttl){
+      removeSprite(s, false);
+      needSpawn++;
+    }
+  }
+
+  // maintain ACTIVE_SPRITES
+  while(sprites.size < ACTIVE_SPRITES){
+    const areaRect = playArea.getBoundingClientRect();
+    const {centers} = gridCenters(areaRect.width, areaRect.height);
+    spawnSprite(centers, areaRect.width, areaRect.height);
+  }
+}
+
+function removeSprite(s, quick){
+  if(s.removed) return;
+  s.removed = true;
+  try{
+    if(!quick) s.el.classList.add('fade-out');
+    setTimeout(()=>{ s.el.remove(); sprites.delete(s); }, quick ? 0 : 700);
+  }catch{
+    s.el.remove(); sprites.delete(s);
+  }
+}
+
+function endRound(){
+  if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+  if(timerId){ clearInterval(timerId); timerId = null; }
+  // clear sprites
+  sprites.forEach(s=>s.el.remove()); sprites.clear();
+  // update end text
+  $('#finalScore').textContent = `You scored ${score} points.`;
+  const nextBtn = $('#btnPlayNext');
+  if(mode === 'progressive' && levelIndex < LEVELS.length - 1){
+    nextBtn.textContent = 'Next Level';
+  }else if(mode === 'progressive' && levelIndex === LEVELS.length - 1){
+    nextBtn.textContent = 'Chaos Round';
+  }else{
+    nextBtn.textContent = 'Back to Start';
+  }
+  showScreen('end');
+}
+
+/* ---------------------------
+   EVENT WIRING
+--------------------------- */
+function wireUI(){
+  $('#btnStartProgressive').addEventListener('click', ()=>{
+    mode = 'progressive'; levelIndex = 0; startInstruction();
+    try{ if(!audio.bgm) setupAudio(); }catch{}
+  });
+  $('#btnChaos').addEventListener('click', ()=>{
+    mode = 'chaos'; startInstruction();
+    try{ if(!audio.bgm) setupAudio(); }catch{}
+  });
+  $('#btnBeginRound').addEventListener('click', ()=>{
+    startRound();
+    // Start BGM (user gesture)
+    try{ if(!audio.bgm) setupAudio(); audio.bgm && audio.bgm.play().catch(()=>{});}catch{}
+  });
+
+  $('#btnReplay').addEventListener('click', ()=>{
+    if(mode === 'progressive'){
+      // replay same level
+      startInstruction();
+    }else{
+      // replay chaos instruction
+      startInstruction();
+    }
+  });
+
+  $('#btnPlayNext').addEventListener('click', ()=>{
+    if(mode === 'progressive' && levelIndex < LEVELS.length - 1){
+      levelIndex += 1; startInstruction();
+    }else if(mode === 'progressive' && levelIndex === LEVELS.length - 1){
+      mode = 'chaos'; startInstruction();
+    }else{
+      // chaos -> back to start
+      showScreen('start');
+    }
+  });
+
+  // Prevent text selection on rapid taps
+  document.addEventListener('mousedown', (e)=>{ e.preventDefault(); }, {passive:false});
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  wireUI();
+  setupAudio();
+});
+</script>
+
+</body>
+</html>

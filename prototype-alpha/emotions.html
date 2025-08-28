@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Emotions Game - MindMaster</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", Arial, sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      background: #eee;
+    }
+    .question {
+      font-size: 1.4em;
+      margin-bottom: 20px;
+    }
+    .options button {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .options button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+    .feedback {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .nav-buttons {
+      margin-top: 30px;
+    }
+    .nav-buttons button {
+      padding: 12px 24px;
+      font-size: 1.1em;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2196F3;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-buttons button:hover {
+      background-color: #1976D2;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img id="sceneImage" src="" alt="Scene Image">
+    <div id="question" class="question"></div>
+    <div class="options" id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <div class="nav-buttons" id="nav"></div>
+  </div>
+
+  <script>
+    const scenes = [
+      {
+        image: "assets/emotions/storyboard-scene1-clean.png",
+        question: "What do you think they are feeling right now?",
+        options: ["Happy", "Sad", "Angry"],
+        correct: "Happy",
+        feedback: "They feel happy because they are enjoying a game together."
+      },
+      {
+        image: "assets/emotions/storyboard-scene2-clean.png",
+        question: "How might the second child feel?",
+        options: ["Sad", "Excited", "Proud"],
+        correct: "Sad",
+        feedback: "They feel sad because they want to play with the blocks too."
+      },
+      {
+        image: "assets/emotions/storyboard-scene3-clean.png",
+        question: "What is the first child feeling before they get help?",
+        options: ["Frustrated", "Relaxed", "Surprised"],
+        correct: "Frustrated",
+        feedback: "They feel frustrated because the puzzle is difficult."
+      },
+      {
+        image: "assets/emotions/storyboard-scene4-clean.png",
+        question: "What do you think the child who fell is feeling?",
+        options: ["Hurt", "Calm", "Happy"],
+        correct: "Hurt",
+        feedback: "They feel hurt."
+      },
+      {
+        image: "assets/emotions/storyboard-scene5-clean.png",
+        question: "What are they all feeling now?",
+        options: ["Shocked", "Frustrated", "Happy"],
+        correct: "Happy",
+        feedback: "They’re all happy – because it’s nice to have friends."
+      },
+      {
+        image: "assets/emotions/storyboard-scene6.png",
+        question: "",
+        options: [],
+        correct: "",
+        feedback: "Psychology helps us see how our actions affect feelings."
+      }
+    ];
+
+    let currentScene = 0;
+
+    function loadScene() {
+      const scene = scenes[currentScene];
+      const imgEl = document.getElementById("sceneImage");
+
+      imgEl.src = scene.image;
+      document.getElementById("question").textContent = scene.question || "";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("feedback").style.color = "#333";
+      document.getElementById("nav").innerHTML = "";
+
+      if (scene.options.length > 0) {
+        scene.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+          btn.onclick = () => checkAnswer(opt);
+          document.getElementById("options").appendChild(btn);
+        });
+      } else {
+        // End card
+        document.getElementById("feedback").textContent = scene.feedback;
+        const playAgain = document.createElement("button");
+        playAgain.textContent = "Play Again";
+        playAgain.onclick = () => { currentScene = 0; loadScene(); };
+        document.getElementById("nav").appendChild(playAgain);
+
+        const homeBtn = document.createElement("button");
+        homeBtn.textContent = "Home";
+        homeBtn.onclick = () => { window.location.href = "home.html"; };
+        document.getElementById("nav").appendChild(homeBtn);
+      }
+    }
+
+    function checkAnswer(answer) {
+      const scene = scenes[currentScene];
+      const feedbackEl = document.getElementById("feedback");
+      if (answer === scene.correct) {
+        feedbackEl.textContent = scene.feedback;
+        feedbackEl.style.color = "green";
+      } else {
+        feedbackEl.textContent = "Not quite – look again.";
+        feedbackEl.style.color = "red";
+      }
+
+      // Show next button
+      const nav = document.getElementById("nav");
+      nav.innerHTML = "";
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next Scene";
+      nextBtn.onclick = () => { currentScene++; loadScene(); };
+      nav.appendChild(nextBtn);
+    }
+
+    loadScene();
+  </script>
+</body>
+</html>
