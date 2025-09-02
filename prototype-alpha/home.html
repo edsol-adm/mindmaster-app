@@ -9,71 +9,95 @@
     --pink: #ffb6c1;
     --card: #ffffff;
     --ink: #111827;
-    --shadow: 0 8px 28px rgba(0,0,0,0.15);
+    --shadow: 0 8px 28px rgba(0,0,0,0.12);
+    --gutter: 32px;
+    --colgap: 40px;   /* wide gap between columns */
+    --rowgap: 18px;   /* vertical gap */
+    --radius: 18px;
   }
   html, body { height: 100%; }
   body {
     margin: 0;
     font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     background: var(--pink);
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
   }
   .wrap {
     background: var(--card);
     color: var(--ink);
     border-radius: 24px;
-    padding: 28px 24px 32px;
+    padding: 20px var(--gutter) 24px var(--gutter);
     box-shadow: var(--shadow);
-    width: min(92vw, 460px);
-    margin: 0 auto;            /* hard center the card */
+    width: 880px;    /* fixed width ensures gutters appear */
+    max-width: 96vw;
     text-align: center;
   }
   .logo {
-    width: 160px;
+    width: 130px;
     height: auto;
-    margin: 6px auto 12px;
+    margin: 4px auto 6px;
     display: block;
   }
   h1 {
-    margin: 8px 0 18px;
-    font-size: 28px;
+    margin: 6px 0 14px;
+    font-size: 26px;
     line-height: 1.2;
   }
-  .stack {
+  .grid-wrapper {
+    display: flex;
+    justify-content: center; /* center the whole grid horizontally */
+  }
+  .grid {
+    display: flex;
+    gap: var(--colgap);       /* wide white gap between them */
+  }
+  .col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    align-items: center;       /* center each button container */
+    gap: var(--rowgap);
+    width: 320px;  /* fixed equal width for both columns */
   }
   .btn {
-    display: flex;             /* center emoji + text precisely */
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding: 16px 18px;
-    margin: 0 auto;
-    font-size: 18px;
+    min-height: 56px;
+    padding: 12px 14px;
+    font-size: 16px;
     font-weight: 800;
     color: #fff;
     text-decoration: none;
-    border: none;
-    border-radius: 18px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-    transition: transform .05s ease, filter .08s ease;
+    border-radius: var(--radius);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    transition: transform .06s ease, filter .08s ease;
     text-align: center;
   }
   .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
   .btn:active { transform: translateY(0); filter: brightness(.98); }
-  .attention { background: #3b82f6; }  /* blue */
-  .emotions  { background: #22c55e; }  /* green */
-  .memory    { background: #f59e0b; }  /* orange */
-  .senses    { background: #a855f7; }  /* purple */
-  .storytime { background: #ef4444; }  /* red */
-  .hint { color: #6b7280; font-size: 13px; margin-top: 16px; }
+  .btn span.emoji { font-size: 20px; line-height: 1; }
+
+  .attention  { background: #3b82f6; }
+  .attention2 { background: #2563eb; }
+  .memory     { background: #f59e0b; }
+  .memory2    { background: #d97706; }
+  .solve      { background: #14b8a6; }
+  .emotions   { background: #22c55e; }
+  .senses     { background: #a855f7; }
+  .storytime  { background: #ef4444; }
+  .teamwork   { background: #6366f1; }
+  .carpooler  { background: #f43f5e; }
+
+  .hint { color: #6b7280; font-size: 12px; margin-top: 14px; }
+  @media (max-width: 720px) {
+    .wrap { width: min(96vw, 540px); }
+    .grid { flex-direction: column; gap: var(--rowgap); }
+    .col { width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -81,15 +105,27 @@
     <img class="logo" src="assets/mindmaster-logo.png" alt="MindMaster logo">
     <h1>MindMaster Games</h1>
 
-    <div class="stack">
-      <a class="btn attention" href="./Attention.html">👀 <span>Play Attention Game</span></a>
-      <a class="btn emotions"  href="./Emotions.html">🎮 <span>Play Emotions Game</span></a>
-      <a class="btn memory"    href="./Memory.html">🧠 <span>Play Memory Game</span></a>
-      <a class="btn senses"    href="./Senses.html">👂 <span>Play Senses Game</span></a>
-      <a class="btn storytime" href="./Storytime.html">📖 <span>Play Storytime Game</span></a>
+    <div class="grid-wrapper">
+      <div class="grid">
+        <div class="col">
+          <a class="btn attention"  href="attention.html"><span class="emoji">👀</span> <span>Play Attention Game</span></a>
+          <a class="btn attention2" href="attention2.html"><span class="emoji">👁️</span> <span>Play Attention2 Game</span></a>
+          <a class="btn memory"     href="memory.html"><span class="emoji">🧠</span> <span>Play Memory Game</span></a>
+          <a class="btn memory2"    href="memory2.html"><span class="emoji">🧩</span> <span>Play Memory2 Game</span></a>
+          <a class="btn solve"      href="solve.html"><span class="emoji">🧮</span> <span>Play Problem Solver Game</span></a>
+        </div>
+
+        <div class="col">
+          <a class="btn emotions"   href="emotions.html"><span class="emoji">🎮</span> <span>Play Emotions Game</span></a>
+          <a class="btn senses"     href="senses.html"><span class="emoji">👂</span> <span>Play Senses Game</span></a>
+          <a class="btn storytime"  href="storytime.html"><span class="emoji">📖</span> <span>Play Storytime Game</span></a>
+          <a class="btn teamwork"   href="teamwork.html"><span class="emoji">🤝</span> <span>Play Teamwork Game</span></a>
+          <a class="btn carpooler"  href="carpooler.html"><span class="emoji">🚗</span> <span>Play Carpooler Game</span></a>
+        </div>
+      </div>
     </div>
 
-    <div class="hint">Make sure the game files sit next to this Home page and the logo is at <code>assets/mindmaster-logo.png</code>.</div>
+    <div class="hint">Files live beside this page. Logo path: <code>assets/mindmaster-logo.png</code>.</div>
   </div>
 </body>
 </html>
