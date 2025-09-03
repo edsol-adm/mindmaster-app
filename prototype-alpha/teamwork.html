@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Teamwork — MindMaster</title>
+<style>
+:root{
+  --pink:#ffc6d2; --yellow:#ffd34d; --ink:#1f2937;
+  --grid:#e9edf2; --grid-dark:#c3cad3; --wall:#1f2937;
+  --red:#e53e3e; --blue:#3182ce;
+}
+html,body{height:100%}
+body{margin:0;background:var(--pink);font-family:'Comic Neue','Comic Sans MS',system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+.wrap{max-width:980px;margin-inline:auto;padding:10px 14px 18px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.title{font-size:28px;font-weight:800;letter-spacing:.2px}
+.turn{margin:auto;background:#ffeef0;color:#b91c1c;padding:8px 14px;border-radius:18px;border:2px solid #f7caca;font-weight:800;display:flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--red)}
+.home{ text-decoration:none;font-weight:800;color:#000;background:var(--yellow);border:3px solid #000;padding:8px 14px;border-radius:14px;display:inline-block;box-shadow:0 3px 0 #000 }
+.board{display:flex;justify-content:center}
+canvas#board{display:block;width:min(86vw,720px);height:auto;border:4px solid #0b2239;border-radius:12px;background:#fff}
+.controls{margin-top:14px;display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap}
+.btn{width:88px;height:88px;border-radius:999px;background:var(--yellow);border:4px solid #000;display:grid;place-items:center;box-shadow:0 6px 0 #000;cursor:pointer}
+.btn[disabled]{filter:grayscale(.25) brightness(.9);cursor:not-allowed}
+.legend{display:flex;gap:12px;justify-content:center;margin-top:8px;font-size:14px;color:#4b5563}
+.chip{display:inline-flex;gap:6px;align-items:center}
+.chip i{display:inline-block;width:14px;height:6px;border-radius:3px;background:#000}
+.chip .r{background:var(--red)} .chip .b{background:var(--blue)}
+#postWin{display:none;text-align:center;margin-top:16px}
+.panel{display:inline-block;background:#fff;border:4px solid #000;border-radius:16px;padding:16px 20px;box-shadow:0 6px 0 #000}
+</style>
+
+<!-- SFX -->
+<audio id="sfxWin" src="assets/teamwork/sounds/sfx/celebrate.mp3" preload="auto"></audio>
+<audio id="bgm" src="assets/audio/teamwork-bgm.mp3" preload="auto" loop></audio>
+
+<script>
+// Error overlay (helps during local-file testing)
+window.addEventListener('error', function(e){
+  try{
+    var d=document.createElement('div');
+    d.style.cssText='position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);color:#fff;z-index:9999;font:14px/1.4 system-ui,sans-serif;padding:24px;text-align:center;white-space:pre-wrap';
+    d.textContent='Teamwork script error at ' + (e.filename||'inline') + ':' + (e.lineno||'?') + ':' + (e.colno||'?') + '\\n' + (e.message||'unknown');
+    document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(d); });
+  }catch(_){}
+}, true);
+</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">Teamwork — Level <span id="levelNum">1</span></div>
+      <div class="turn"><span class="dot" id="turnDot"></span><span id="turnText">Your turn: Red</span></div>
+      <a href="home.html" class="home">Home</a>
+    </div>
+
+    <div class="board"><canvas id="board" width="900" height="900" aria-label="10 by 10 maze board"></canvas></div>
+
+    <div class="controls" aria-label="Movement controls">
+      <button class="btn" data-dir="left" aria-label="Left">
+        <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5l-7 7 7 7" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="btn" data-dir="up" aria-label="Up">
+        <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 14.5l7-7 7 7" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="btn" data-dir="down" aria-label="Down">
+        <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.5l7 7 7-7" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="btn" data-dir="right" aria-label="Right">
+        <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5l7 7-7 7" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div class="legend">
+      <span class="chip"><i class="b"></i> Blue gates (left)</span>
+      <span class="chip"><i class="r"></i> Red gates (right)</span>
+    </div>
+
+    <div id="postWin">
+      <div class="panel">
+        <div style="font-weight:800;font-size:22px;margin-bottom:10px;">Level complete!</div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button id="btnNext" class="home" style="min-width:160px;">Go to next level?</button>
+          <button id="btnReplay" class="home" style="min-width:160px;">Play again?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  console.info('Teamwork build r13 — avatars (idle/run/hi5) + bridges');
+
+  // ===== Config =====
+  var ROWS=10, COLS=10;
+  var START_BLUE={r:5,c:0}, START_RED={r:5,c:9};
+  var PAD_BLUE={r:5,c:4}, PAD_RED={r:5,c:5};
+  var level=1;
+  function gatesPerSide(){ return {1:2,2:3,3:4}[level] || 2; }
+  var START_BUFFER=3, END_BUFFER=3, MIN_SPACING=4;
+  var LINE_W=1.2, WALL_W=4, DIV_W=6, GATE_W=6, MOVE_MS=120;
+
+  // ===== Asset helpers =====
+  var IMG={};
+  function getImg(src){
+    if(!IMG[src]){
+      var im=new Image();
+      im.onload=function(){ draw(); };
+      im.onerror=function(){ console.warn('Image failed:', src); };
+      im.src=src; IMG[src]=im;
+    }
+    return IMG[src];
+  }
+  function avatarPath(name, state){
+    return 'assets/teamwork/images/avatars/'+name+'/'+name+'-'+state+'.png';
+  }
+  var BRIDGE_LEFT = getImg('assets/teamwork/images/tiles/bridge-left.png');
+  var BRIDGE_RIGHT= getImg('assets/teamwork/images/tiles/bridge-right.png');
+
+  // level → names
+  function levelNames(){ return {1:{blue:'boy', red:'girl'}, 2:{blue:'dog', red:'man'}, 3:{blue:'alien', red:'spaceman'}}[level]; }
+
+  // ===== State =====
+  var blue={r:START_BLUE.r,c:START_BLUE.c,name:'B',side:'left'};
+  var red ={r:START_RED.r, c:START_RED.c, name:'R', side:'right'};
+  var turn='red', animating=false, gameOver=false;
+  var bluePose='idle', redPose='idle'; // idle | run | hi5
+  var AV_BLUE={}, AV_RED={}; // {idle:Image, run:Image, hi5:Image}
+  var mazeLeft, mazeRight;
+  var gateMap=new Map();
+  var showBridgeLeft=true, showBridgeRight=true;
+
+  // ===== DOM =====
+  var canvas=document.getElementById('board'), ctx=canvas.getContext('2d');
+  var levelNum=document.getElementById('levelNum');
+  var turnText=document.getElementById('turnText'), turnDot=document.getElementById('turnDot');
+  var controls=document.querySelector('.controls');
+  var winPanel=document.getElementById('postWin');
+  var sfxWin=document.getElementById('sfxWin');
+  var bgm=document.getElementById('bgm');
+  var bgmStarted=false;
+  function startBgm(){
+    if(bgmStarted) return;
+    bgmStarted=true;
+    try{ if(bgm){ bgm.volume=0.35; bgm.currentTime=0; bgm.play().catch(function(){}); } }catch(_){}
+  }
+
+  var btnReplay=document.getElementById('btnReplay'), btnNext=document.getElementById('btnNext');
+  Array.from(document.querySelectorAll('.btn')).forEach(function(b){
+  b.addEventListener('click', function(e){
+    try{ if(typeof startBgm==='function') startBgm(); }catch(_){}
+    requestMove(e.currentTarget.getAttribute('data-dir'));
+  });
+});
+  window.addEventListener('keydown', function(e){
+  var m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};
+  if(m[e.key]){
+    e.preventDefault();
+    try{ if(typeof startBgm==='function') startBgm(); }catch(_){}
+    requestMove(m[e.key]);
+  }
+});
+  if(btnReplay) btnReplay.addEventListener('click', function(){ endReset(false); });
+  if(btnNext)   btnNext.addEventListener('click',   function(){ endReset(true ); });
+
+  // ===== Algorithms =====
+  function genPerfect(rows, cols){
+    var cells=[]; for(var r=0;r<rows;r++){ for(var c=0;c<cols;c++){ cells.push({r:r,c:c,N:true,E:true,S:true,W:true,visited:false}); } }
+    var idx=function(rr,cc){ return rr*cols+cc; };
+    var current=cells[idx(Math.floor(Math.random()*rows), Math.floor(Math.random()*cols))];
+    current.visited=true; var stack=[];
+    function neighbors(r,c){
+      var out=[], cand=[{dir:'N',r:r-1,c:c,opp:'S'},{dir:'E',r:r,c:c+1,opp:'W'},{dir:'S',r:r+1,c:c,opp:'N'},{dir:'W',r:r,c:c-1,opp:'E'}];
+      for(var i=0;i<cand.length;i++){ var n=cand[i]; if(n.r>=0&&n.r<rows&&n.c>=0&&n.c<cols && !cells[idx(n.r,n.c)].visited){ out.push(n); } }
+      return out;
+    }
+    while(true){
+      var ns=neighbors(current.r,current.c);
+      if(ns.length){
+        var n=ns[Math.floor(Math.random()*(ns.length))];
+        current[n.dir]=false; var next=cells[idx(n.r,n.c)]; next[n.opp]=false;
+        stack.push(current); current=next; current.visited=true;
+      }else if(stack.length){ current=stack.pop(); } else { break; }
+    }
+    return {rows:rows, cols:cols, cells:cells, idx:idx};
+  }
+
+  function shortestPathEdges(maze, start, goal){
+    var rows=maze.rows, cols=maze.cols, idx=maze.idx;
+    var dist=new Array(rows*cols), prev=new Array(rows*cols);
+    for(var i=0;i<rows*cols;i++){ dist[i]=Infinity; prev[i]=-1; }
+    var si=idx(start.r,start.c), gi=idx(goal.r,goal.c), q=[si];
+    dist[si]=0;
+    var dirs=[{dir:'N',dr:-1,dc:0,opp:'S'},{dir:'E',dr:0,dc:1,opp:'W'},{dir:'S',dr:1,dc:0,opp:'N'},{dir:'W',dr:0,dc:-1,opp:'E'}];
+    while(q.length){
+      var ii=q.shift(); if(ii===gi) break;
+      var r=Math.floor(ii/cols), c=ii%cols, cell=maze.cells[idx(r,c)];
+      for(var d=0; d<dirs.length; d++){
+        var dd=dirs[d]; if(cell[dd.dir]) continue;
+        var ni=idx(r+dd.dr,c+dd.dc);
+        if(dist[ni]>dist[ii]+1){ dist[ni]=dist[ii]+1; prev[ni]=ii; q.push(ni); }
+      }
+    }
+    var path=[], cur=gi; if(prev[cur]===-1 && cur!==si) return [];
+    while(cur!==-1){ var rr=Math.floor(cur/cols), cc=cur%cols; path.push({r:rr,c:cc}); if(cur===si) break; cur=prev[cur]; }
+    path.reverse();
+    var edges=[]; for(var k=0;k<path.length-1;k++){ var a=path[k], b=path[k+1], dr=b.r-a.r, dc=b.c-a.c; var dir=dr===1?'S':dr===-1?'N':dc===1?'E':'W'; edges.push({cell:{r:a.r,c:a.c}, dir:dir}); }
+    return edges;
+  }
+
+  function placeGates(edges, count){
+    var n=edges.length, candidates=[];
+    for(var i=0;i<n;i++){ if(i>=START_BUFFER && i<=n-1-END_BUFFER) candidates.push(i); }
+    var chosen=[];
+    function ok(i){ for(var t=0;t<chosen.length;t++){ if(Math.abs(i-chosen[t])<MIN_SPACING) return false; } return true; }
+    // shuffle
+    for(var s=candidates.length-1;s>0;s--){ var j=Math.floor(Math.random()*(s+1)); var tmp=candidates[s]; candidates[s]=candidates[j]; candidates[j]=tmp; }
+    var p=0; while(p<candidates.length && chosen.length<count){ var pick=candidates[p++]; if(ok(pick)) chosen.push(pick); }
+    chosen.sort(function(a,b){return a-b;});
+    var out=[]; for(var z=0; z<chosen.length; z++){ var idx=chosen[z]; out.push({index:idx, edge:edges[idx]}); }
+    return out;
+  }
+
+  // ===== Generation =====
+  function loadAvatarsForLevel(){
+    var names=levelNames();
+    AV_BLUE={ idle:getImg(avatarPath(names.blue,'idle')),
+              run :getImg(avatarPath(names.blue,'run')),
+              hi5 :getImg(avatarPath(names.blue,'hi5')) };
+    AV_RED={  idle:getImg(avatarPath(names.red,'idle')),
+              run :getImg(avatarPath(names.red,'run')),
+              hi5 :getImg(avatarPath(names.red,'hi5')) };
+  }
+
+  function generate(){
+    gateMap.clear();
+    var GPS=gatesPerSide();
+    mazeLeft  = genPerfect(ROWS,5);
+    mazeRight = genPerfect(ROWS,5);
+
+    var leftEdges  = shortestPathEdges(mazeLeft,  START_BLUE,                        PAD_BLUE);
+    var rightEdges = shortestPathEdges(mazeRight, {r:START_RED.r,c:START_RED.c-5},  {r:PAD_RED.r,c:PAD_RED.c-5});
+
+    var L=placeGates(leftEdges,GPS), R=placeGates(rightEdges,GPS), tries=0;
+    while((L.length!==GPS || R.length!==GPS) && tries<60){
+      mazeLeft  = genPerfect(ROWS,5);
+      mazeRight = genPerfect(ROWS,5);
+      L=placeGates(shortestPathEdges(mazeLeft,  START_BLUE,                       PAD_BLUE), GPS);
+      R=placeGates(shortestPathEdges(mazeRight, {r:START_RED.r,c:START_RED.c-5}, {r:PAD_RED.r,c:PAD_RED.c-5}), GPS);
+      tries++;
+    }
+    // map gates to board coordinates
+    L.forEach(function(g){ addGate({side:'left', r:g.edge.cell.r, c:g.edge.cell.c,     dir:g.edge.dir, index:g.index}); });
+    R.forEach(function(g){ addGate({side:'right',r:g.edge.cell.r, c:g.edge.cell.c+5,   dir:g.edge.dir, index:g.index}); });
+
+    // reset
+    blue.r=START_BLUE.r; blue.c=START_BLUE.c;
+    red.r=START_RED.r;   red.c=START_RED.c;
+    turn='red'; gameOver=false;
+    bluePose='idle'; redPose='idle';
+    showBridgeLeft=true; showBridgeRight=true;
+    if(levelNum) levelNum.textContent=String(level);
+    if(winPanel) winPanel.style.display='none';
+    if(controls) controls.style.display='flex';
+    loadAvatarsForLevel();
+    updateTurnUI(); draw();
+  }
+
+  function addGate(g){ g.open=false; g.touched=false; gateMap.set(edgeKey(g.r,g.c,g.dir), g); }
+
+  // ===== Movement: player keeps moving until own-gate bump or pad =====
+  function requestMove(dir){
+    if(animating || gameOver) return;
+    var actor=(turn==='red')?red:blue;
+    var poseRef = (turn==='red')? 'redPose' : 'bluePose';
+    var delta={left:[0,-1],right:[0,1],up:[-1,0],down:[1,0]}[dir]; if(!delta) return;
+    var nr=clamp(actor.r+delta[0],0,ROWS-1), nc=clamp(actor.c+delta[1],0,COLS-1);
+    var dr=nr-actor.r, dc=nc-actor.c; if(Math.abs(dr)+Math.abs(dc)!==1) return;
+    var edgeDir=dr===1?'S':dr===-1?'N':dc===1?'E':'W';
+
+    var state=analyzeEdge(actor, actor.r, actor.c, edgeDir);
+    if(state.type==='wall') return;
+
+    if(state.type==='gate'){
+      if(state.own && !state.g.open){
+        // bump: record touch, open partner's earliest touched+closed, then FLIP TURN
+        touchGate(state.g, actor);
+        // landing didn't move, so pose stays (idle or hi5 if already on pad)
+        turn=(turn==='red')?'blue':'red'; updateTurnUI(); draw(); return;
+      }
+      if(!state.own && !state.g.open) return; // closed partner gate blocks
+      // else if open partner gate -> allow move
+    }
+
+    // animate with 'run' pose
+    if(turn==='red') redPose='run'; else bluePose='run';
+    animateMove(actor, {r:nr,c:nc}, function(){
+      // After landing, set pose based on pad status
+      if(actor===red){
+        if(actor.r===PAD_RED.r && actor.c===PAD_RED.c){
+          redPose='hi5'; showBridgeRight=false; // hide red half
+          openPartnersNextUnopened('left'); turn='blue'; updateTurnUI(); draw(); return;
+        } else {
+          redPose='idle';
+        }
+      }else{
+        if(actor.r===PAD_BLUE.r && actor.c===PAD_BLUE.c){
+          bluePose='hi5'; showBridgeLeft=false; endGame(); return;
+        } else {
+          bluePose='idle';
+        }
+      }
+      // Otherwise: same player continues
+      updateTurnUI(); draw();
+    });
+  }
+
+  function analyzeEdge(actor,r,c,dir){
+    // gates first (check both sides of the edge)
+    var keyF=edgeKey(r,c,dir);
+    var d = dir==='N'?-1:dir==='S'?1:0, e = dir==='W'?-1:dir==='E'?1:0;
+    var nr=r+d, nc=c+e, opp=dir==='N'?'S':dir==='S'?'N':dir==='W'?'E':'W';
+    var keyR=edgeKey(nr,nc,opp);
+    var g=gateMap.get(keyF) || gateMap.get(keyR);
+    if(g){ return {type:'gate', g:g, own:(actor.side===g.side)}; }
+
+    // center divider is a wall
+    if((dir==='E' && c===4) || (dir==='W' && c===5)) return {type:'wall'};
+
+    // maze walls
+    if(c<=4){ if(isMazeWall(mazeLeft, r, c, dir)) return {type:'wall'}; }
+    else    { if(isMazeWall(mazeRight, r, c-5, dir)) return {type:'wall'}; }
+    return {type:'pass'};
+  }
+
+  // bumping your own closed gate marks touch and opens partner's previously touched gate (if any)
+  function touchGate(gate, actor){
+    gate.touched=true;
+    var partnerSide = gate.side==='left' ? 'right' : 'left';
+    var vals = Array.from(gateMap.values());
+    var candidates = vals.filter(function(x){ return x.side===partnerSide && x.touched && !x.open; })
+                         .sort(function(a,b){ return a.index-b.index; });
+    if(candidates.length){ candidates[0].open=true; }
+  }
+
+  function openPartnersNextUnopened(side){
+    var vals=Array.from(gateMap.values());
+    var next = vals.filter(function(g){ return g.side===side && !g.open; }).sort(function(a,b){ return a.index-b.index; })[0];
+    if(next) next.open=true;
+  }
+
+  // ===== Drawing =====
+  
+  
+  function draw(){
+    // size to DPR
+    var cssW=canvas.clientWidth, dpr=Math.max(1, Math.floor(window.devicePixelRatio||1));
+    canvas.width=Math.floor(cssW*dpr); canvas.height=Math.floor(cssW*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    var g=geom(), pad=g.pad, cell=g.cell, left=g.left, top=g.top, right=g.right, bottom=g.bottom;
+
+    // border
+    ctx.lineWidth=2; ctx.strokeStyle=getCSS('--grid-dark');
+    crisp(function(){ ctx.strokeRect(pad,pad,COLS*cell,ROWS*cell); });
+
+    // grid
+    ctx.lineWidth=LINE_W; ctx.strokeStyle=getCSS('--grid');
+    crisp(function(){
+      for(var r=1;r<ROWS;r++){
+        var y = top + r*cell;
+        ctx.beginPath(); ctx.moveTo(left,y); ctx.lineTo(right,y); ctx.stroke();
+      }
+    });
+    crisp(function(){
+      for(var c=1;c<COLS;c++){
+        var x = left + c*cell;
+        ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,bottom); ctx.stroke();
+      }
+    });
+
+    // walls (fade on gameOver)
+    ctx.strokeStyle=getCSS('--wall'); ctx.lineWidth=WALL_W; ctx.lineCap='round';
+    ctx.save(); ctx.globalAlpha = gameOver ? 0.1 : 1;
+    crisp(function(){ drawMazeWalls(mazeLeft, 0, cell, pad); });
+    crisp(function(){ drawMazeWalls(mazeRight,5, cell, pad); });
+    ctx.restore();
+
+    // center divider (also fades)
+    ctx.lineWidth=DIV_W; ctx.save(); ctx.globalAlpha = gameOver ? 0.1 : 1;
+    crisp(function(){
+      var x = pad + 5*cell;
+      ctx.beginPath(); ctx.moveTo(x,pad); ctx.lineTo(x,pad+ROWS*cell); ctx.stroke();
+    });
+    ctx.restore();
+
+    // bridges (images); hide halves as play progresses; also fade on gameOver
+    ctx.save(); ctx.globalAlpha = gameOver ? 0.1 : 1;
+    if(showBridgeLeft  && BRIDGE_LEFT.complete)  { drawBridgeImage(PAD_BLUE.r, PAD_BLUE.c, BRIDGE_LEFT); }
+    if(showBridgeRight && BRIDGE_RIGHT.complete) { drawBridgeImage(PAD_RED.r,  PAD_RED.c,  BRIDGE_RIGHT); }
+    ctx.restore();
+
+    // gates (fade on gameOver)
+    ctx.save(); ctx.globalAlpha = gameOver ? 0.1 : 1; drawGates(); ctx.restore();
+
+    // tokens with avatars
+    drawToken(blue, AV_BLUE, bluePose);
+    drawToken(red,  AV_RED,  redPose);
+  }
+
+  function drawBridgeImage(r,c,img){
+    var cc=cellCenter(r,c), cell=cc.cell;
+    var w=cell*0.9, h=cell*0.9;
+    ctx.drawImage(img, cc.x-w/2, cc.y-h/2, w, h);
+  }
+
+  function drawMazeWalls(maze, colOffset, cell, pad){
+    var left=pad, top=pad;
+    for(var r=0;r<maze.rows;r++){
+      for(var c=0;c<maze.cols;c++){
+        var ce=maze.cells[maze.idx(r,c)];
+        var gx=left+(c+colOffset)*cell, gy=top+r*cell;
+        if(ce.N){ line(gx,gy,gx+cell,gy); }
+        if(ce.W){ line(gx,gy,gx,gy+cell); }
+        if(c===maze.cols-1 && ce.E){ line(gx+cell,gy,gx+cell,gy+cell); }
+        if(r===maze.rows-1 && ce.S){ line(gx,gy+cell,gx+cell,gy+cell); }
+      }
+    }
+    function line(x1,y1,x2,y2){ ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); }
+  }
+
+  function drawGates(){
+    var vals = Array.from(gateMap.values());
+    for(var i=0;i<vals.length;i++){
+      var g=vals[i];
+      var col = g.open ? '#8dd48d' : (g.side==='left'?getCSS('--blue'):getCSS('--red'));
+      drawGateEdge(g.r,g.c,g.dir,col,g.open);
+    }
+  }
+
+  function drawGateEdge(r,c,dir,color,isOpen){
+    var g=geom(), pad=g.pad, cell=g.cell;
+    var x0=pad+c*cell, y0=pad+r*cell, len=cell*0.6, off=(cell-len)/2;
+    ctx.save(); ctx.lineCap='round'; ctx.lineWidth=GATE_W; ctx.strokeStyle=color;
+    if(dir==='N' || dir==='S'){
+      var y=(dir==='N')?y0:(y0+cell);
+      ctx.beginPath(); ctx.moveTo(x0+off,y); ctx.lineTo(x0+cell-off,y); ctx.stroke();
+    }else{
+      var x=(dir==='W')?x0:(x0+cell);
+      ctx.beginPath(); ctx.moveTo(x,y0+off); ctx.lineTo(x,y0+cell-off); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawToken(t, SPRITES, pose){
+    var cc=cellCenter(t.r,t.c), x=cc.x, y=cc.y, cell=cc.cell;
+    var radius=Math.max(12,Math.min(20,cell*0.32));
+    // shadow
+    ctx.beginPath(); ctx.arc(x,y+1.5,radius,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fill();
+    // base chip
+    ctx.beginPath(); ctx.arc(x,y,radius,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle='#000'; ctx.stroke();
+    // avatar image (inside chip)
+    var im = SPRITES && SPRITES[pose];
+    if(im && im.complete){
+      var size=(radius-4)*2;
+      ctx.save(); ctx.beginPath(); ctx.arc(x,y,radius-4,0,Math.PI*2); ctx.clip();
+      ctx.drawImage(im, x-size/2, y-size/2, size, size);
+      ctx.restore();
+    }else{
+      // fallback color
+      ctx.beginPath(); ctx.arc(x,y,radius-5,0,Math.PI*2); ctx.fillStyle=(t===blue)?'#86b7ff':'#ff9aa2'; ctx.fill();
+    }
+    // letter overlay (small)
+    ctx.fillStyle='#000'; ctx.font=Math.floor(radius*0.7)+'px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t.name, x, y);
+  }
+
+
+  // ===== Helpers =====
+  function edgeKey(r,c,dir){ if(dir==='N') return (r-1)+','+c+',S'; if(dir==='W') return r+','+(c-1)+',E'; return r+','+c+','+dir; }
+  function isMazeWall(maze,r,c,dir){ if(r<0||r>=maze.rows||c<0||c>=maze.cols) return true; var ce=maze.cells[maze.idx(r,c)]; return !!ce[dir]; }
+  function updateTurnUI(){ if(gameOver){ turnText.textContent='Level complete!'; turnDot.style.background='#22c55e'; return; } var isRed=(turn==='red'); turnText.textContent='Your turn: ' + (isRed?'Red':'Blue'); turnDot.style.background=isRed?'var(--red)':'var(--blue)'; }
+  function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+  function geom(){ var pad=12, size=Math.min(canvas.clientWidth,canvas.clientHeight)-pad*2, cell=size/COLS; return {pad:pad,cell:cell,left:pad,top:pad,right:pad+COLS*cell,bottom:pad+ROWS*cell}; }
+  function cellCenter(r,c){ var g=geom(); return {x:g.pad+c*g.cell+g.cell/2,y:g.pad+r*g.cell+g.cell/2,cell:g.cell}; }
+  function crisp(fn){ ctx.save(); ctx.translate(0.5,0.5); fn(); ctx.restore(); }
+  function getCSS(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+  function animateMove(actor, target, onDone){
+    animating=true; Array.from(document.querySelectorAll('.btn')).forEach(function(b){ b.disabled=true; });
+    var from=cellCenter(actor.r,actor.c), to=cellCenter(target.r,target.c);
+    var start=performance.now();
+    function step(now){
+      var t=Math.min(1,(now-start)/MOVE_MS), k=t<0.5?2*t*t:-1+(4-2*t)*t;
+      draw();
+      // draw moving token at interpolated pos with run pose
+      var savePoseBlue=bluePose, savePoseRed=redPose;
+      if(actor===red){ redPose='run'; } else { bluePose='run'; }
+      drawToken(actor===red?red:blue, actor===red?AV_RED:AV_BLUE, 'run');
+      // restore static other
+      if(actor===red){ bluePose=savePoseBlue; } else { redPose=savePoseRed; }
+      var x=from.x+(to.x-from.x)*k, y=from.y+(to.y-from.y)*k, cell=from.cell;
+      // draw moving token manually at (x,y)
+      var radius=Math.max(12,Math.min(20,cell*0.32));
+      // shadow
+      ctx.beginPath(); ctx.arc(x,y+1.5,radius,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fill();
+      // base
+      ctx.beginPath(); ctx.arc(x,y,radius,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle='#000'; ctx.stroke();
+      // avatar
+      var im=(actor===red?AV_RED:AV_BLUE)['run'];
+      if(im && im.complete){ var size=(radius-4)*2; ctx.save(); ctx.beginPath(); ctx.arc(x,y,radius-4,0,Math.PI*2); ctx.clip(); ctx.drawImage(im, x-size/2, y-size/2, size, size); ctx.restore(); }
+      // letter
+      ctx.fillStyle='#000'; ctx.font=Math.floor(radius*0.7)+'px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(actor.name, x, y);
+
+      if(t<1){ requestAnimationFrame(step); } else {
+        actor.r=target.r; actor.c=target.c; animating=false; Array.from(document.querySelectorAll('.btn')).forEach(function(b){ b.disabled=false; }); if(onDone) onDone();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ===== Finish / Reset =====
+  function endGame(){
+    gameOver=true; updateTurnUI();
+    (controls||document.querySelector('.controls')).style.display='none';
+    var panel=(winPanel||document.getElementById('postWin')); if(panel) panel.style.display='block';
+    try{ if(sfxWin){ sfxWin.currentTime=0; sfxWin.play().catch(function(){}); } }catch(_){}
+    draw();
+  }
+
+  function endReset(next){
+    try{ if(sfxWin){ sfxWin.pause(); sfxWin.currentTime=0; } }catch(_){}
+    if(next){ level=Math.min(3, level+1); }
+    generate(); turn='red'; gameOver=false;
+    (controls||document.querySelector('.controls')).style.display='flex';
+    var panel=(winPanel||document.getElementById('postWin')); if(panel) panel.style.display='none';
+    updateTurnUI(); draw();
+  }
+
+  // ===== Utility draw pieces =====
+  function drawTokenGhost(t,x,y,cell){} // not used in avatar build
+
+  // ===== Start =====
+  generate(); draw();
+  window.addEventListener('resize', draw);
+})();</script>
+</body>
+</html>
