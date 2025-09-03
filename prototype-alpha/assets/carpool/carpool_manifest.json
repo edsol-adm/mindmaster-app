@@ -1,0 +1,94 @@
+{
+  "ui": {
+    "logicalWidth": 1100,
+    "logicalHeight": 1400,
+    "initialSpeedPercent": 85,
+    "minSpeedPercent": 60,
+    "maxSpeedPercent": 100,
+    "eventIntervalMs": 5000,
+    "tailBufferMs": 2000,
+    "toastMs": 900
+  },
+  "audio": {
+    "bgm": "assets/audio/carpool-bgm.mp3",
+    "honk": "assets/carpool/sounds/sfx/honk.mp3",
+    "ding": "synth:ding",
+    "negative": "synth:doink"
+  },
+  "levels": [
+    {
+      "id": "beginner",
+      "durationSec": 30,
+      "greens": 3,
+      "reds": 3
+    },
+    {
+      "id": "expert",
+      "durationSec": 60,
+      "greens": 5,
+      "reds": 7
+    },
+    {
+      "id": "ace",
+      "durationSec": 90,
+      "greens": 7,
+      "reds": 11,
+      "timeExtension": {
+        "perGreens": 3,
+        "addSec": 15,
+        "capSec": 45
+      }
+    }
+  ],
+  "rules": {
+    "maxSameTypeInRow": 2,
+    "maxSameLaneInRow": 3,
+    "greenScore": 5,
+    "greenSpeedDelta": 10,
+    "redSpeedDelta": -20,
+    "chainBonusPerGreen": 10
+  },
+  "assets": {
+    "buttons": {
+      "left": "assets/carpool/images/carpool-btn-left.png",
+      "right": "assets/carpool/images/carpool-btn-right.png",
+      "carpool": "assets/carpool/images/carpool-btn-carpool.png",
+      "honk": "assets/carpool/images/carpool-btn-honk.png"
+    },
+    "car": "assets/carpool/images/carpool-van.png",
+    "events": {
+      "positive": [
+        "assets/carpool/images/event/positive-01.png",
+        "assets/carpool/images/event/positive-02.png",
+        "assets/carpool/images/event/positive-03.png",
+        "assets/carpool/images/event/positive-04.png",
+        "assets/carpool/images/event/positive-05.png",
+        "assets/carpool/images/event/positive-06.png",
+        "assets/carpool/images/event/positive-07.png",
+        "assets/carpool/images/event/positive-08.png",
+        "assets/carpool/images/event/positive-09.png",
+        "assets/carpool/images/event/positive-10.png",
+        "assets/carpool/images/event/positive-11.png",
+        "assets/carpool/images/event/positive-12.png"
+      ],
+      "negative": [
+        "assets/carpool/images/event/negative-01.png",
+        "assets/carpool/images/event/negative-02.png",
+        "assets/carpool/images/event/negative-03.png",
+        "assets/carpool/images/event/negative-04.png",
+        "assets/carpool/images/event/negative-05.png",
+        "assets/carpool/images/event/negative-06.png",
+        "assets/carpool/images/event/negative-07.png",
+        "assets/carpool/images/event/negative-08.png",
+        "assets/carpool/images/event/negative-09.png",
+        "assets/carpool/images/event/negative-10.png",
+        "assets/carpool/images/event/negative-11.png",
+        "assets/carpool/images/event/negative-12.png",
+        "assets/carpool/images/event/negative-13.png",
+        "assets/carpool/images/event/negative-14.png",
+        "assets/carpool/images/event/negative-15.png",
+        "assets/carpool/images/event/negative-16.png"
+      ]
+    }
+  }
+}
