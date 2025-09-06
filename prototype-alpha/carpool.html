@@ -14,6 +14,16 @@
     --shadow: rgba(0,0,0,0.18);
     --blue: #36A3FF; --blue-dark:#2C8BDB;
     --yellow:#FFD34D; --yellow-dark:#E3B93D;
+
+    /* NEW: tunable sizes for controls bar & main drive buttons */
+    --dash-w: 10px;          /* matches .left-border-dash/.right-border-dash width */
+    --controls-h: 120px;   /* controls bar height (was 148px) */
+    --drivebtn-h: 90px;    /* main drive button height (was 112px) */
+
+    /* ADDED: road inset & roadside controls */
+    --road-inset: 8px;        /* matches current .road inner edge thickness */
+    --roadside-w: 40px;       /* visual thickness of the grass strip */
+    --roadside-nudge: 0px;    /* tiny overlap to remove micro-gaps */
   }
   body{ margin:0; background:#f3f5f7; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:#111;
         display:flex; align-items:center; justify-content:center; min-height:100vh; }
@@ -23,8 +33,8 @@
   .hud{ position:absolute; top:0; left:0; right:0; height:64px; background:#fff;
         display:flex; align-items:center; justify-content:space-between; padding:0 18px; border-bottom:3px solid #eee; z-index:5; }
 
-  .playfield{ position:absolute; top:64px; bottom:148px; left:0; right:0; background:#eaf2ea; overflow:hidden; }
-  .road{ position:absolute; top:0; bottom:0; width:88%; left:6%; background:var(--road-bg); box-shadow:inset 0 0 0 8px #1e1e1e; overflow:hidden; }
+  .playfield{ position:absolute; top:64px; bottom:var(--controls-h); left:0; right:0; background:#eaf2ea; overflow:hidden; }
+  .road{ position:absolute; top:0; bottom:0; width:88%; left:6%; background:var(--road-bg); box-shadow:inset 0 0 0 var(--road-inset) #1e1e1e; overflow:visible; }
   .lane{ position:absolute; top:0; bottom:0; width:calc(50% - var(--lane-gap)); }
   .lane.left{ left:var(--lane-gap); } .lane.right{ right:var(--lane-gap); }
 
@@ -32,6 +42,7 @@
     position:absolute; top:-100%; bottom:-100%; width:12px;
     background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.95) 0 30px, rgba(255,255,255,0) 30px 60px);
     animation: dashMove 0.8s linear infinite;
+    z-index: 2;
   }
   .center-dash{ left:calc(50% - 6px); }
   .left-border-dash,.right-border-dash{ width:10px;
@@ -47,7 +58,7 @@
     display:flex; align-items:center; justify-content:center; text-align:center;
     padding:0; user-select:none;
   }
-  .car{ bottom: 15%; height:var(--car-h); z-index:3;
+  .car{ bottom: 8%; height:var(--car-h); z-index:3;
         background-image:url('assets/carpool/images/carpool-van.png');
         background-size:contain; background-position:center; background-repeat:no-repeat;
         filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25)); }
@@ -68,9 +79,9 @@
     will-change: transform;
   }
 
-.controls{ position:absolute; left:0; right:0; bottom:0; height:148px; background:#fff; border-top:3px solid #eee;
+  .controls{ position:absolute; left:0; right:0; bottom:0; height:var(--controls-h); background:#fff; border-top:3px solid #eee;
              display:flex; align-items:center; justify-content:space-evenly; gap:10px; padding:8px 12px; z-index:5; }
-  .drive-btn{ flex:1; height:112px; background:#fff; background-repeat:no-repeat; background-position:center; background-size:contain;
+  .drive-btn{ flex:1; height:var(--drivebtn-h); background:#fff; background-repeat:no-repeat; background-position:center; background-size:contain;
         color:transparent; border:none; border-radius:18px; box-shadow:0 10px 16px var(--shadow); }
   .btn-left{  background-image:url('assets/carpool/images/carpool-btn-left.png'); }
   .btn-right{ background-image:url('assets/carpool/images/carpool-btn-right.png'); }
@@ -94,6 +105,31 @@
 
   /* show/hide helper */
   .hidden{ display:none !important; }
+
+  /* Roadside border strips (REPLACED) */
+  .road-border{
+    position:absolute;
+    top:0; bottom:0;
+    width:var(--roadside-w);
+    background: url('assets/carpool/images/carpool-border.png') repeat-y left top / 100% auto;
+    z-index:1;                  /* below dashes; above road bg */
+    pointer-events:none;
+  }
+
+  /* Put each strip inside the road’s visual edge by overlapping the inset.
+     The extra --roadside-nudge removes any 1px seam from subpixel rounding. */
+  .road-border.left-border{
+    left: calc(-1 * (var(--road-inset) + var(--dash-w)));
+  }
+  .road-border.right-border{
+    right: calc(-1 * (var(--road-inset) + var(--dash-w)));
+    transform: scaleX(-1);
+    transform-origin:center;
+  }
+
+  /* Ensure dash layers are above the border art */
+  .center-dash, .left-border-dash, .right-border-dash{ z-index:2; }
+
 </style>
 </head>
 <body>
@@ -112,6 +148,8 @@
       <div class="left-border-dash"></div>
       <div class="center-dash"></div>
       <div class="right-border-dash"></div>
+      <div class="road-border left-border"></div>
+      <div class="road-border right-border"></div>
       <div class="entity car" id="car" aria-label="Player car"></div>
     </div>
   </div>
@@ -134,11 +172,12 @@
       </div>
       <div id="howPanel" class="hidden" style="margin-top:14px; text-align:left;">
         <ul style="margin-top:0">
-          <li>Change lanes with <b>Left</b>/<b>Right</b> — First press of any button starts the game.</li>
-<li><b>Avoid negative events</b> — hit one and your speed drops 20% (minimum 60%).</li>
-          <li><b>Positive events</b> — when one reaches the van, press <b>Carpool</b> to score <b>5 points</b> and gain <b>+10% speed</b> (up to 100%).</li>
-          <li><b>Honk</b> can play anytime; background music loops.</li>
-        </ul>
+  <li><b>Start & Move</b> — First press of any button starts the game.</li>
+  <li>Change lanes with <b>Left</b> or <b>Right</b> yellow buttons</li>
+  <li><b>Carpool Positives</b> — when a positive event reaches the van, press the <b>blue Carpool</b> button. You will earn <b>+5 points</b> and increase speed by <b>10%</b> (maximum 100%). Do it again in a row for an extra <b>+10 points</b> each time.</li>
+  <li><b>Honk Negatives</b> — when a negative event is in the other lane beside the van, press the <b>red Honk</b> button to shrink it and earn <b>+5 points</b> and increase speed by <b>10%</b> (maximum 100%). Do it again in a row for an extra <b>+10 points</b> each time.</li>
+  <li><b>Honk Negatives</b> — if the van is in the same lane as a negative event and hits it, speed drops by <b>20%</b> (minimum 60%).</li>
+</ul>
 </div>
     </div>
   </div>
@@ -236,7 +275,9 @@
     ? IMG_POS[(posIdx++) % IMG_POS.length]
     : IMG_NEG[(negIdx++) % IMG_NEG.length];
 
-  let levelIndex = 0, score = 0, speed = START_SPEED, chainCount = 0;
+  let levelIndex = 0, score = 0, speed = START_SPEED;
+  let chainPos = 0;   // streak of carpool successes
+  let chainHonk = 0;  // streak of honk-shrink successes
   let startTimestamp = null, elapsed = 0;
   let remainingPos = 0, remainingNeg = 0;
   let lastType = null, sameTypeCount = 0;
@@ -309,6 +350,23 @@
       if (verticallyAlongside){
         o.startled = true; // one-shot
         poster.classList.add('startled');
+        if (!o.honkRewarded) {
+          o.honkRewarded = true;
+
+          // base + chain for honk
+          score += 5 + (chainHonk > 0 ? 10 : 0);
+          chainHonk += 1;
+          hudScore.textContent = score;
+
+          // +10% speed (capped by existing adjustSpeed logic)
+          adjustSpeed(+POS_SPEED_BONUS);
+
+          // history note
+          history.push({ type: 'positive', text: 'Honked away: well handled!' });
+
+          // remove so it can't collide or be rewarded twice
+          o.resolved = true;
+}
       }
     });
   }
@@ -369,7 +427,9 @@
   function startGame(){
     gameStarted = true; endScreenActive = false; intro.style.display = 'none';
     const L = LEVELS[levelIndex];
-    score = 0; speed = START_SPEED; chainCount = 0; extensionAccum = 0; posSinceExt = 0;
+    score = 0; speed = START_SPEED; extensionAccum = 0; posSinceExt = 0;
+    chainPos = 0;
+    chainHonk = 0;
     elapsed = 0;
     lastType = null; sameTypeCount = 0; lastLane = null; sameLaneCount = 0;
     remainingPos = L.positives; remainingNeg = L.negatives;
@@ -417,7 +477,7 @@
       if(pct >= 1){
         if(!o.resolved){
           if(o.type === 'positive'){
-            if(o.overlapOnce){ history.push({type:'positive', text:`Missed: ${o.title} — press Carpool next time.`}); playDoink(); chainCount = 0; }
+            if(o.overlapOnce){ history.push({type:'positive', text:`Missed: ${o.title} — press Carpool next time.`}); playDoink(); chainPos = 0; }
             else { history.push({type:'positive', text:`Avoided: ${o.title}`}); }
           } else { history.push({type:'negative', text:`Avoided: ${o.title} — good choice!`}); }
           o.resolved = true;
@@ -432,10 +492,11 @@
       const sameLane = (o.lane === lane);
       if(overlap && sameLane){
         o.overlapOnce = true;
-        if(o.type === 'negative' && !o.collided){
+        if(o.type === 'negative' && !o.collided && !o.resolved){
           o.collided = true; o.resolved = true; history.push({type:'negative', text:`Collision: ${o.title} — slow down.`});
-          adjustSpeed( -NEG_SPEED_PENALTY ); playDoink(); chainCount = 0; o.el.remove(); obstacles.delete(o);
-        }else if(o.type === 'positive'){ o.canCarpool = true; }
+          adjustSpeed( -NEG_SPEED_PENALTY ); playDoink(); o.el.remove(); obstacles.delete(o);
+                  chainPos = 0; chainHonk = 0;
+          }else if(o.type === 'positive'){ o.canCarpool = true; }
       }else{ if(o.type === 'positive'){ o.canCarpool = false; } }
     });
 
@@ -491,7 +552,9 @@
       if(captured) return;
       if(o.type === 'positive' && o.canCarpool && !o.resolved){
         captured = true; o.resolved = true; history.push({type:'positive', text:`Carpooled: Well done!`});
-        score += 5 + (chainCount > 0 ? 10 : 0); chainCount += 1; hudScore.textContent = score;
+        score += 5 + (chainPos > 0 ? 10 : 0);
+        chainPos += 1;
+        hudScore.textContent = score;
         adjustSpeed( +POS_SPEED_BONUS ); playDing(); o.el.remove(); obstacles.delete(o);
         if(LEVELS[levelIndex].allowExtension){
           posSinceExt += 1;
@@ -506,8 +569,11 @@
         }
       }
     });
-    if(!captured){ chainCount = 0; }
-  }
+    
+  
+    // reset only carpool chain on whiff
+    if (!captured) { chainPos = 0; }
+}
 
   function adjustSpeed(delta){ speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, speed + delta)); hudSpeed.textContent = speed; setDashRateFromSpeed(); }
   function setDashRateFromSpeed(){
