@@ -1,0 +1,58 @@
+{
+  "version": "1.1",
+  "updated_at": "2025-09-11T00:00:00Z",
+  "screen": "lesson-01.01",
+  "assets": {
+    "background": "../assets/mindmaster-screens/images/lesson-background.png",
+    "mimi": "../assets/images/mimi.gif",
+    "buttons": {
+      "btn-lesson-summary": "../assets/mindmaster-screens/images/btn-lesson-summary.png",
+      "btn-in-class-games": "../assets/mindmaster-screens/images/btn-in-class-games.png",
+      "btn-home-games": "../assets/mindmaster-screens/images/btn-home-games.png",
+      "btn-extra-lesson": "../assets/mindmaster-screens/images/btn-extra-lesson.png",
+      "btn-reflection": "../assets/mindmaster-screens/images/btn-reflection.png"
+    }
+  },
+  "positions": {
+    "btn-home-games": {
+      "left_percent": 34,
+      "top_percent": 15,
+      "notes": "North of the north swing, on path"
+    },
+    "btn-in-class-games": {
+      "left_percent": 9,
+      "top_percent": 33,
+      "notes": "West of merry-go-round, on path"
+    },
+    "btn-extra-lesson": {
+      "left_percent": 57,
+      "top_percent": 59,
+      "notes": "East of slide, on path"
+    },
+    "btn-reflection": {
+      "left_percent": 59,
+      "top_percent": 18,
+      "notes": "South-west of lake, on path"
+    },
+    "btn-lesson-summary": {
+      "left_percent": 18,
+      "top_percent": 84,
+      "notes": "East of caf\u00e9, on path"
+    }
+  },
+  "states": {
+    "btn-lesson-summary": "active",
+    "btn-in-class-games": "active",
+    "btn-home-games": "active",
+    "btn-extra-lesson": "inactive",
+    "btn-reflection": "inactive"
+  },
+  "layout": {
+    "positioning_basis": "image_rect",
+    "notes": "Percentages are relative to the rendered lesson-background image rectangle, not the viewport."
+  },
+  "mobile": {
+    "mirror_desktop_positions": true,
+    "mimi_width_px": 97
+  }
+}

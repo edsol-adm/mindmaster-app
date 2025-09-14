@@ -1,0 +1,23 @@
+{
+  "name": "MindMaster Login",
+  "version": "1.0",
+  "type": "login-screen",
+  "description": "Combined Student/Teacher login screen for MindMaster Proto3. Handles role selection, credential validation, localStorage profile creation, and redirection to student-home.html or teacher-home.html.",
+  "filename": "mindmaster-login.html",
+  "assets": {
+    "logo": "assets/mindmaster-logo.png"
+  },
+  "localStorageKeys": {
+    "student": "mmStudent",
+    "teacher": "mmTeacher"
+  },
+  "redirects": {
+    "student": "student-home.html",
+    "teacher": "teacher-home.html"
+  },
+  "datasets": {
+    "students": 10,
+    "teachers": 3
+  },
+  "errorMessage": "Hmm, I don’t recognize that. Try again! 😕"
+}
