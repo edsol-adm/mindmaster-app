@@ -7,15 +7,15 @@ It is not the final technical design – advanced features will be built post-aw
 ---
 
 ## How to run
-- **Start with the Home page:**  
-  👉 https://edsol-adm.github.io/mindmaster-app/prototype-alpha/home.html  
+- **Start with the Student Home page:**  
+  👉 https://edsol-adm.github.io/mindmaster-app/prototype-alpha/student-home.html  
 
-- From the Home page you can navigate into all prototype activities.  
+- From the Student Home page learners can access their roadmap and activities.  
 - Alternatively, you can also open individual activities directly:
 
 | Activity    | Direct Link                                                                                          |
 |-------------|------------------------------------------------------------------------------------------------------|
-| Home        | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/home.html                                 |
+| Student Home| https://edsol-adm.github.io/mindmaster-app/prototype-alpha/student-home.html                         |
 | Attention   | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention.html                            |
 | Attention 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention2.html                           |
 | Carpool     | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html                              |
@@ -92,7 +92,17 @@ Each activity is intentionally designed to reflect a Grade 1 psychology topic. T
    Helps children identify feelings in themselves and others, building empathy and perspective-taking.  
 
 10. **Teamwork and cooperation** → *Teamwork Game*  
-   Reinforces collaboration, patience, and mutual support to achieve shared goals.  
+    Reinforces collaboration, patience, and mutual support to achieve shared goals.  
+
+---
+
+### Student Home (Roadmap logic)
+The **student-home.html** screen ties these activities into a coherent curriculum flow.  
+- **Explore** – Lesson summaries that introduce key concepts. In future builds, these will be guided by a friendly chatbot learning buddy, making summaries child-friendly and accessible.  
+- **Practice** – Interactive activities (In-Class Activities and Home Games). These are the gamified prototypes provided in this Alpha.  
+- **Reflection** – Prompts that help children think about their experiences and learning. In the real build, these will also be scaffolded by the chatbot to reduce intimidation and encourage sharing.  
+
+This roadmap models the intended **knowledge → application → reflection** cycle, ensuring activities are not isolated games but part of a structured psychology literacy curriculum.
 
 ---
 
@@ -106,7 +116,6 @@ All images and audio are stored in the `assets/` subfolders:
 ---
 
 ## Next steps
-- **Beta Prototype**: build in advanced app features (teacher dashboards, analytics, offline-first design).  
+- **Beta Prototype**: build in advanced app features (teacher dashboards, analytics, offline-first design, chatbot Explore & Reflection).  
 - **Iterative RAD testing**: multiple cycles of user testing and refinement.  
-- **Link to evaluation**: User feedback for this Alpha Curriculum Prototype is available in  
-  [`/unicef-venture-fund-2025-submission/user-testing-alpha/`](../unicef-venture-fund-2025-submission/user-testing-alpha/).  
+- **User testing**: This Alpha prototype has already been tested with children and teachers (10 students, 2 teachers). A concise feedback summary will be uploaded here to document insights.
