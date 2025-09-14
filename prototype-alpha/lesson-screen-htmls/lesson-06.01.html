@@ -63,8 +63,12 @@
   .active {
     border-radius: 20%;
     cursor: pointer;
-    box-shadow: none;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(255,255,255,0);
   }
+
+  .active:hover,
+  .active:focus,
+  .active:focus-visible { box-shadow: none; }
 
   .inactive {
     pointer-events: none;
@@ -87,6 +91,7 @@
     white-space:nowrap;
   }
 
+  /* Return button (matches lesson-01.01) */
   .return-btn {
     position: absolute;
     pointer-events: auto;
@@ -125,24 +130,23 @@
         <img src="../assets/mindmaster-screens/images/btn-extra-lesson.png" alt="Extra Lesson">
       </button>
 
-      <button id="btn-reflection" class="btn active" aria-label="Reflection">
+      <button id="btn-reflection" class="btn inactive" aria-label="Reflection" tabindex="-1">
         <img src="../assets/mindmaster-screens/images/btn-reflection.png" alt="Reflection">
       </button>
 
-      <button id="btn-return-curriculum" class="return-btn" aria-label="Return to Lessons-Year 1">
-        Return to Lessons-Year 1
+      <button id="btn-return-curriculum" class="return-btn" aria-label="Return to Lessons-Grade 1">
+        Return to Lessons-Grade 1
       </button>
     </div>
 
     <img class="mimi" src="../assets/images/mimi.gif" alt="Mimi assistant">
-
     <audio id="bgm" preload="auto" loop src="../assets/audio/lesson-screen-bgm.mp3"></audio>
   </div>
 
 <script id="mm-manifest" type="application/json">
 {
-  "version": "1.2.0",
-  "updated_at": "2025-09-12T00:00:00Z",
+  "version": "1.1.8",
+  "updated_at": "2025-09-09T00:00:00Z",
   "screen": "lesson-06.01",
   "assets": {
     "background": "../assets/mindmaster-screens/images/lesson-background.png",
@@ -156,11 +160,11 @@
     }
   },
   "positions": {
-    "btn-home-games":       { "left_percent": 34, "top_percent": 15 },
-    "btn-in-class-games":   { "left_percent": 9,  "top_percent": 33 },
-    "btn-extra-lesson":     { "left_percent": 57, "top_percent": 59 },
-    "btn-reflection":       { "left_percent": 59, "top_percent": 18 },
-    "btn-lesson-summary":   { "left_percent": 18, "top_percent": 84 }
+    "btn-home-games":       { "left_percent": 34, "top_percent": 15, "notes": "no change" },
+    "btn-in-class-games":   { "left_percent": 9,  "top_percent": 33, "notes": "moved down 1% (west of merry-go-round, on path)" },
+    "btn-extra-lesson":     { "left_percent": 57, "top_percent": 59, "notes": "moved down 1% and left 1% (east of slide, on path)" },
+    "btn-reflection":       { "left_percent": 59, "top_percent": 18, "notes": "no change" },
+    "btn-lesson-summary":   { "left_percent": 18, "top_percent": 84, "notes": "no change" }
   },
   "states": {
     "btn-lesson-summary": "active",
@@ -170,7 +174,8 @@
     "btn-reflection": "active"
   },
   "layout": {
-    "positioning_basis": "image_rect"
+    "positioning_basis": "image_rect",
+    "notes": "Percentages are relative to the rendered lesson-background image rectangle, not the viewport."
   },
   "mobile": {
     "mirror_desktop_positions": true,
@@ -187,19 +192,30 @@
   const mimi = document.querySelector('.mimi');
   const manifestEl = document.getElementById('mm-manifest');
   const headerTag = document.getElementById('header-tag');
+  const returnBtn = document.getElementById('btn-return-curriculum');
   const bgm = document.getElementById('bgm');
+  try { bgm.volume = 0.6; } catch(e) {}
 
+  // Central path resolver
   function mmJoinPath(subpath) {
-    const p = String(location.pathname).replace(/\/g, '/');
+    const p = String(location.pathname).replace(/\\/g, '/');
     const marker = '/lesson-screen-htmls/';
     const idx = p.lastIndexOf(marker);
     const base = idx !== -1 ? p.slice(0, idx + marker.length) : p.replace(/[^/]*$/, '');
     return (base + subpath).replace(/\/{2,}/g, '/');
   }
 
+  function stopBgmIfPlaying() {
+    try { if (!bgm.paused) { bgm.pause(); bgm.currentTime = 0; } } catch(e) {}
+  }
+
   let manifest = null;
-  try { manifest = JSON.parse(manifestEl.textContent); } 
-  catch (e) { manifest = { positions: {}, mobile: { mimi_width_px: 84 } }; }
+  try {
+    manifest = JSON.parse(manifestEl.textContent);
+  } catch (e) {
+    console.error('Manifest parse error', e);
+    manifest = { positions: {}, mobile: { mimi_width_px: 84 }, states: {} };
+  }
 
   const positions = manifest.positions || {};
   const states = manifest.states || {};
@@ -211,25 +227,38 @@
     btn.classList.add(state === 'active' ? 'active' : 'inactive');
   });
 
-  function stopBgmIfPlaying() {
-    try { if (!bgm.paused) { bgm.pause(); bgm.currentTime = 0; } } catch(e){}
-  }
-  function makeBgmAudibleOnce() {
-    if (!bgm || !bgm.muted) return;
-    try { bgm.pause(); bgm.currentTime = 0; bgm.muted = false; bgm.play().catch(()=>{}); } catch(e){}
-  }
-
+  // BGM: start muted on load; unmute on first non-nav gesture or any key
   window.addEventListener('load', () => {
-    try { bgm.volume = 0.6; } catch(e){}
-    try { bgm.muted = true; bgm.play().catch(()=>{}); } catch(e){}
+    requestAnimationFrame(layout);
+    try { bgm.muted = true; bgm.play().catch(()=>{}); } catch(e) {}
   });
 
+  function makeBgmAudibleOnce() {
+    if (!bgm.muted) return;
+    try {
+      bgm.pause();
+      bgm.currentTime = 0;
+      bgm.muted = false;
+      bgm.play().catch(()=>{});
+    } catch(e) {}
+  }
+
   wrapper.addEventListener('pointerdown', (ev) => {
-    if (ev.target.closest('.btn.active')) return;
+    if (ev.target.closest('.btn.active')) return; // nav clicks don't trigger unmute
     makeBgmAudibleOnce();
   }, { once: true, passive: true });
+
   document.addEventListener('keydown', makeBgmAudibleOnce, { once: true });
 
+  // Return button click → curriculum
+  if (returnBtn) {
+    returnBtn.addEventListener('click', () => {
+      stopBgmIfPlaying();
+      window.location.href = mmJoinPath('../curriculum-Y01.html');
+    });
+  }
+
+  // Stage button routing with BGM stop/reset
   stage.addEventListener('click', (e) => {
     const btn = e.target.closest('.btn.active');
     if (!btn) return;
@@ -245,26 +274,16 @@
     } else if (btn.id === 'btn-reflection') {
       stopBgmIfPlaying();
       window.location.href = mmJoinPath('home-reflection-htmls/hr-06.01.html');
+    } else {
+      console.info('Clicked:', btn.id);
     }
   });
 
-  document.getElementById('btn-return-curriculum').addEventListener('click', () => {
-    stopBgmIfPlaying();
-    window.location.href = mmJoinPath('../curriculum-Y1.html');
-  });
-
-  function sizeStageToImageRect(img) {
-    const rect = img.getBoundingClientRect();
-    stage.style.width  = rect.width + 'px';
+  function sizeStageToImageRect(rect) {
+    stage.style.left = rect.left + 'px';
+    stage.style.top = rect.top + 'px';
+    stage.style.width = rect.width + 'px';
     stage.style.height = rect.height + 'px';
-    return { width: rect.width, height: rect.height };
-  }
-
-  function placeButtonFromPercent(btn, rect, leftPct, topPct) {
-    const x = (leftPct / 100) * rect.width;
-    const y = (topPct  / 100) * rect.height;
-    btn.style.left = Math.round(x) + 'px';
-    btn.style.top  = Math.round(y) + 'px';
   }
 
   function positionButtons(rect) {
@@ -272,7 +291,10 @@
       const def = positions[id];
       const btn = stage.querySelector('#' + id);
       if (!btn || !def) return;
-      placeButtonFromPercent(btn, rect, def.left_percent, def.top_percent);
+      const leftPx = (rect.width * (def.left_percent / 100));
+      const topPx  = (rect.height * (def.top_percent / 100));
+      btn.style.left = leftPx + 'px';
+      btn.style.top  = topPx + 'px';
     });
   }
 
@@ -282,24 +304,21 @@
     } else {
       mimi.style.width = '133px';
     }
-    mimi.style.left = (rect.width - mimi.offsetWidth) + 'px';
-    mimi.style.top = 0 + 'px';
+    mimi.style.left = (rect.right - mimi.offsetWidth) + 'px';
+    mimi.style.top = rect.top + 'px';
   }
 
   function positionReturnButton(rect) {
-    const b = document.getElementById('btn-return-curriculum');
-    if (!b) return;
+    if(!returnBtn) return;
     const insetX = rect.width * 0.02;
     const insetY = rect.height * 0.02;
     const minW = Math.max(120, rect.width * 0.18);
     const minH = Math.max(44,  rect.height * 0.06);
-    b.style.minWidth  = Math.round(minW) + 'px';
-    b.style.minHeight = Math.round(minH) + 'px';
-    b.style.fontSize  = Math.round(Math.max(14, rect.height * 0.032)) + 'px';
-    const bw = b.offsetWidth;
-    const bh = b.offsetHeight;
-    b.style.left = (rect.width  - bw - insetX) + 'px';
-    b.style.top  = (rect.height - bh - insetY) + 'px';
+    returnBtn.style.minWidth  = Math.round(minW) + 'px';
+    returnBtn.style.minHeight = Math.round(minH) + 'px';
+    returnBtn.style.fontSize  = Math.round(Math.max(14, rect.height * 0.032)) + 'px';
+    returnBtn.style.left = (rect.width  - returnBtn.offsetWidth  - insetX) + 'px';
+    returnBtn.style.top  = (rect.height - returnBtn.offsetHeight - insetY) + 'px';
   }
 
   function computeHeaderText(){
@@ -313,18 +332,23 @@
 
   function layoutHeader(rect){
     if(!headerTag) return;
+
     const text = computeHeaderText();
     headerTag.textContent = text || 'Unit ? : Lesson ?';
+
     const mx = rect.width * 0.02;
     const my = rect.height * 0.02;
     headerTag.style.left = mx + 'px';
     headerTag.style.top  = my + 'px';
+
     const sampleBtn = stage.querySelector('.btn');
     const btnH = (sampleBtn && sampleBtn.getBoundingClientRect().height) || 80;
     const targetH = Math.round(btnH);
+
     const fs = Math.max(16, Math.min(28, targetH * 0.38));
     headerTag.style.fontSize = Math.round(fs) + 'px';
     headerTag.style.lineHeight = '1';
+
     headerTag.style.height = Math.round(targetH * 0.85) + 'px';
     headerTag.style.minWidth = Math.round(rect.width * 0.22) + 'px';
     headerTag.style.padding = '0 ' + Math.round(rect.width * 0.02) + 'px';
@@ -332,10 +356,11 @@
 
   function layout() {
     if (!bg.complete || bg.naturalWidth === 0) return;
-    const rect = sizeStageToImageRect(bg);
+    const rect = bg.getBoundingClientRect();
+    sizeStageToImageRect(rect);
+    positionButtons(rect);
     layoutHeader(rect);
     positionMimi(rect);
-    positionButtons(rect);
     positionReturnButton(rect);
   }
 
@@ -344,8 +369,8 @@
   } else {
     bg.addEventListener('load', () => requestAnimationFrame(layout), { once: true });
   }
-  window.addEventListener('resize', layout, { passive: true });
-  window.addEventListener('orientationchange', layout, { passive: true });
+  window.addEventListener('resize', () => requestAnimationFrame(layout));
+  window.addEventListener('load', () => requestAnimationFrame(layout));
 })();
 </script>
 </body>
