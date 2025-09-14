@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MindMaster Login</title>
+  <style>
+    :root{
+      --pink:#FFB6C1;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --yellow:#FFD600;
+      --yellow-press:#E6C400;
+      --outline:#1a73e8;
+      --error:#cc0000;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--pink);
+      color:var(--text);
+      display:grid;
+      place-items:center;
+    }
+    .card{
+      width:min(92vw, 520px);
+      background:var(--card);
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,.12);
+      padding:28px 24px 24px;
+      transition:transform .15s ease;
+    }
+    .logo{
+      display:block;
+      width:140px;
+      max-width:60%;
+      margin:4px auto 12px;
+      height:auto;
+      user-drag:none;
+      -webkit-user-drag:none;
+    }
+    .title{
+      text-align:center;
+      margin:0 0 14px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+
+    /* Role toggle */
+    .toggle{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      background:transparent;
+      margin:6px 0 14px;
+    }
+    .seg{
+      appearance:none;
+      border-radius:999px;
+      padding:12px 14px;
+      border:2px solid var(--yellow);
+      background:transparent;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .seg[aria-pressed="true"]{
+      background:var(--yellow);
+      border-color:var(--yellow);
+    }
+    .seg:focus-visible{
+      outline:3px solid var(--outline);
+      outline-offset:2px;
+    }
+
+    /* Form */
+    form{margin-top:6px}
+    .field{
+      display:grid;
+      margin-bottom:12px;
+    }
+    label{
+      font-size:.95rem;
+      margin-bottom:6px;
+    }
+    .input-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:stretch;
+      border:2px solid #ddd;
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+    }
+    input[type="text"],input[type="password"]{
+      font-size:1rem;
+      padding:12px 14px;
+      border:0;
+      outline:none;
+      min-width:0;
+    }
+    .show{
+      background:#f7f7f7;
+      border:0;
+      padding:0 12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .show:focus-visible{ outline:3px solid var(--outline); outline-offset:-3px; }
+    .actions{
+      margin-top:6px;
+      display:grid;
+      gap:8px;
+    }
+    .btn{
+      padding:14px 16px;
+      border-radius:14px;
+      border:0;
+      background:var(--yellow);
+      font-weight:800;
+      cursor:pointer;
+    }
+    .btn:active{ background:var(--yellow-press); transform:translateY(1px) }
+    .btn:disabled{ opacity:.6; cursor:not-allowed }
+    .muted{
+      color:var(--muted);
+      text-align:center;
+      font-size:.95rem;
+      text-decoration:none;
+    }
+    .muted:focus-visible{ outline:3px solid var(--outline) }
+    .error{
+      min-height:1.4em;
+      color:var(--error);
+      font-weight:700;
+      margin:4px 0 0;
+      text-align:center;
+      visibility:hidden;
+    }
+    .error.active{ visibility:visible }
+
+    /* Shake animation for errors */
+    @keyframes shake {
+      10%, 90% { transform: translateX(-1px); }
+      20%, 80% { transform: translateX(2px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
+    .shake{ animation: shake 500ms ease; }
+
+    /* Responsive tweaks */
+    @media (prefers-reduced-motion: reduce){
+      .shake{ animation:none }
+      .card{ transition:none }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" id="card" role="region" aria-labelledby="login-title">
+    <img class="logo" src="assets/mindmaster-logo.png" alt="MindMaster" />
+    <h1 class="title" id="login-title">Welcome to MindMaster</h1>
+
+    <!-- Role selector -->
+    <div class="toggle" role="group" aria-label="Choose role">
+      <button type="button" id="btnStudent" class="seg" aria-pressed="true">Student</button>
+      <button type="button" id="btnTeacher" class="seg" aria-pressed="false">Teacher</button>
+    </div>
+
+    <!-- Form -->
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <div class="input-row">
+          <input id="username" name="username" type="text" autocomplete="username" required aria-required="true" />
+          <span aria-hidden="true" style="display:none"></span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-row">
+          <input id="password" name="password" type="password" autocomplete="current-password" required aria-required="true" />
+          <button class="show" type="button" id="togglePw" aria-controls="password" aria-label="Show password">Show</button>
+        </div>
+        <div id="err" class="error" role="status" aria-live="polite"></div>
+      </div>
+      <div class="actions">
+        <button id="loginBtn" class="btn" type="submit">Login</button>
+        <a href="#" class="muted" aria-disabled="true">Forgot password?</a>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // --- Embedded datasets (exactly as provided) ---
+    const STUDENTS = [
+      { id:'S001', first:'Nattapong', last:'Rattanakul', username:'nattapong', password:'nat789', className:'M1-1', gender:'Boy',  age:6 },
+      { id:'S002', first:'Anurak',    last:'Chaiyasit',  username:'anurak',    password:'aru456', className:'M1-1', gender:'Boy',  age:7 },
+      { id:'S003', first:'Kittisak',  last:'Wongchai',   username:'kittisak',  password:'kit123', className:'M1-1', gender:'Boy',  age:7 },
+      { id:'S004', first:'Prasert',   last:'Boonmee',    username:'prasert',   password:'pra852', className:'M1-1', gender:'Boy',  age:6 },
+      { id:'S005', first:'Chanon',    last:'Theerawat',  username:'chanon',    password:'cha963', className:'M1-2', gender:'Boy',  age:7 },
+      { id:'S006', first:'Suphansa',  last:'Wattanachai',username:'suphansa',  password:'sup741', className:'M1-2', gender:'Girl', age:6 },
+      { id:'S007', first:'Kannika',   last:'Phromphong', username:'kannika',   password:'kan159', className:'M1-2', gender:'Girl', age:7 },
+      { id:'S008', first:'Patcharaporn', last:'Srisuk',  username:'patchara',  password:'pat357', className:'M1-3', gender:'Girl', age:7 },
+      { id:'S009', first:'Nalinee',   last:'Chantarat',  username:'nalinee',   password:'nal258', className:'M1-3', gender:'Girl', age:6 },
+      { id:'S010', first:'Waranya',   last:'Kongprasert',username:'waranya',   password:'war654', className:'M1-3', gender:'Girl', age:7 },
+    ];
+
+    const TEACHERS = [
+      { id:'T001', first:'Somchai',  last:'Rattanapong',  username:'somchai',  password:'som111', className:'M1-1', gender:'Male' },
+      { id:'T002', first:'Siriporn', last:'Lertwichaikul',username:'siriporn', password:'sir222', className:'M1-2', gender:'Female' },
+      { id:'T003', first:'Patcharee',last:'Wongthanasin', username:'patcharee',password:'pat333', className:'M1-3', gender:'Female' },
+    ];
+
+    // --- Elements ---
+    const card = document.getElementById('card');
+    const btnStudent = document.getElementById('btnStudent');
+    const btnTeacher = document.getElementById('btnTeacher');
+    const form = document.getElementById('loginForm');
+    const usernameEl = document.getElementById('username');
+    const passwordEl = document.getElementById('password');
+    const togglePw = document.getElementById('togglePw');
+    const errEl = document.getElementById('err');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // --- State ---
+    let role = 'Student'; // default
+
+    // Helpers
+    const todayStr = () => {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    };
+    const initialsOf = (first, last) => (first?.[0] || '').toUpperCase() + (last?.[0] || '').toUpperCase();
+
+    const setRole = (r) => {
+      role = r;
+      const isStu = r === 'Student';
+      btnStudent.setAttribute('aria-pressed', String(isStu));
+      btnTeacher.setAttribute('aria-pressed', String(!isStu));
+      // Clear previous error when switching roles
+      errEl.textContent = '';
+      errEl.classList.remove('active');
+    };
+
+    // Role toggle events
+    btnStudent.addEventListener('click', () => setRole('Student'));
+    btnTeacher.addEventListener('click', () => setRole('Teacher'));
+    // Keyboard support for toggle
+    [btnStudent, btnTeacher].forEach((btn, idx, arr) => {
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const next = e.key === 'ArrowRight' ? (idx+1)%2 : (idx+1)%2;
+          arr[next].focus();
+          arr[next].click();
+        }
+      });
+    });
+
+    // Password show/hide
+    togglePw.addEventListener('click', () => {
+      const isPw = passwordEl.type === 'password';
+      passwordEl.type = isPw ? 'text' : 'password';
+      togglePw.textContent = isPw ? 'Hide' : 'Show';
+      togglePw.setAttribute('aria-label', isPw ? 'Hide password' : 'Show password');
+      passwordEl.focus();
+    });
+
+    // Submit handler
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Basic constraint validation
+      if (!usernameEl.value || !passwordEl.value) {
+        return showError("Hmm, I don’t recognize that. Try again! 😕");
+      }
+      loginBtn.disabled = true;
+
+      const uname = usernameEl.value.trim().toLowerCase();
+      const pw = passwordEl.value;
+
+      let match = null;
+      if (role === 'Student') {
+        match = STUDENTS.find(u => u.username.toLowerCase() === uname && u.password === pw);
+        if (match) {
+          const payload = {
+            id: match.id,
+            first: match.first,
+            last: match.last,
+            username: match.username,
+            className: match.className,
+            gender: match.gender,
+            age: match.age,
+            initials: initialsOf(match.first, match.last),
+            coins: 0,
+            streak: 1,
+            lastVisit: todayStr(),
+            level: 1,
+            unit: 1,
+            lesson: 1
+          };
+          try {
+            localStorage.setItem('mmStudent', JSON.stringify(payload));
+          } catch {}
+          window.location.href = 'student-home.html';
+          return;
+        }
+      } else {
+        match = TEACHERS.find(u => u.username.toLowerCase() === uname && u.password === pw);
+        if (match) {
+          const payload = {
+            id: match.id,
+            first: match.first,
+            last: match.last,
+            username: match.username,
+            className: match.className,
+            gender: match.gender,
+            initials: initialsOf(match.first, match.last),
+            lastVisit: todayStr()
+          };
+          try {
+            localStorage.setItem('mmTeacher', JSON.stringify(payload));
+          } catch {}
+          window.location.href = 'teacher-home.html';
+          return;
+        }
+      }
+
+      // Failure
+      showError("Hmm, I don’t recognize that. Try again! 😕");
+    });
+
+    function showError(msg){
+      errEl.textContent = msg;
+      errEl.classList.add('active');
+      card.classList.remove('shake');
+      // trigger reflow for restart animation
+      void card.offsetWidth;
+      card.classList.add('shake');
+      loginBtn.disabled = false;
+    }
+
+    // Enter key submits naturally via <form> submit; ensure username gets focus first
+    window.addEventListener('DOMContentLoaded', () => {
+      usernameEl.focus({ preventScroll:true });
+    });
+  </script>
+</body>
+</html>
