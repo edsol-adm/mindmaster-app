@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lesson-01.01</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #fff; }
+
+  .wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    overflow: hidden;
+  }
+
+  .bg {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    inset: 0;
+    margin: auto;
+    display: block;
+  }
+
+  .stage {
+    position: absolute;
+    pointer-events: none;
+  }
+  .stage .btn {
+    pointer-events: auto;
+  }
+
+  .mimi {
+    position: absolute;
+    width: 133px;
+    height: auto;
+    pointer-events: none;
+  }
+
+  .btn {
+    position: absolute;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    min-width: 80px;
+    min-height: 80px;
+    max-width: 12vw;
+    max-height: 12vw;
+    outline: none;
+  }
+
+  .btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .active {
+    border-radius: 20%;
+    cursor: pointer;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(255,255,255,0);
+  }
+
+  .active:hover,
+  .active:focus,
+  .active:focus-visible { box-shadow: none; }
+
+  .inactive {
+    pointer-events: none;
+    opacity: 0.9;
+    cursor: default;
+  }
+
+  .header-tag{
+    position:absolute;
+    background:#FFEB3B;
+    color:#000;
+    font-weight:700;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding:0 16px;
+    pointer-events:none;
+    z-index:10;
+    white-space:nowrap;
+  }
+
+  .return-btn {
+    position: absolute;
+    pointer-events: auto;
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-weight: 700;
+    min-width: 120px;
+    min-height: 44px;
+    cursor: pointer;
+    z-index: 15;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+</style>
+</head>
+<body>
+  <div class="wrapper" aria-label="Lesson 01.01 screen">
+    <img class="bg" src="../assets/mindmaster-screens/images/lesson-background.png" alt="" aria-hidden="true">
+    <div class="stage" aria-hidden="true">
+      <div id="header-tag" class="header-tag" aria-hidden="true"></div>
+
+      <button id="btn-lesson-summary" class="btn inactive" aria-label="Lesson Summary">
+        <img src="../assets/mindmaster-screens/images/btn-lesson-summary.png" alt="Lesson Summary">
+      </button>
+
+      <button id="btn-in-class-games" class="btn active" aria-label="In-Class Games">
+        <img src="../assets/mindmaster-screens/images/btn-in-class-games.png" alt="In-Class Games">
+      </button>
+
+      <button id="btn-home-games" class="btn active" aria-label="Home Games">
+        <img src="../assets/mindmaster-screens/images/btn-home-games.png" alt="Home Games">
+      </button>
+
+      <button id="btn-extra-lesson" class="btn inactive" aria-label="Extra Lesson" tabindex="-1">
+        <img src="../assets/mindmaster-screens/images/btn-extra-lesson.png" alt="Extra Lesson">
+      </button>
+
+      <button id="btn-reflection" class="btn active" aria-label="Reflection">
+        <img src="../assets/mindmaster-screens/images/btn-reflection.png" alt="Reflection">
+      </button>
+
+      <button id="btn-return-curriculum" class="return-btn" aria-label="Return to Lessons-Year 1">
+        Return to Lessons-Year 1
+      </button>
+    </div>
+
+    <img class="mimi" src="../assets/images/mimi.gif" alt="Mimi assistant">
+
+    <audio id="bgm" preload="auto" loop src="../assets/audio/lesson-screen-bgm.mp3"></audio>
+  </div>
+
+<script id="mm-manifest" type="application/json">{
+  "version": "1.1.9",
+  "updated_at": "2025-09-12T00:00:00Z",
+  "screen": "lesson-01.01",
+  "assets": {
+    "background": "../assets/mindmaster-screens/images/lesson-background.png",
+    "mimi": "../assets/images/mimi.gif",
+    "buttons": {
+      "btn-lesson-summary": "../assets/mindmaster-screens/images/btn-lesson-summary.png",
+      "btn-in-class-games": "../assets/mindmaster-screens/images/btn-in-class-games.png",
+      "btn-home-games": "../assets/mindmaster-screens/images/btn-home-games.png",
+      "btn-extra-lesson": "../assets/mindmaster-screens/images/btn-extra-lesson.png",
+      "btn-reflection": "../assets/mindmaster-screens/images/btn-reflection.png"
+    }
+  },
+  "positions": {
+    "btn-home-games": { "left_percent": 34, "top_percent": 15, "notes": "no change" },
+    "btn-in-class-games": { "left_percent": 9, "top_percent": 33, "notes": "moved down 1% (west of merry-go-round, on path)" },
+    "btn-extra-lesson": { "left_percent": 57, "top_percent": 59, "notes": "moved down 1% and left 1% (east of slide, on path)" },
+    "btn-reflection": { "left_percent": 59, "top_percent": 18, "notes": "no change" },
+    "btn-lesson-summary": { "left_percent": 18, "top_percent": 84, "notes": "no change" }
+  },
+  "states": {
+    "btn-lesson-summary": "active",
+    "btn-in-class-games": "active",
+    "btn-home-games": "active",
+    "btn-extra-lesson": "inactive",
+    "btn-reflection": "active"
+  },
+  "layout": {
+    "positioning_basis": "image_rect",
+    "notes": "Percentages are relative to the rendered lesson-background image rectangle, not the viewport."
+  },
+  "mobile": {
+    "mirror_desktop_positions": true,
+    "mimi_width_px": 97
+  }
+}</script>
+
+<script>
+(function () {
+  const wrapper = document.querySelector('.wrapper');
+  const bg = document.querySelector('.bg');
+  const stage = document.querySelector('.stage');
+  const mimi = document.querySelector('.mimi');
+  const manifestEl = document.getElementById('mm-manifest');
+  const headerTag = document.getElementById('header-tag');
+  const returnBtn = document.getElementById('btn-return-curriculum');
+  const bgm = document.getElementById('bgm');
+
+  try { bgm.volume = 0.6; } catch(e) {}
+
+  let manifest = null;
+  try {
+    manifest = JSON.parse(manifestEl.textContent);
+  } catch (e) {
+    manifest = { positions: {}, mobile: { mimi_width_px: 84 } };
+  }
+
+  const positions = manifest.positions || {};
+  const states = manifest.states || {};
+  const mobileCfg = manifest.mobile || { mimi_width_px: 84 };
+
+  function mmJoinPath(subpath) {
+    const p = String(location.pathname).replace(/\\/g, '/');
+    const marker = '/lesson-screen-htmls/';
+    const idx = p.lastIndexOf(marker);
+    const base = idx !== -1 ? p.slice(0, idx + marker.length) : p.replace(/[^/]*$/, '');
+    return (base + subpath).replace(/\/{2,}/g, '/');
+  }
+
+  Array.from(stage.querySelectorAll('.btn')).forEach(btn => {
+    const state = states[btn.id] || 'inactive';
+    btn.classList.remove('active', 'inactive');
+    btn.classList.add(state === 'active' ? 'active' : 'inactive');
+  });
+
+  function stopBgmIfPlaying() {
+    try { if (!bgm.paused) { bgm.pause(); bgm.currentTime = 0; } } catch(e) {}
+  }
+
+  stage.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn.active');
+    if (!btn) return;
+    if (btn.id === 'btn-in-class-games') {
+      stopBgmIfPlaying();
+      window.location.href = mmJoinPath('in-class-game-htmls/icg-01.01.html');
+    } else if (btn.id === 'btn-home-games') {
+      stopBgmIfPlaying();
+      window.location.href = mmJoinPath('home-game-htmls/hg-01.01.html');
+    } else if (btn.id === 'btn-lesson-summary') {
+      stopBgmIfPlaying();
+      window.location.href = mmJoinPath('lesson-summary-htmls/ls-01.01.html');
+    } else if (btn.id === 'btn-reflection') {
+      stopBgmIfPlaying();
+      window.location.href = mmJoinPath('home-reflection-htmls/hr-01.01.html');
+    } else {
+      console.info('Clicked:', btn.id);
+    }
+  });
+
+  function sizeStageToImageRect(rect) {
+    stage.style.left = rect.left + 'px';
+    stage.style.top = rect.top + 'px';
+    stage.style.width = rect.width + 'px';
+    stage.style.height = rect.height + 'px';
+  }
+
+  function positionButtons(rect) {
+    Object.keys(positions).forEach(id => {
+      const def = positions[id];
+      const btn = stage.querySelector('#' + id);
+      if (!btn || !def) return;
+      const leftPx = (rect.width * (def.left_percent / 100));
+      const topPx  = (rect.height * (def.top_percent / 100));
+      btn.style.left = leftPx + 'px';
+      btn.style.top  = topPx + 'px';
+    });
+  }
+
+  function positionMimi(rect) {
+    if (window.matchMedia('(max-width: 600px)').matches && mobileCfg.mimi_width_px) {
+      mimi.style.width = mobileCfg.mimi_width_px + 'px';
+    } else {
+      mimi.style.width = '133px';
+    }
+    mimi.style.left = (rect.right - mimi.offsetWidth) + 'px';
+    mimi.style.top = rect.top + 'px';
+  }
+
+  function computeHeaderText(){
+    const src = (document.title || window.location.pathname || '').toLowerCase();
+    const m = src.match(/lesson-(\d{2})\.(\d{2})/);
+    if(!m){ return ''; }
+    const unit = parseInt(m[1], 10);
+    const lesson = parseInt(m[2], 10);
+    return `Unit ${unit} : Lesson ${lesson}`;
+  }
+
+  function layoutHeader(rect){
+    if(!headerTag) return;
+    const text = computeHeaderText();
+    headerTag.textContent = text || 'Unit ? : Lesson ?';
+    const mx = rect.width * 0.02;
+    const my = rect.height * 0.02;
+    headerTag.style.left = mx + 'px';
+    headerTag.style.top  = my + 'px';
+    const sampleBtn = stage.querySelector('.btn');
+    const btnH = (sampleBtn && sampleBtn.getBoundingClientRect().height) || 80;
+    const targetH = Math.round(btnH);
+    const fs = Math.max(16, Math.min(28, targetH * 0.38));
+    headerTag.style.fontSize = Math.round(fs) + 'px';
+    headerTag.style.lineHeight = '1';
+    headerTag.style.height = Math.round(targetH * 0.85) + 'px';
+    headerTag.style.minWidth = Math.round(rect.width * 0.22) + 'px';
+    headerTag.style.padding = '0 ' + Math.round(rect.width * 0.02) + 'px';
+  }
+
+  function positionReturnButton(rect) {
+    if(!returnBtn) return;
+    const insetX = rect.width * 0.02;
+    const insetY = rect.height * 0.02;
+    const minW = Math.max(120, rect.width * 0.18);
+    const minH = Math.max(44, rect.height * 0.06);
+    returnBtn.style.minWidth = Math.round(minW) + 'px';
+    returnBtn.style.minHeight= Math.round(minH) + 'px';
+    returnBtn.style.fontSize = Math.round(Math.max(14, rect.height * 0.032)) + 'px';
+    returnBtn.style.left = (rect.width - returnBtn.offsetWidth - insetX) + 'px';
+    returnBtn.style.top  = (rect.height - returnBtn.offsetHeight - insetY) + 'px';
+  }
+
+  function layout() {
+    if (!bg.complete || bg.naturalWidth === 0) return;
+    const rect = bg.getBoundingClientRect();
+    sizeStageToImageRect(rect);
+    positionButtons(rect);
+    layoutHeader(rect);
+    positionMimi(rect);
+    positionReturnButton(rect);
+  }
+
+  if (bg.complete && bg.naturalWidth) {
+    requestAnimationFrame(layout);
+  } else {
+    bg.addEventListener('load', () => requestAnimationFrame(layout), { once: true });
+  }
+  window.addEventListener('resize', () => requestAnimationFrame(layout));
+  window.addEventListener('load', () => {
+    requestAnimationFrame(layout);
+    try {
+      bgm.muted = true;
+      bgm.play().catch(()=>{});
+    } catch(e) {}
+  });
+
+  function makeBgmAudibleOnce() {
+    if (!bgm.muted) return;
+    try {
+      bgm.pause();
+      bgm.currentTime = 0;
+      bgm.muted = false;
+      bgm.play().catch(()=>{});
+    } catch(e) {}
+  }
+
+  wrapper.addEventListener('pointerdown', (ev) => {
+    if (ev.target.closest('.btn.active')) return;
+    makeBgmAudibleOnce();
+  }, { once: true, passive: true });
+  document.addEventListener('keydown', makeBgmAudibleOnce, { once: true });
+
+  if (returnBtn) {
+    returnBtn.addEventListener('click', () => {
+      stopBgmIfPlaying();
+      window.location.href = mmJoinPath('../curriculum-Y1.html');
+    });
+  }
+})();
+</script>
+</body>
+</html>
