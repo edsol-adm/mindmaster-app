@@ -1,7 +1,7 @@
 # MindMaster's 6-Year Psychology Literacy Curriculum Outline
 
 **Target Group:** Primary Students (Grades 1–6)  
-**Total Topics:** 10 per academic year  
+**Total Unit Topics:** 10 per academic year  
 **Purpose:** To introduce foundational and age-appropriate psychological concepts that evolve in complexity throughout the primary school years.
 
 ---
@@ -77,3 +77,4 @@ This curriculum outline provides a structured, progressive framework to develop 
 5. Understanding Teenagers: Early Changes
 6. Exploring Gender Differences in Development
 7. Exploring Independence in Growing Up, Personal Identity and Values
+
