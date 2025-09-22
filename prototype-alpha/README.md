@@ -18,16 +18,16 @@ It is not the final technical design. Advanced features will be built in the Bet
 | Unit 1 – Psychology of the Mind | Carpool | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html |
 | Unit 1 – Psychology of the Mind | Balloon Race | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/balloon-race.html |
 | Unit 2 – What Are Feelings? | Emotions | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/emotions.html |
-| Unit 3 – Imagination and Storytelling | Storytime | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/storytime.html |
-| Unit 4 – Family and Friendship Dynamics | Good Apple, Bad Apple | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/good-apple-bad-apple.html |
-| Unit 5 – Teamwork and Cooperation | Teamwork | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/teamwork.html |
-| Unit 6 – Simple Sensory Exploration | Senses | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/senses.html |
-| Unit 7 – Basic Attention and Focus | Attention | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention.html |
-| Unit 7 – Basic Attention and Focus | Attention 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention2.html |
-| Unit 8 – Memory Through Play | Memory | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html |
-| Unit 8 – Memory Through Play | Memory 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html |
-| Unit 9 – Problem-Solving Basics | Magic Looking Glass | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/magic-looking-glass.html |
-| Unit 10 – Our Actions and Impact | Domino Choices | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/domino-choices.html |
+| Unit 3 – Memory Through Play | Memory | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html |
+| Unit 3 – Memory Through Play | Memory 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html |
+| Unit 4 – Simple Sensory Exploration | Senses | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/senses.html |
+| Unit 5 – Basic Attention and Focus | Attention | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention.html |
+| Unit 5 – Basic Attention and Focus | Attention 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention2.html |
+| Unit 6 – Imagination and Storytelling | Storytime | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/storytime.html |
+| Unit 7 – Family and Friendship Dynamics | Good Apple, Bad Apple | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/good-apple-bad-apple.html |
+| Unit 8 – Problem-Solving Basics | Magic Looking Glass | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/magic-looking-glass.html |
+| Unit 9 – Our Actions and Impact | *Coming soon* | – |
+| Unit 10 – Teamwork and Cooperation | Teamwork | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/teamwork.html |
 
 ---
 
@@ -38,16 +38,16 @@ If a gamified practice does not load, you can view a video demonstration.
 |--------------|------------|
 | Unit 1 – Psychology of the Mind (Carpool) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
 | Unit 2 – What Are Feelings? (Emotions) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4) |
-| Unit 3 – Imagination and Storytelling (Storytime) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_story-sequencing_storytime.mp4) |
-| Unit 4 – Family and Friendship (Good Apple, Bad Apple) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_good-apple-bad-apple.mp4) |
-| Unit 5 – Teamwork and Cooperation (Teamwork) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_teamwork-cooperation_teamwork.mp4) |
-| Unit 6 – Simple Sensory Exploration (Senses) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4) |
-| Unit 7 – Basic Attention and Focus (Attention) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4) |
-| Unit 7 – Basic Attention and Focus (Attention 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention2.mp4) |
-| Unit 8 – Memory Through Play (Memory) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
-| Unit 8 – Memory Through Play (Memory 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory2.mp4) |
-| Unit 9 – Problem-Solving Basics (Magic Looking Glass) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_problem-solving-basics_solve.mp4) |
-| Unit 10 – Our Actions and Impact (Domino Choices) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_domino-choices.mp4) |
+| Unit 3 – Memory Through Play (Memory) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
+| Unit 3 – Memory Through Play (Memory 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory2.mp4) |
+| Unit 4 – Simple Sensory Exploration (Senses) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4) |
+| Unit 5 – Basic Attention and Focus (Attention) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4) |
+| Unit 5 – Basic Attention and Focus (Attention 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention2.mp4) |
+| Unit 6 – Imagination and Storytelling (Storytime) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_story-sequencing_storytime.mp4) |
+| Unit 7 – Family and Friendship (Good Apple, Bad Apple) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_good-apple-bad-apple.mp4) |
+| Unit 8 – Problem-Solving Basics (Magic Looking Glass) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_problem-solving-basics_solve.mp4) |
+| Unit 9 – Our Actions and Impact | *Coming soon* | – |
+| Unit 10 – Teamwork and Cooperation (Teamwork) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_teamwork-cooperation_teamwork.mp4) |
 
 ---
 
@@ -61,29 +61,29 @@ Each Grade 1 unit introduces a key psychology literacy concept. Gamified Practic
 2. **What Are Feelings?** – Naming emotions and body cues  
    • Emotions  
 
-3. **Imagination and Storytelling** – Linking stories to inner worlds  
-   • Storytime  
-
-4. **Family and Friendship Dynamics** – Belonging and trust in relationships  
-   • Good Apple, Bad Apple  
-
-5. **Teamwork and Cooperation** – Sharing, turn-taking, and fairness  
-   • Teamwork  
-
-6. **Simple Sensory Exploration** – Connecting senses to feelings and thoughts  
-   • Senses  
-
-7. **Basic Attention and Focus** – Practice focusing and ignoring distractions  
-   • Attention, Attention 2  
-
-8. **Memory Through Play** – Using memory to learn and share experiences  
+3. **Memory Through Play** – Using memory to learn and share experiences  
    • Memory, Memory 2  
 
-9. **Problem-Solving Basics** – Exploring everyday dilemmas step by step  
+4. **Simple Sensory Exploration** – Connecting senses to feelings and thoughts  
+   • Senses  
+
+5. **Basic Attention and Focus** – Practice focusing and ignoring distractions  
+   • Attention, Attention 2  
+
+6. **Imagination and Storytelling** – Linking stories to inner worlds  
+   • Storytime  
+
+7. **Family and Friendship Dynamics** – Belonging and trust in relationships  
+   • Good Apple, Bad Apple  
+
+8. **Problem-Solving Basics** – Exploring everyday dilemmas step by step  
    • Magic Looking Glass  
 
-10. **Our Actions and Impact** – Choices and their consequences  
-    • Domino Choices  
+9. **Our Actions and Impact** – Choices and their consequences  
+   • *Coming soon*  
+
+10. **Teamwork and Cooperation** – Sharing, turn-taking, and fairness  
+    • Teamwork  
 
 👉 For the full Grade 1 curriculum outline with detailed unit descriptions, see [Curriculum Outline](docs/curriculum-outline.md).  
 
