@@ -15,8 +15,8 @@ It is not the final technical design. Advanced features will be built in the Bet
 
 | Unit & Topic | Gamified Practice | Direct Link |
 |--------------|------------------|-------------|
-| Unit 1 – Psychology of the Mind | Carpool | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html |
-| Unit 1 – Psychology of the Mind | Balloon Race | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/balloon-race.html |
+| Unit 1 – What is Psychology? | Carpool | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html |
+| Unit 1 – What is Psychology? | Balloon Race | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/balloon-race.html |
 | Unit 2 – What Are Feelings? | Emotions | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/emotions.html |
 | Unit 3 – Memory Through Play | Memory | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html |
 | Unit 3 – Memory Through Play | Memory 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html |
@@ -36,7 +36,7 @@ If a gamified practice does not load, you can view a video demonstration.
 
 | Unit & Topic | Video Link |
 |--------------|------------|
-| Unit 1 – Psychology of the Mind (Carpool) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
+| Unit 1 – What is Psychology? (Carpool) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
 | Unit 2 – What Are Feelings? (Emotions) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4) |
 | Unit 3 – Memory Through Play (Memory) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
 | Unit 3 – Memory Through Play (Memory 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory2.mp4) |
@@ -55,7 +55,7 @@ If a gamified practice does not load, you can view a video demonstration.
 
 Each Grade 1 unit introduces a key psychology literacy concept. Gamified Practice reinforces learning through interactive play.  
 
-1. **Psychology of the Mind** – Thinking, feeling, and doing  
+1. **What is Psychology?** – Thinking, feeling, and doing  
    • Carpool, Balloon Race  
 
 2. **What Are Feelings?** – Naming emotions and body cues  
