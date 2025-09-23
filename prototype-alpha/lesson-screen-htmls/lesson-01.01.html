@@ -51,6 +51,8 @@
     max-width: 12vw;
     max-height: 12vw;
     outline: none;
+    text-decoration: none;
+    display: inline-block;
   }
 
   .btn img {
@@ -104,6 +106,14 @@
     cursor: pointer;
     z-index: 15;
     box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    text-decoration: none;
+    color: #000;
+    display: inline-block;
+  }
+
+  a.btn:focus, a.return-btn:focus {
+    outline: 4px solid #000;
+    outline-offset: 2px;
   }
 </style>
 </head>
@@ -113,29 +123,29 @@
     <div class="stage" aria-hidden="true">
       <div id="header-tag" class="header-tag" aria-hidden="true"></div>
 
-      <button id="btn-lesson-summary" class="btn inactive" aria-label="Lesson Summary">
+      <a id="btn-lesson-summary" class="btn inactive" aria-label="Lesson Summary" href="lesson-summary-htmls/ls-01.01.html">
         <img src="../assets/mindmaster-screens/images/btn-lesson-summary.png" alt="Lesson Summary">
-      </button>
+      </a>
 
-      <button id="btn-in-class-games" class="btn active" aria-label="In-Class Games">
+      <a id="btn-in-class-games" class="btn active" aria-label="In-Class Games" href="in-class-game-htmls/icg-01.01.html">
         <img src="../assets/mindmaster-screens/images/btn-in-class-games.png" alt="In-Class Games">
-      </button>
+      </a>
 
-      <button id="btn-home-games" class="btn active" aria-label="Home Games">
+      <a id="btn-home-games" class="btn active" aria-label="Home Games" href="home-game-htmls/hg-01.01.html">
         <img src="../assets/mindmaster-screens/images/btn-home-games.png" alt="Home Games">
-      </button>
+      </a>
 
-      <button id="btn-extra-lesson" class="btn inactive" aria-label="Extra Lesson" tabindex="-1">
+      <a id="btn-extra-lesson" class="btn inactive" aria-label="Extra Lesson" tabindex="-1" href="#">
         <img src="../assets/mindmaster-screens/images/btn-extra-lesson.png" alt="Extra Lesson">
-      </button>
+      </a>
 
-      <button id="btn-reflection" class="btn active" aria-label="Reflection">
+      <a id="btn-reflection" class="btn active" aria-label="Reflection" href="home-reflection-htmls/hr-01.01.html">
         <img src="../assets/mindmaster-screens/images/btn-reflection.png" alt="Reflection">
-      </button>
+      </a>
 
-      <button id="btn-return-curriculum" class="return-btn" aria-label="Return to Lessons-Grade 1">
+      <a id="btn-return-curriculum" class="return-btn" aria-label="Return to Lessons-Grade 1" href="../curriculum-Y01.html">
         Return to Lessons-Grade 1
-      </button>
+      </a>
     </div>
 
     <img class="mimi" src="../assets/images/mimi.gif" alt="Mimi assistant">
@@ -144,8 +154,8 @@
   </div>
 
 <script id="mm-manifest" type="application/json">{
-  "version": "1.1.9",
-  "updated_at": "2025-09-12T00:00:00Z",
+  "version": "1.2.0",
+  "updated_at": "2025-09-21T00:00:00Z",
   "screen": "lesson-01.01",
   "assets": {
     "background": "../assets/mindmaster-screens/images/lesson-background.png",
@@ -190,7 +200,6 @@
   const mimi = document.querySelector('.mimi');
   const manifestEl = document.getElementById('mm-manifest');
   const headerTag = document.getElementById('header-tag');
-  const returnBtn = document.getElementById('btn-return-curriculum');
   const bgm = document.getElementById('bgm');
 
   try { bgm.volume = 0.6; } catch(e) {}
@@ -206,41 +215,14 @@
   const states = manifest.states || {};
   const mobileCfg = manifest.mobile || { mimi_width_px: 84 };
 
-  function mmJoinPath(subpath) {
-    const p = String(location.pathname).replace(/\\/g, '/');
-    const marker = '/lesson-screen-htmls/';
-    const idx = p.lastIndexOf(marker);
-    const base = idx !== -1 ? p.slice(0, idx + marker.length) : p.replace(/[^/]*$/, '');
-    return (base + subpath).replace(/\/{2,}/g, '/');
-  }
-
   Array.from(stage.querySelectorAll('.btn')).forEach(btn => {
     const state = states[btn.id] || 'inactive';
     btn.classList.remove('active', 'inactive');
     btn.classList.add(state === 'active' ? 'active' : 'inactive');
-  });
-
-  function stopBgmIfPlaying() {
-    try { if (!bgm.paused) { bgm.pause(); bgm.currentTime = 0; } } catch(e) {}
-  }
-
-  stage.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn.active');
-    if (!btn) return;
-    if (btn.id === 'btn-in-class-games') {
-      stopBgmIfPlaying();
-      window.location.href = mmJoinPath('in-class-game-htmls/icg-01.01.html');
-    } else if (btn.id === 'btn-home-games') {
-      stopBgmIfPlaying();
-      window.location.href = mmJoinPath('home-game-htmls/hg-01.01.html');
-    } else if (btn.id === 'btn-lesson-summary') {
-      stopBgmIfPlaying();
-      window.location.href = mmJoinPath('lesson-summary-htmls/ls-01.01.html');
-    } else if (btn.id === 'btn-reflection') {
-      stopBgmIfPlaying();
-      window.location.href = mmJoinPath('home-reflection-htmls/hr-01.01.html');
+    if (btn.classList.contains('inactive')) {
+      btn.setAttribute('tabindex', '-1');
     } else {
-      console.info('Clicked:', btn.id);
+      btn.removeAttribute('tabindex');
     }
   });
 
@@ -275,7 +257,7 @@
 
   function computeHeaderText(){
     const src = (document.title || window.location.pathname || '').toLowerCase();
-    const m = src.match(/lesson-(\d{2})\.(\d{2})/);
+    const m = src.match(/lesson-(\d{2})\.(\d{2})(?:\.(\d{2}))?/);
     if(!m){ return ''; }
     const unit = parseInt(m[1], 10);
     const lesson = parseInt(m[2], 10);
@@ -302,6 +284,7 @@
   }
 
   function positionReturnButton(rect) {
+    const returnBtn = document.getElementById('btn-return-curriculum');
     if(!returnBtn) return;
     const insetX = rect.width * 0.02;
     const insetY = rect.height * 0.02;
@@ -354,12 +337,13 @@
   }, { once: true, passive: true });
   document.addEventListener('keydown', makeBgmAudibleOnce, { once: true });
 
-  if (returnBtn) {
-    returnBtn.addEventListener('click', () => {
-      stopBgmIfPlaying();
-      window.location.href = mmJoinPath('../curriculum-Y01.html');
-    });
-  }
+  document.querySelectorAll('a.btn, a.return-btn').forEach(a=>{
+    a.addEventListener('click', ()=> {
+      try{
+        if (bgm && !bgm.paused){ bgm.pause(); bgm.currentTime = 0; }
+      }catch(e){}
+    }, { passive: true });
+  });
 })();
 </script>
 </body>
