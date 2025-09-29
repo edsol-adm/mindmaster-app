@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>quiz-psychology.html</title>
+<style>
+:root{
+  --bg:#FFB6C1;
+  --card:#ffffff;
+  --text:#222;
+  --muted:#555;
+  --accent:#3a7afe;
+  --accent-2:#7c4dff;
+  --btn:#fff;
+  --btn-border:#222;
+  --focus:#000;
+  --pill:#222;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.left-actions{display:flex;gap:12px;align-items:center}
+a.btn, button.btn{
+  display:inline-block;
+  padding:.75rem 1.25rem;
+  background:var(--btn);
+  color:var(--text);
+  border:2px solid var(--btn-border);
+  border-radius:999px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  transition: transform .02s ease-in-out;
+  min-height:44px;
+}
+a.btn:focus, button.btn:focus{
+  outline:4px solid var(--focus);
+  outline-offset:2px;
+}
+a.btn:active, button.btn:active{ transform: scale(.98); }
+.card{
+  background:var(--card);
+  border:2px solid #e7e9ef;
+  border-radius:16px;
+ box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  padding:24px;
+}
+.header-line{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.progress{font-weight:800}
+.category-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:.25rem .75rem;
+  border-radius:999px;
+  border:2px solid var(--pill);
+  font-weight:800;
+}
+.stimulus{
+  margin-top:8px;
+  font-size:1.35rem;
+  line-height:1.4;
+}
+.stimulus q{quotes: "“" "”" "‘" "’"}
+.question{
+  margin-top:18px;
+  font-size:1.15rem;
+  color:var(--muted);
+  font-weight:600;
+}
+.actions{
+  margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.actions .btn{
+  min-width:140px;
+  text-align:center;
+}
+.divider{
+  height:2px;
+  background:#eceef5;
+  margin:20px 0;
+  border-radius:2px;
+}
+.subtle{color:var(--muted); font-size:.95rem}
+.hidden{display:none !important}
+.center{display:flex; justify-content:center; align-items:center}
+.end-title{
+  font-size:1.6rem;
+  font-weight:900;
+  margin:0 0 12px 0;
+}
+.summary-list{
+  margin:0; padding:0; list-style:none; display:grid; gap:10px;
+}
+.summary-item{
+  padding:12px;
+  border:2px dashed #e1e4ee;
+  border-radius:12px;
+  background:#fcfdff;
+}
+.summary-stimulus{margin:0 0 6px 0; font-size:1rem}
+.summary-class{
+  margin:0;
+  font-weight:900;
+  font-size:1.15rem;
+}
+.footer-actions{
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.badge{
+  display:inline-block;
+  font-size:.8rem;
+  font-weight:800;
+  padding:.25rem .6rem;
+  border-radius:999px;
+  border:2px solid #222;
+}
+.logo{max-width:160px}
+.mimi{max-width:120px}
+@media (max-width: 480px){
+  .right-brand img.logo{max-width:120px}
+  .right-brand img.mimi{max-width:96px}
+}
+
+/* Fit quiz sentences without scrolling; width unchanged */
+.header-line{ margin-bottom:8px }
+.stimulus{ margin-top:6px; font-size:clamp(1rem,2.6vw,1.15rem); line-height:1.3 }
+.question{ margin-top:12px; font-size:clamp(1rem,2.2vw,1.05rem); line-height:1.3 }
+.actions{ margin-top:12px; gap:10px }
+
+#startCard{ min-height:50vh; text-align:center }
+.btn.start{
+  display:inline-block;
+  text-align:center;
+  padding:1rem 1.5rem;
+  border-radius:16px;
+  font-size:1.125rem;
+  line-height:1.35;
+  background:linear-gradient(135deg,#ff9a9e 0%, #fad0c4 100%);
+  border-color:#222;
+}
+.btn.start span{ display:block }
+
+/* 1) Tighten quiz typography & spacing by ~10% */
+.header-line{ margin-bottom:7px }
+.stimulus{ margin-top:5px; font-size:clamp(0.9rem,2.34vw,1.035rem); line-height:1.17 }
+.question{ margin-top:11px; font-size:clamp(0.9rem,1.98vw,0.945rem); line-height:1.17 }
+.actions{ margin-top:11px; gap:9px }
+
+/* C) Correct answer: only gap-fill bold + larger (sentence normal) */
+.correct-answer {
+  margin-top: 12px;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #000;
+}
+.btn.next{
+  display:inline-block;
+  margin-top:12px;
+  padding:.75rem 1.25rem;
+  border-radius:12px;
+  font-weight:800;
+  background:#e8f0ff;
+  border:2px solid #1a56ff;
+}
+/* End summary: tighten vertical spacing by ~10% */
+.summary-list{ gap:8px }                 /* was 10px */
+.summary-item{ padding:10px }            /* was 12px */
+.summary-stimulus{                       /* first line of each item */
+  margin:0 0 4px 0;                      /* was 6px */
+  line-height:1.15                       /* tighter lines */
+}
+.summary-class{                           /* second line (bold classification) */
+  margin:0;
+  line-height:1.15
+}
+
+/* Summary: buttons always visible; list scrolls */
+#endCard{
+  display:flex;
+  flex-direction:column;
+  max-height:72vh;       /* keep compact card height */
+  overflow:hidden;       /* prevent the whole card from scrolling */
+  min-height:0;          /* allow inner flex children to shrink/scroll */
+}
+.summary-list{
+  flex:1 1 auto;         /* take remaining vertical space */
+  overflow:auto;         /* only the list scrolls */
+  min-height:0;          /* required for overflow:auto inside flex */
+}
+.footer-actions{
+  position:sticky;       /* keep buttons in view at bottom of card */
+  bottom:0;
+  background:var(--card);
+  padding-top:8px;
+  margin-top:12px;
+  border-top:2px solid #eceef5;
+  z-index:1;
+}
+
+/* Psychology-specific */
+.answer-emph{ font-weight:900; font-size:1.12em }
+.option{ background:#fff; border:2px solid #222; border-radius:12px; padding:.75rem 1rem; min-width:160px }
+.option[disabled]{ opacity:0.6; cursor:not-allowed }
+
+/* Patch D: prevent truncation and improve spacing */
+.card { overflow: visible; }
+.main { padding-top: 128px; }
+
+:root{
+  --header-h: 88px;      /* fixed topbar height incl. its internal padding */
+  --page-pad: 16px;      /* page side padding */
+  --card-max-w: 960px;   /* max width for centered cards */
+  --focus-outline: 4px;  /* Navigation Standard */
+}
+
+/* Fixed header (no border/shadow) in front of content */
+.topbar{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  background: #FFB6C1 url('assets/images/quiz-psychology-back.webp') center / cover no-repeat fixed;      /* page/header background spec */
+  z-index: 10;               /* ensures it stays above main content */
+  box-shadow: none; border-bottom: none;
+}
+
+/* Main content always below header; cannot be “short” */
+.main{
+  position: relative;
+  background: #FFB6C1 url('assets/images/quiz-psychology-back.webp') center / cover no-repeat fixed;                      /* page background spec */
+  padding: calc(var(--header-h) + 24px) var(--page-pad) 72px var(--page-pad);
+  min-height: calc(100vh - 24px);           /* prevents truncation under header */
+}
+
+/* Generic card container used by start/quiz/end */
+.card{
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  max-width: var(--card-max-w);
+  margin: 0 auto;
+  padding: 24px 24px 28px;
+  overflow: visible;                         /* cards must not clip inner content */
+}
+
+/* Explicitly present the three main cards */
+#startCard, #quizCard, #endCard{
+  display: block;
+}
+
+/* Quiz content can grow and scroll internally if needed */
+#quizCard{
+  max-height: calc(100vh - var(--header-h) - (2 * var(--page-pad)) - 96px);
+  overflow: auto;
+}
+
+/* Stimulus text and correct answer emphasis */
+.stimulus{
+  font-size: 1.125rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.answer-emph{
+  font-weight: 800;
+  font-size: 1.12em;   /* spec: ~110–120% */
+}
+
+/* Options, confidence, and actions areas — ≥44px targets */
+.options{
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+.confidence, .actions{
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.options .btn,
+.confidence .btn,
+.actions .btn{
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Navigation Standard: focus outline for anchors and buttons */
+a.btn.nav:focus,
+button.btn:focus{
+  outline: var(--focus-outline) solid #000;
+  outline-offset: 2px;
+}
+
+/* Brand block on the right header: logo with Mimi underneath */
+.brand-block{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Tighter vertical fit on shorter screens while avoiding overlap */
+@media (max-height: 820px){
+  .main{ padding-bottom: 56px; }
+  #quizCard, #endCard{
+    max-height: calc(100vh - var(--header-h) - (2 * var(--page-pad)) - 72px);
+  }
+}
+
+/* ========================= */
+/* A) Gap-fill option buttons ~½ width */
+/* ========================= */
+#answerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+#answerRow .btn.option {
+  flex: 1 1 calc(50% - 12px);
+  max-width: calc(50% - 12px);
+  padding: 0.6rem 0.9rem;
+  min-width: 0;
+}
+
+/* Preview options match width */
+#previewOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+#previewOptions .btn.option {
+  flex: 1 1 calc(50% - 12px);
+  max-width: calc(50% - 12px);
+  padding: 0.6rem 0.9rem;
+  min-width: 0;
+}
+
+/* ===================================== */
+/* B) Confidence buttons side-by-side etc */
+/* ===================================== */
+#sureRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+/* Ensure hidden always hides the confidence row */
+.hidden#sureRow, #sureRow.hidden { display: none !important; }
+
+#sureRow .btn {
+  padding: 0.5rem 0.75rem;
+  min-width: auto;
+  font-weight: 700;
+}
+
+/* ================================== */
+/* E) Bright button color theme block */
+/* ================================== */
+.btn.option {
+  background: #42A5F5;    /* bright blue */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+}
+.btn.option:hover { background: #1E88E5; }
+
+#sureRow .btn {
+  background: #FF7043;    /* bright orange */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+}
+#sureRow .btn:hover { background: #F4511E; }
+
+.actions .btn {
+  background: #66BB6A;    /* bright green */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+}
+.actions .btn:hover { background: #43A047; }
+
+a.btn.nav {
+  background: #AB47BC;    /* bright purple */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+}
+a.btn.nav:hover { background: #8E24AA; }
+
+/* Right brand stack: logo on top, Mimi directly below */
+.brand-block,
+.right-brand{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.brand-block img:first-child,
+.right-brand img:first-child {
+  max-width: 150px; height: auto; display: block;
+}
+
+brand-block img + img,
+.right-brand img + img {
+  max-width: 120px; height: auto; display: block;
+}
+
+/* Mimi sits along the right edge of the centered pink background area,
+   below the fixed header, outside of any white card */
+.mimi-floating {
+  position: absolute;
+  top: calc(var(--header-h) + 8px);
+  right: var(--page-pad);
+  max-width: 120px;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Slightly smaller on short viewports */
+@media (max-height: 700px) {
+  .mimi-floating { max-width: 100px; }
+}
+
+/* Canonical layout: the pink background container spans full width */
+.main{
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="left-actions">
+    <a class="btn nav" href="lesson-screen-htmls/lesson-01.01.html">Return to the Park</a>
+  </div>
+  <div class="right-brand">
+    <img class="logo" src="assets/images/mindmaster-logo.png" alt="MindMaster logo">
+  </div>
+</nav>
+
+<main class="main">
+  <img class="mimi-floating" src="assets/images/mimi.webp" alt="Mimi helper">
+  <section id="startCard" class="card">
+    <div class="center" style="margin-bottom:16px;">
+      <button id="btnStart" class="btn start" type="button">
+        <span>Press any key to start</span><br>
+        <span>Read the sentence then Choose the correct phrase to complete the sentence</span>
+      </button>
+    </div>
+    <div id="previewWrap">
+      <div class="header-line">
+        <div class="progress">Question 1 of 7</div>
+      </div>
+      <div class="stimulus" id="previewQuestion"></div>
+      <div class="actions" id="previewOptions"></div>
+    </div>
+  </section>
+
+  <section id="quizCard" class="card hidden">
+    <div class="header-line">
+      <div class="progress" id="progressText">Question 1 of 7</div>
+    </div>
+    <div class="stimulus" id="stimulusText"></div>
+    <div class="question" id="questionLine"></div>
+    <div class="actions" id="answerRow"></div>
+    <div class="divider"></div>
+    <div class="subtle hidden" id="surePrompt">How sure are you?</div>
+    <div class="actions hidden" id="sureRow">
+      <button class="btn maybe" id="btnMaybe" type="button">Maybe correct</button>
+      <button class="btn def" id="btnDef" type="button">Definitely correct</button>
+    </div>
+    <div id="correctAnswer" class="correct-answer hidden"></div>
+    <button id="btnNext" class="btn next hidden" type="button">click for next question</button>
+  </section>
+
+  <section id="endCard" class="card hidden">
+    <div class="end-title">Summary</div>
+    <ul class="summary-list" id="summaryList"></ul>
+    <div class="footer-actions">
+      <a class="btn nav" href="quiz-psychology.html">Play Again</a>
+      <a class="btn nav" href="lesson-screen-htmls/in-class-game-htmls/icg-01.01.html">Go back to Class Activities</a>
+      <a class="btn nav" href="lesson-screen-htmls/lesson-01.01.html">Go back to the Park</a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const quizCard = document.getElementById("quizCard");
+  const endCard = document.getElementById("endCard");
+  const progressText = document.getElementById("progressText");
+  const stimulusText = document.getElementById("stimulusText");
+  const questionLine = document.getElementById("questionLine");
+  const answerRow = document.getElementById("answerRow");
+  const surePrompt = document.getElementById("surePrompt");
+  const sureRow = document.getElementById("sureRow");
+  const btnMaybe = document.getElementById("btnMaybe");
+  const btnDef = document.getElementById("btnDef");
+  const summaryList = document.getElementById("summaryList");
+  const correctAnswerBox = document.getElementById("correctAnswer");
+  const btnNext = document.getElementById("btnNext");
+
+  const startCard = document.getElementById("startCard");
+  const btnStart = document.getElementById("btnStart");
+  const previewQuestion = document.getElementById("previewQuestion");
+  const previewOptions = document.getElementById("previewOptions");
+
+  function getDATA(){
+    const el = document.getElementById('quiz-data');
+    return JSON.parse(el.textContent).quizPsychology.slice();
+  }
+  let DATA = null;
+
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+  let rounds = [];
+  let idx = 0;
+  let transcript = [];
+  let preItem = null;
+  let preOptions = null;
+
+  function sampleRounds(){
+    const pool = DATA.slice();
+    shuffle(pool);
+    rounds = pool.slice(0,7);
+  }
+
+  function renderPreview(){
+    preItem = rounds[0];
+    preOptions = preItem.options.slice(); // frozen order for round 1
+    previewQuestion.textContent = preItem.question;
+    previewOptions.innerHTML = "";
+    preOptions.forEach((opt,i)=>{
+      const b = document.createElement("button");
+      b.className = "btn option";
+      b.type = "button";
+      b.textContent = opt;
+      b.disabled = true;
+      previewOptions.appendChild(b);
+    });
+  }
+
+  function startGame(){
+    if(startCard.classList.contains("hidden")) return;
+    startCard.classList.add("hidden");
+    quizCard.classList.remove("hidden");
+    idx = 0;
+    transcript = [];
+    renderQuestion(true); // first round uses frozen preview content
+    const firstBtn = answerRow.querySelector("button");
+    if(firstBtn) firstBtn.focus();
+  }
+
+  function renderQuestion(isFirst){
+    const item = isFirst ? preItem : rounds[idx];
+    const options = isFirst ? preOptions.slice() : shuffle(rounds[idx].options.slice());
+    progressText.textContent = "Question " + (idx+1) + " of 7";
+    stimulusText.textContent = item.question;
+    questionLine.textContent = "Choose the correct phrase to complete the sentence";
+    answerRow.innerHTML = "";
+    options.forEach(opt=>{
+      const b = document.createElement("button");
+      b.className = "btn option";
+      b.type = "button";
+      b.textContent = opt;
+      b.addEventListener("click", ()=>onAnswer(item, opt));
+      answerRow.appendChild(b);
+    });
+    surePrompt.classList.add("hidden");
+    sureRow.classList.add("hidden");
+    correctAnswerBox.textContent = "";
+    correctAnswerBox.classList.add("hidden");
+    btnNext.classList.add("hidden");
+    btnNext.disabled = true;
+  }
+
+  function onAnswer(item, chosen){
+    Array.from(answerRow.querySelectorAll("button")).forEach(b=>b.disabled=true);
+    surePrompt.textContent = "How sure are you?";
+    surePrompt.classList.remove("hidden");
+    sureRow.classList.remove("hidden");
+    const confirm = (confidence)=>{
+      const filled = item.question.replace(/_{3,}/g, "<strong class=\"answer-emph\">"+item.answer+"</strong>");
+      transcript.push(filled);
+      correctAnswerBox.innerHTML = filled;
+      correctAnswerBox.classList.remove("hidden");
+      btnNext.disabled = false;
+      btnNext.classList.remove("hidden");
+      btnNext.focus();
+      btnMaybe.removeEventListener("click", onMaybe);
+      btnDef.removeEventListener("click", onDef);
+    };
+    function onMaybe(){ confirm("maybe"); }
+    function onDef(){ confirm("definitely"); }
+    btnMaybe.addEventListener("click", onMaybe);
+    btnDef.addEventListener("click", onDef);
+  }
+
+  btnNext.addEventListener("click", function(){
+    btnNext.disabled = true;
+    btnNext.classList.add("hidden");
+    idx++;
+    if(idx<7){
+      renderQuestion(false);
+    }else{
+      renderEnd();
+    }
+  });
+
+  function renderEnd(){
+    quizCard.classList.add("hidden");
+    endCard.classList.remove("hidden");
+    summaryList.innerHTML = "";
+    transcript.forEach(html=>{
+      const li = document.createElement("li");
+      li.className = "summary-item";
+      const p1 = document.createElement("p");
+      p1.className = "summary-stimulus";
+      p1.innerHTML = html;
+      summaryList.appendChild(li);
+      li.appendChild(p1);
+    });
+  }
+
+  function init(){
+    DATA = getDATA();
+    sampleRounds();
+    renderPreview();
+  }
+
+  function handleFirstInteraction(){
+    window.removeEventListener('keydown', handleFirstInteraction);
+    window.removeEventListener('pointerdown', handleFirstInteraction);
+    try {
+      var el = document.getElementById('bgm');
+      if (el) {
+        el.volume = 0.25;
+        var p = el.play();
+        if (p && typeof p.catch === 'function') { p.catch(function(){}); }
+      }
+    }catch(e){}
+    startGame();
+  }
+
+  btnStart.addEventListener("click", handleFirstInteraction);
+  window.addEventListener("keydown", handleFirstInteraction, {once:false});
+  window.addEventListener("pointerdown", handleFirstInteraction, {once:false});
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
+</script>
+
+<script type="application/json" id="quiz-data">
+{
+  "quizPsychology": [
+    { "id": 1, "question": "Psychology is the science of how we think, feel, and act, which helps us make better choices at ____.", "options": ["midnight", "outer space", "school"], "answer": "school" },
+    { "id": 2, "question": "Our thoughts are like messages; if I change “I can’t” to ____ , I often try again.", "options": ["I can try", "Never mind", "Whatever"], "answer": "I can try" },
+    { "id": 3, "question": "I can discover what helps me learn by trying two ways and comparing results. This is a small ____.", "options": ["experiment", "accident", "excuse"], "answer": "experiment" },
+    { "id": 4, "question": "Good habits grow with small steps. Setting a tiny goal like ____ every day trains my brain.", "options": ["Reading for 5 minutes", "Win every game!", "Eat only candy"], "answer": "Reading for 5 minutes" },
+    { "id": 5, "question": "Psychology is about noticing what we think, feel, and do. When I look for clues and test ideas like a scientist, I’m using the ____.", "options": ["science steps", "gossip chain", "wild guess"], "answer": "science steps" },
+    { "id": 6, "question": "Kindness uses psychology too. When I imagine how a friend feels, I’m practicing ____.", "options": ["empathy", "geometry", "gymnastics"], "answer": "empathy" },
+    { "id": 7, "question": "Sleep, eating food, and movement change how our brain works. After a short ____ , my mood can improve.", "options": ["walk or run", "stress out", "talk to myself"], "answer": "walk or run" },
+    { "id": 8, "question": "Our brain helps us ____ when we try to remember yesterday.", "options": ["remember what we did", "paint a picture", "sing a song"], "answer": "remember what we did" },
+    { "id": 9, "question": "Two people can look at the same cloud and ____, even though it’s the same shape.", "options": ["see different things", "wear the same shoes", "find a broken toy"], "answer": "see different things" },
+    { "id": 10, "question": "When you were a baby, your ____ , but later you learned to speak.", "options": ["mind had no words", "shoes were too small", "toys made no sound"], "answer": "mind had no words" },
+    { "id": 11, "question": "Sometimes people ____ even when the facts show it is not true.", "options": ["believe something", "climb a tall tree", "eat tasty pizza"], "answer": "believe something" },
+    { "id": 12, "question": "One child may ____ at a joke, while another may not find it funny. And that’s OK.", "options": ["laugh loudly", "feel very hungry", "become sleepy"], "answer": "laugh loudly" },
+    { "id": 13, "question": "Dreams happen when we ____, but they are not the same as real life.", "options": ["sleep at night", "shout really loudly", "run very fast"], "answer": "sleep at night" },
+    { "id": 14, "question": "Our attention can only ____, so we cannot notice everything at once.", "options": ["focus on some things", "carry heavy bags", "eat all the food"], "answer": "focus on some things" },
+    { "id": 15, "question": "The more you ____, the easier it gets because your brain makes new paths.", "options": ["practice a skill", "wear a funny hat", "bake a sweet cake"], "answer": "practice a skill" },
+    { "id": 16, "question": "When you watch a friend build with blocks and then you copy them, you are _________ by watching.", "options": ["making a new friend", "learning a new skill", "taking a picture"], "answer": "learning a new skill" },
+    { "id": 17, "question": "Getting a sticker for putting away your toys makes you want to _________ because it feels good.", "options": ["play a game", "repeat the good behavior", "sit down"], "answer": "repeat the good behavior" },
+    { "id": 18, "question": "The part of your brain that helps you decide if you should eat a cookie now or wait for dinner is what helps you _________.", "options": ["sing a song", "make a choice", "fall asleep"], "answer": "make a choice" },
+    { "id": 19, "question": "When you remember a trip to the zoo, your brain helps you _________ by putting together all the sights and sounds.", "options": ["play a game", "build a memory", "draw a picture"], "answer": "build a memory" },
+    { "id": 20, "question": "A baby thinks a toy is gone when they can’t see it, but you know it’s still there. This is a step in how your brain _________ as you grow.", "options": ["gets a new color", "learns to think smarter", "becomes invisible"], "answer": "learns to think smarter" },
+    { "id": 21, "question": "When you look at clouds and see the shape of an elephant, your mind loves to _________ to see a whole picture.", "options": ["find funny spots", "connect the shapes", "tell a story"], "answer": "connect the shapes" },
+    { "id": 22, "question": "Sometimes, when you feel scared, your heart beats faster. This shows how your body _________ how you feel.", "options": ["tells your brain", "gets tired of", "forgets about"], "answer": "tells your brain" },
+    { "id": 23, "question": "When your friend is smiling, you can tell they're happy because you have a part of your brain that helps you _________.", "options": ["understand their feelings", "know what they are wearing", "learn their name"], "answer": "understand their feelings" },
+    { "id": 24, "question": "Why do you feel tired and grumpy when you are hungry? Because your body needs to get _________ before you can be happy and playful.", "options": ["a new toy", "food and rest", "a new name"], "answer": "food and rest" },
+    { "id": 25, "question": "When you practice writing your name over and over, you are making a habit that helps you _________ without thinking so hard.", "options": ["sing a song", "do it easily", "talk to a friend"], "answer": "do it easily" },
+    { "id": 26, "question": "When you learn to tie your shoes, you get a special brain \"path\" that helps you remember the steps without even thinking. This is how we form ______.", "options": ["funny faces", "habits", "tall buildings"], "answer": "habits" },
+    { "id": 27, "question": "Sometimes, you feel your tummy grumble and then you get a little grumpy. Your body told your brain you were hungry, and your brain made you feel that way. This is a bit like ______.", "options": ["a rocket blasting off", "your body telling you how to feel", "a secret handshake"], "answer": "your body telling you how to feel" },
+    { "id": 28, "question": "When you are a baby, you might cry for food or a hug because those are the most important things. As you get older, you also need to feel safe and have friends. This is like a pyramid that shows our ______.", "options": ["favorite toys", "needs", "special powers"], "answer": "needs" },
+    { "id": 29, "question": "Sometimes, you want to play right now, but a part of your brain says, \"Wait, you need to finish your homework first!\" This is a simple idea of how different parts of our brain help us __________.", "options": ["play hide-and-seek", "make decisions", "get sleepy"], "answer": "make decisions" },
+    { "id": 30, "question": "Why do you remember your birthday party so well? Your brain saves some pictures, sounds, and feelings, and then it puts them together to build a story. This is like your brain __________.", "options": ["taking a perfect photo", "building a memory", "singing a song"], "answer": "building a memory" },
+    { "id": 31, "question": "When you see your mom smile, you _______ because feelings can spread from person to person.", "options": ["smile back at her", "run to the kitchen", "start doing homework"], "answer": "smile back at her" },
+    { "id": 32, "question": "If you practice tying your shoes every day, it _______ because your brain learns the steps.", "options": ["becomes very hard", "gets much easier", "makes you sleepy"], "answer": "gets much easier" },
+    { "id": 33, "question": "When you help wash dishes and mom says \"good job,\", you _______ because praise makes us happy.", "options": ["want to help again", "feel very angry", "go hide upstairs"], "answer": "want to help again" },
+    { "id": 34, "question": "Your brain helps you _______ even when you're not trying to think about it.", "options": ["forget your name", "remember fun times", "feel very cold"], "answer": "remember fun times" },
+    { "id": 35, "question": "When your friend looks sad and starts crying, you can _______ by watching their face.", "options": ["tell how they feel", "become very hungry", "learn new math"], "answer": "tell how they feel" },
+    { "id": 36, "question": "If you touch something very hot, your brain _______ to keep you safe from getting hurt.", "options": ["makes you dance", "tells you to pull away", "wants you to sleep"], "answer": "tells you to pull away" },
+    { "id": 37, "question": "When you feel scared about the dark, taking slow deep breaths _______ and feel better.", "options": ["makes you run fast", "helps you stay calm", "teaches you to sing"], "answer": "helps you stay calm" },
+    { "id": 38, "question": "Your amazing brain is like a computer that _______ about the world around you.", "options": ["helps you learn things", "makes you feel hungry", "wants to take naps"], "answer": "helps you learn things" },
+    { "id": 39, "question": "When you always say \"please\" and \"thank you,\", these nice words _______ without even thinking about it.", "options": ["make you feel sad", "become a good habit", "help you run faster"], "answer": "become a good habit" },
+    { "id": 40, "question": "Some kids love playing with blocks while other kids _______ because everyone is different and special.", "options": ["like to draw pictures", "always feel tired", "forget their toys"], "answer": "like to draw pictures" }
+  ]
+}
+</script>
+
+<audio id="bgm" src="assets/audio/quiz-psychology-bgm.mp3" loop preload="auto"></audio>
+</body>
+</html>

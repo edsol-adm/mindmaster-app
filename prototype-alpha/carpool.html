@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preload" as="image" href="assets/images/carpool-back.webp">
 <title>Carpool – Psychology Road (v1.7 — strict quiet tail + How panel)</title>
 <style>
   :root{
@@ -25,10 +26,10 @@
     --roadside-w: 40px;       /* visual thickness of the grass strip */
     --roadside-nudge: 0px;    /* tiny overlap to remove micro-gaps */
   }
-  body{ margin:0; background:#f3f5f7; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:#111;
+  body{ margin:0; background: #fff url('assets/images/carpool-back.webp') center/cover no-repeat; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:#111;
         display:flex; align-items:center; justify-content:center; min-height:100vh; }
   .frame{ position:relative; width:min(96vw, calc(96vh * (11/14))); aspect-ratio:11/14;
-          box-shadow:0 20px 40px var(--shadow); border-radius:16px; overflow:hidden; background:#fff; }
+          box-shadow:0 20px 40px var(--shadow); border-radius:16px; overflow:hidden; background: transparent; }
 
   .hud{ position:absolute; top:0; left:0; right:0; height:64px; background:#fff;
         display:flex; align-items:center; justify-content:space-between; padding:0 18px; border-bottom:3px solid #eee; z-index:5; }
@@ -70,7 +71,7 @@
     filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
   }
 
-  
+
   /* Visual shrink when honked at (negative-only), once per obstacle */
   .poster.startled{
     transform: scale(0.5);
@@ -130,11 +131,55 @@
   /* Ensure dash layers are above the border art */
   .center-dash, .left-border-dash, .right-border-dash{ z-index:2; }
 
+  .btn.nav:focus { outline: 4px solid #000; outline-offset: 2px; }
+
+/* Summary panel layout: internal scroll + sticky actions */
+.end-panel{
+  display:flex;
+  flex-direction:column;
+  max-height:85%;
+  overflow:hidden;          /* prevents horizontal scroll in the card */
+}
+.end-scroll{
+  flex:1 1 auto;
+  min-height:0;             /* enables proper flex scrolling */
+  overflow-y:auto;
+  overflow-x:hidden;        /* no L/R scrolling allowed */
+  margin-top:8px;
+}
+.end-actions{
+  position:sticky;
+  bottom:0;
+  background:linear-gradient(180deg, rgba(255,255,255,0), #fff 40%);
+  padding-top:12px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;           /* fit within card at narrow widths */
+  justify-content:center;
+}
+/* Smaller nav buttons inside summary card so they fit without L/R scroll */
+.end-panel .navbtn{
+  min-width:136px;
+  height:52px;
+  padding:0 16px;
+  font-size:16px;
+}
+
+/* Centered column for full play area (header + road/hedges + bottom bar) */
+.game-wrap{
+  position:absolute;
+  top:0; bottom:0;
+  /* Match the road's left/width so the column equals the full play area incl. hedges */
+  left:6%;
+  width:88%;
+  /* This centers the column; gutters (left/right) reveal the frame background image */
+}
 </style>
 </head>
 <body>
 <div class="frame" id="frame">
 
+  <div class="game-wrap">
   <div class="hud">
     <div class="left">Score: <span id="score">0</span></div>
     <div class="center">Time: <span id="timer">00:00</span></div>
@@ -160,6 +205,7 @@
     <button class="drive-btn btn-carpool" id="btnCarpool" aria-label="Carpool">Carpool</button>
     <button class="drive-btn btn-honk" id="btnHonk" aria-label="Honk">Honk</button>
   </div>
+  </div>
 
   <div class="overlay" id="intro">
     <div class="card">
@@ -168,7 +214,7 @@
       <div class="row" style="margin-top:14px;">
         <button class="navbtn nav-primary" id="btnStart">Start</button>
         <button class="navbtn nav-secondary" id="btnHow">How to play</button>
-        <a class="navbtn nav-secondary" href="home.html" id="btnHome">Home</a>
+        <a class="navbtn nav-secondary btn nav" href="lesson-screen-htmls/lesson-01.01.html" id="btnHome">Return to the park</a>
       </div>
       <div id="howPanel" class="hidden" style="margin-top:14px; text-align:left;">
         <ul style="margin-top:0">
@@ -190,11 +236,16 @@
              <span class="pill" style="background:#FF3B30; margin-left:6px;">Negative</span></div>
       </div>
       <div style="color:#666; font-size:14px;">Summary of events you met on the road:</div>
-      <div id="eventLog" style="margin-top:8px; font-size:15px; line-height:1.4;"></div>
+
+      <div class="end-scroll">
+        <div id="eventLog" style="font-size:15px; line-height:1.4;"></div>
+      </div>
+
       <div class="end-actions">
+        <!-- Keep these three controls with their existing IDs and texts -->
         <button class="navbtn nav-primary" id="btnNext">Next Level</button>
         <button class="navbtn nav-secondary" id="btnAgain">Play Again</button>
-        <a class="navbtn nav-secondary" href="home.html" id="btnEndHome">Home</a>
+        <a class="navbtn nav-secondary btn nav" href="lesson-screen-htmls/lesson-01.01.html" id="btnEndHome">Return to the park</a>
       </div>
     </div>
   </div>
@@ -569,8 +620,8 @@
         }
       }
     });
-    
-  
+
+
     // reset only carpool chain on whiff
     if (!captured) { chainPos = 0; }
 }

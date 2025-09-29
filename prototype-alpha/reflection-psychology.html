@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>reflection-psychology.html</title>
+<style>
+:root{
+  --bg:#FFB6C1;              /* header pink remains token, not used for gradient */
+  --card:#ffffff;
+  --text:#222;
+  --muted:#555;
+  --btn:#fff;
+  --btn-border:#222;
+  --focus:#000;
+  --pill:#222;
+  --header-h: 88px;          /* fixed topbar height incl. padding */
+  --page-pad: 16px;          /* page side padding */
+  --card-max-w: 960px;       /* max width for centered cards */
+  --focus-outline: 4px;      /* Navigation Standard */
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  color:var(--text);
+  background: #cfe8ff url('assets/images/sea.webp') center/cover no-repeat fixed;
+}
+a.btn, button.btn{
+  display:inline-block;
+  padding:.75rem 1.25rem;
+  background:var(--btn);
+  color:var(--text);
+  border:2px solid var(--btn-border);
+  border-radius:999px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  transition: transform .02s ease-in-out;
+  min-height:44px; /* ≥44px targets */
+}
+a.btn:focus, button.btn:focus{
+  outline:4px solid var(--focus);
+  outline-offset:2px;
+}
+a.btn:active, button.btn:active{ transform: scale(.98); }
+
+.card{
+  background:var(--card);
+  border:2px solid #e7e9ef;
+  border-radius:16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  padding:24px 24px 28px;
+  max-width: var(--card-max-w);
+  margin: 0 auto;
+  overflow: visible; /* do not clip inner content */
+}
+.subtle{color:var(--muted); font-size:.95rem}
+.hidden{display:none !important}
+.center{display:flex; justify-content:center; align-items:center}
+
+.stimulus{
+  margin-top:6px;
+  font-size:clamp(1rem,2.4vw,1.15rem);
+  line-height:1.35;
+}
+.options{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  gap:12px;
+  margin-top:12px;
+}
+.btn.option{
+  background:#42A5F5;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:.75rem 1rem;
+}
+.btn.option:hover{ background:#1E88E5 }
+.btn.next{
+  display:inline-block;
+  margin-top:12px;
+  padding:.75rem 1.25rem;
+  border-radius:12px;
+  font-weight:800;
+  background:#e8f0ff;
+  border:2px solid #1a56ff;
+}
+.correct-box{
+  margin-top:12px;
+  padding:12px;
+  background:#f7fbff;
+  border-left:4px solid #1a56ff;
+  border-radius:8px;
+}
+.expln{
+  margin-top:8px;
+  color:#333;
+  font-size:1rem;
+  line-height:1.35;
+}
+.answer-emph{ font-weight:900 }
+
+.divider{
+  height:2px; background:#eceef5; margin:16px 0; border-radius:2px;
+}
+
+/* Score pill in top-right of quiz card */
+.score-pill{
+  position:absolute;
+  top:12px;
+  right:12px;
+  border:2px solid #222;
+  background:#fff;
+  border-radius:999px;
+  padding:.25rem .6rem;
+  font-size:.9rem;
+  font-weight:900;
+}
+
+/* Summary list with sticky footer controls */
+.end-title{
+  font-size:1.6rem;
+  font-weight:900;
+  margin:0 0 12px 0;
+}
+#endCard{
+  display:flex;
+  flex-direction:column;
+  max-height: calc(100vh - var(--header-h) - (2 * var(--page-pad)) - 96px);
+}
+.summary-list{
+  margin:0; padding:0; list-style:none; display:grid; gap:8px;
+  flex:1 1 auto; overflow:auto; min-height:0;
+}
+.summary-item{
+  padding:10px;
+  border:2px dashed #e1e4ee;
+  border-radius:12px;
+  background:#fcfdff;
+}
+.summary-stem{ margin:0 0 4px 0; line-height:1.2; font-weight:700 }
+.summary-ans{ margin:0 0 4px 0 }
+.summary-exp{ margin:0; color:#333 }
+
+.footer-actions{
+  position:sticky; bottom:0; background:#fff;
+  padding-top:8px; margin-top:12px; border-top:2px solid #eceef5; z-index:1;
+  display:flex; flex-wrap:wrap; gap:12px;
+}
+
+/* Fixed header topbar: now truly transparent over river image */
+.topbar{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  background: transparent;
+  z-index: 10;
+  box-shadow: none; border-bottom: none;
+  padding: 0 var(--page-pad);
+}
+.left-actions{display:flex;gap:12px;align-items:center}
+.right-brand img.logo{max-width:160px;height:auto;display:block}
+.topbar img.logo{
+  display:block;
+  max-width:160px;     /* size lock */
+  height:auto;         /* preserve aspect ratio */
+  align-self:center;   /* vertical center within header */
+  margin-right:var(--page-pad); /* fixed right offset */
+}
+.topbar a:focus{ outline: 4px solid #fff; outline-offset: 2px; }
+
+.main{
+  position: relative;
+  padding: calc(var(--header-h) + 24px) var(--page-pad) 72px var(--page-pad);
+  min-height: calc(100vh - 24px);
+  background: url('assets/images/sea.webp') center/cover no-repeat fixed;
+}
+
+/* Mimi: child of .main, absolute, decorative only */
+.mimi-floating{
+  position:absolute;
+  top: calc(var(--header-h) + 8px);
+  right: var(--page-pad);
+  max-width:120px;
+  height:auto;
+  display:block;
+  pointer-events:none;
+  z-index: 2;
+}
+@media (max-height: 700px){
+  .mimi-floating{ max-width:100px }
+}
+
+/* Navigation Standard: focus outline for anchors and buttons */
+a.btn.nav:focus, button.btn:focus{
+  outline: var(--focus-outline) solid #000;
+  outline-offset: 2px;
+}
+
+/* Start card button (multiline) */
+#startCard{ min-height:50vh; text-align:center }
+.btn.start{
+  display:inline-block;
+  text-align:left;
+  padding:1rem 1.25rem;
+  border-radius:16px;
+  font-size:1.02rem;
+  line-height:1.35;
+  background:linear-gradient(135deg,#ffecd2 0%, #fcb69f 100%);
+  border-color:#222;
+  max-width:720px;
+}
+.btn.start span{ display:block; margin:.15rem 0 }
+
+/* Quiz card max height for internal scroll safety */
+#quizCard{
+  position: relative; /* for score pill */
+  max-height: calc(100vh - var(--header-h) - (2 * var(--page-pad)) - 96px);
+  overflow: auto;
+  padding-top: 56px; /* push content below the score pill */
+}
+
+/* Confetti canvas */
+#confettiCanvas{
+  position:fixed; inset:0; pointer-events:none; z-index: 99; display:none;
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="left-actions">
+    <a class="btn nav" href="lesson-screen-htmls/lesson-01.01.html">Return to the Park</a>
+  </div>
+  <div class="right-brand">
+    <img class="logo" src="assets/images/mindmaster-logo.png" alt="MindMaster">
+  </div>
+</nav>
+
+<main class="main">
+  <img class="mimi-floating" src="assets/images/mimi.webp" alt="" aria-hidden="true">
+  <canvas id="confettiCanvas"></canvas>
+
+  <section id="startCard" class="card">
+    <div class="center" style="margin-bottom:16px;">
+      <button id="btnStart" class="btn start" type="button">
+        <span>Psychology is the science of how the mind works. Like biology is the science and the study of the body.</span>
+        <span>But what do we mean by that?</span>
+        <span>These questions should remind you about what we’ve learned about how the mind works.</span>
+        <span>Press any key to start.</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="quizCard" class="card hidden" aria-live="polite">
+    <div class="score-pill" id="scorePill" role="status" aria-live="polite">Score: 0 (L1)</div>
+    <div class="stimulus" id="stimulusText"></div>
+    <div class="options" id="optionsRow"></div>
+    <div class="divider"></div>
+    <div id="feedbackBox" class="correct-box hidden">
+      <div id="correctLine"></div>
+      <div id="explanationLine" class="expln"></div>
+      <button id="btnNext" class="btn next" type="button">Next</button>
+    </div>
+  </section>
+
+  <section id="endCard" class="card hidden">
+    <div class="end-title">Summary</div>
+    <ul class="summary-list" id="summaryList"></ul>
+    <div class="footer-actions">
+      <a class="btn nav" href="reflection-psychology.html">Play Again</a>
+      <a class="btn nav" href="lesson-screen-htmls/in-class-game-htmls/icg-01.01.html">Go back to Class Activities</a>
+      <a class="btn nav" href="lesson-screen-htmls/lesson-01.01.html">Go back to the Park</a>
+      <button id="btnNextLevel" class="btn hidden" type="button">Next Level</button>
+    </div>
+  </section>
+</main>
+
+<script id="reflection-data" type="application/json">
+[
+  {"id":"feelings_01_q1","batchId":"feelings_01","theme":"Feelings","stem":"When you feel sad because your toy broke, but then you smile after a hug from your friend, what part of psychology is happening?","options":["How we think","How we act","How we feel","How tall we are"],"correctIndex":2,"explanation":"Psychology is like having a special pair of glasses that helps us see inside people's minds! It helps us understand why you might feel excited on your birthday, why you think about your friends at school, and why you might act differently when you're happy versus when you're tired. Psychologists are like mind detectives who study all the amazing things that happen in our brains every single day!"},
+  {"id":"feelings_01_q2","batchId":"feelings_01","theme":"Feelings","stem":"What does psychology help us understand?","options":["Only how to do math problems","How to build toy robots","Only what animals eat for dinner","How we think, feel, and behave every day"],"correctIndex":3,"explanation":"Psychology is like having a special pair of glasses that helps us see inside people's minds! It helps us understand why you might feel excited on your birthday, why you think about your friends at school, and why you might act differently when you're happy versus when you're tired. Psychologists are like mind detectives who study all the amazing things that happen in our brains every single day!"},
+  {"id":"development_01_q1","batchId":"development_01","theme":"Cognitive Development","stem":"When you were a baby, you didn’t know any words. As you grew, you learned to talk. What does this show about how our minds change?","options":["Our minds never change, we just stay the same.","We learn words only when our parents give them to us.","Our minds grow in steps, like climbing stairs.","Talking is magic that just happens one day."],"correctIndex":2,"explanation":"When you were a baby, your brain was already working and you had lots of feelings - like being happy, hungry, or sleepy - but you didn't have words yet to tell anyone about them! As you grew bigger, your mind learned how to use words, just like learning to walk or ride a bike. Your thinking keeps getting stronger and smarter every year, which is pretty amazing!"},
+  {"id":"development_01_q2","batchId":"development_01","theme":"Cognitive Development","stem":"When you were a tiny baby, what was different about how your mind worked compared to now?","options":["You could already read books perfectly","You had thoughts and feelings, but no words to say them","You could do math homework right away","You never had any thoughts at all"],"correctIndex":1,"explanation":"When you were a baby, your brain was already working and you had lots of feelings - like being happy, hungry, or sleepy - but you didn't have words yet to tell anyone about them! As you grew bigger, your mind learned how to use words, just like learning to walk or ride a bike. Your thinking keeps getting stronger and smarter every year, which is pretty amazing!"},
+  {"id":"attention_01_q1","batchId":"attention_01","theme":"Attention","stem":"Why can’t we notice everything around us at the same time?","options":["Because our brains have limits and can only focus on a few things at once.","Because our brains get full, like a toy box with no space.","Because our eyes don’t work very well.","Because we forget things on purpose."],"correctIndex":0,"explanation":"Your brain is like having one pair of eyes and ears that can only focus really well on a few things at a time. If you try to listen to the teacher, your friend, and the dog all at once, it gets confusing! That's why teachers ask for quiet during story time - it helps your brain's 'attention flashlight' shine on just the story so you can understand it better."},
+  {"id":"attention_01_q2","batchId":"attention_01","theme":"Attention","stem":"You're trying to listen to your teacher read a story, but your friend is whispering jokes and there's a dog barking outside. What happens to your brain?","options":["Your brain can easily listen to all three things perfectly at the same time","Your brain automatically turns off completely","Your brain has to choose which sound to focus on - you can't pay attention to everything at once","Your brain only works when it's completely quiet"],"correctIndex":2,"explanation":"Your brain is like having one pair of eyes and ears that can only focus really well on a few things at a time. If you try to listen to the teacher, your friend, and the dog all at once, it gets confusing! That's why teachers ask for quiet during story time - it helps your brain's 'attention flashlight' shine on just the story so you can understand it better."},
+  {"id":"attention_01_q3","batchId":"attention_01","theme":"Attention","stem":"Our brains can only focus on a few new things at the same time. If your teacher gives you too many instructions you might:","options":["Remember all of them perfectly","Forget to do everything that was important","Become super smart instantly","Forget some because your brain got overloaded"],"correctIndex":3,"explanation":"Your brain is like having one pair of eyes and ears that can only focus really well on a few things at a time. If you try to listen to the teacher, your friend, and the dog all at once, it gets confusing! That's why teachers ask for quiet during story time - it helps your brain's 'attention flashlight' shine on just the story so you can understand it better."},
+  {"id":"observational_01_q1","batchId":"observational_01","theme":"Observational Learning","stem":"You see your friend stack blocks into a tall tower. Then you try the same thing. What kind of learning is this?","options":["Learning by watching others and copying.","Learning by magic.","Learning only when a teacher tells you.","Learning because the blocks talk to you."],"correctIndex":0,"explanation":"Your brain is like a super good video camera! When you watch someone do something - like building with blocks, drawing a picture, or being kind to others - your brain records it and then you can try to do it too. This is called learning by watching, and it's one of the most important ways kids learn new things. You're like a learning detective, always watching and picking up new skills!"},
+  {"id":"observational_01_q2","batchId":"observational_01","theme":"Observational Learning","stem":"Your big sister shows you how to tie your shoes by doing it slowly while you watch. Then you try to do it the same way. What type of learning is this?","options":["Learning by reading about it in a book","Learning by someone telling you the steps without showing you","Learning by guessing randomly","Learning by watching and copying what someone else does"],"correctIndex":3,"explanation":"Your brain is like a super good video camera! When you watch someone do something - like building with blocks, drawing a picture, or being kind to others - your brain records it and then you can try to do it too. This is called learning by watching, and it's one of the most important ways kids learn new things. You're like a learning detective, always watching and picking up new skills!"},
+  {"id":"memory_integration_01_q1","batchId":"memory_integration_01","theme":"Memory","stem":"You went to the zoo and later you remember the elephants, the lion’s roar, and the ice cream you ate. How does your brain do this?","options":["By putting together sights, sounds, and feelings into a memory.","By hiding memories in your shoes.","By asking animals to tell you the story again.","By only remembering one thing at a time."],"correctIndex":0,"explanation":"Your brain is like a master puzzle builder! When you remember the zoo, it doesn't just play a video - instead, it gathers up all the different pieces from that day: what you saw (funny monkeys!), what you heard (elephants trumpeting!), what you smelled (yummy cotton candy!), and how you felt (so happy!). Then your brain puts all these pieces together to build your special zoo memory!"},
+  {"id":"memory_integration_01_q2","batchId":"memory_integration_01","theme":"Memory","stem":"When you remember your trip to the zoo last month, how does your brain create that memory?","options":["Your brain just plays back the day like watching a movie","Your brain only remembers one thing at a time","Your brain puts together pieces like the lions roaring, the smell of popcorn, and how excited you felt","Your brain makes up everything and none of it really happened"],"correctIndex":2,"explanation":"Your brain is like a master puzzle builder! When you remember the zoo, it doesn't just play a video - instead, it gathers up all the different pieces from that day: what you saw (funny monkeys!), what you heard (elephants trumpeting!), what you smelled (yummy cotton candy!), and how you felt (so happy!). Then your brain puts all these pieces together to build your special zoo memory!"},
+  {"id":"body_feelings_01_q1","batchId":"body_feelings_01","theme":"Emotions & Body","stem":"Your heart starts to beat really fast when you feel scared. What does this show?","options":["Our brain and body never talk to each other.","Our hearts like to run races.","Feelings only happen in our head, not in the body.","Our bodies and feelings are connected."],"correctIndex":3,"explanation":"Sometimes our body is like a messenger! When something scary happens, our body reacts first (fast heartbeat, sweaty hands), and then it sends a message to our brain saying 'I think we're feeling scared right now!' It's like your body is a really good friend who helps your brain understand your feelings."},
+  {"id":"body_feelings_01_q2","batchId":"body_feelings_01","theme":"Emotions & Body","stem":"You're walking in the dark and you hear a strange noise. Your heart starts beating really fast and your hands get sweaty. According to one psychology theory, what happens next?","options":["Your brain tells your body to feel scared","You forget about feeling scared","Your body tells your brain 'Hey, I think we're scared!'","Nothing happens at all"],"correctIndex":2,"explanation":"Sometimes our body is like a messenger! When something scary happens, our body reacts first (fast heartbeat, sweaty hands), and then it sends a message to our brain saying 'I think we're feeling scared right now!' It's like your body is a really good friend who helps your brain understand your feelings."},
+  {"id":"exec_control_01_q1","batchId":"exec_control_01","theme":"Executive Control","stem":"You want to play, but your brain also reminds you to finish your homework first. What does this show?","options":["Our brain has different parts that help us decide.","Homework talks to us.","Playtime is stronger than thinking.","Our brain never helps us make choices."],"correctIndex":0,"explanation":"You have a really smart 'boss part' in your brain that acts like a helpful grown-up inside your head! When you want something right now, this boss part helps you stop and think: 'Is this a good idea? Should I wait?' It's like having a wise friend in your brain who helps you make choices that are good for you, even when it's hard to wait or do the right thing."},
+  {"id":"exec_control_01_q2","batchId":"exec_control_01","theme":"Executive Control","stem":"You really want to eat a cookie before dinner, but something in your brain says 'Wait! Dinner is in 10 minutes.' What part of your brain is helping you?","options":["The part that makes you feel hungry","The part that helps you taste flavors","The 'boss part' that helps you make good decisions and wait for the right time","The part that makes you feel sleepy"],"correctIndex":2,"explanation":"You have a really smart 'boss part' in your brain that acts like a helpful grown-up inside your head! When you want something right now, this boss part helps you stop and think: 'Is this a good idea? Should I wait?' It's like having a wise friend in your brain who helps you make choices that are good for you, even when it's hard to wait or do the right thing."},
+  {"id":"practice_01_q1","batchId":"practice_01","theme":"Practice & Learning","stem":"Why does tying your shoes get easier the more you practice?","options":["Because the laces get shorter each time.","Because the shoes start tying themselves.","Because your hands magically grow stronger.","Because your brain learns and remembers the steps better with practice."],"correctIndex":3,"explanation":"Your brain is like a amazing road builder! Every time you practice something - like writing your name, riding a bike, or tying shoes - your brain builds stronger and smoother 'roads' for that skill. At first, the road might be bumpy and slow, but with practice, your brain makes it into a super smooth highway where the skill can travel really fast and easily!"},
+  {"id":"practice_01_q2","batchId":"practice_01","theme":"Practice & Learning","stem":"At the beginning of the school year, writing your name felt really hard and slow. Now, after practicing every day, you can write it quickly and easily. What happened in your brain?","options":["Your brain got bigger and heavier","Your brain forgot how to do other things to make room","Your brain made stronger connections by practicing, like building a smooth road for that skill","Nothing changed - you were always good at writing"],"correctIndex":2,"explanation":"Your brain is like a amazing road builder! Every time you practice something - like writing your name, riding a bike, or tying shoes - your brain builds stronger and smoother 'roads' for that skill. At first, the road might be bumpy and slow, but with practice, your brain makes it into a super smooth highway where the skill can travel really fast and easily!"},
+  {"id":"spontaneous_memory_01_q1","batchId":"spontaneous_memory_01","theme":"Memory","stem":"You suddenly remember a fun day at the park, even though you weren’t trying to think about it. What does this show?","options":["We only remember when someone reminds us.","Parks can talk to us.","Fun memories are hidden in our shoes.","Our brains can bring back memories on their own."],"correctIndex":3,"explanation":"Your brain is like a super smart librarian that works even when you're sleeping! It automatically saves all your special moments - like birthday parties, playing with friends, or family trips - without you having to ask it to. Sometimes, these happy memories just pop up in your mind like surprise gifts, even when you're thinking about something totally different. Your brain loves to keep your best memories safe and ready to make you smile!"},
+  {"id":"spontaneous_memory_01_q2","batchId":"spontaneous_memory_01","theme":"Memory","stem":"You're sitting in math class when suddenly you remember last weekend's birthday party - the cake, the games, and how much fun you had. You weren't trying to think about it. How did this happen?","options":["Someone whispered about the party to remind you","You can only remember things when you try really hard to think about them","Your brain automatically saved that happy memory and brought it back up on its own","You were dreaming about the party"],"correctIndex":2,"explanation":"Your brain is like a super smart librarian that works even when you're sleeping! It automatically saves all your special moments - like birthday parties, playing with friends, or family trips - without you having to ask it to. Sometimes, these happy memories just pop up in your mind like surprise gifts, even when you're thinking about something totally different. Your brain loves to keep your best memories safe and ready to make you smile!"},
+  {"id":"empathy_01_q1","batchId":"empathy_01","theme":"Social Understanding","stem":"Your friend looks sad and starts crying. How can you tell what they feel?","options":["By looking at their face and noticing their feelings.","By guessing randomly.","By asking their toys to tell you.","By never looking at them at all."],"correctIndex":0,"explanation":"Your brain is like a super detective that can solve the mystery of how other people feel! You don't need special powers - you just look at clues like whether someone is smiling, frowning, or has tears in their eyes. Their face is like a book that tells you their feelings. This helps you be a good friend because when you can tell someone is sad, you might give them a hug or help them feel better!"},
+  {"id":"empathy_01_q2","batchId":"empathy_01","theme":"Social Understanding","stem":"Your classmate drops their ice cream on the ground. Even though they don't say anything, you can see their bottom lip is shaking and their eyes look watery. How do you know how they feel?","options":["You can only know how someone feels if they tell you with words","You can read the clues on their face to understand they feel sad or upset","You have to guess randomly what they might be feeling","Other people's feelings are impossible to figure out"],"correctIndex":1,"explanation":"Your brain is like a super detective that can solve the mystery of how other people feel! You don't need special powers - you just look at clues like whether someone is smiling, frowning, or has tears in their eyes. Their face is like a book that tells you their feelings. This helps you be a good friend because when you can tell someone is sad, you might give them a hug or help them feel better!"},
+  {"id":"reflex_safety_01_q1","batchId":"reflex_safety_01","theme":"Safety & Reflexes","stem":"You touch something very hot, and your brain makes you move your hand away quickly. What does this show?","options":["Our brains and bodies work together to keep us safe.","Our hands don’t like hot things.","Heat makes us stronger if we hold on.","Our brains never notice danger."],"correctIndex":0,"explanation":"Your brain is like having the world's fastest bodyguard inside your head! When something might hurt you - like something hot, sharp, or dangerous - your brain's special alarm goes 'BEEP BEEP DANGER!' and makes your body move away super quickly, even before you have time to think about it. Pain might not feel good, but it's actually your brain being your best friend and trying to keep you safe!"},
+  {"id":"reflex_safety_01_q2","batchId":"reflex_safety_01","theme":"Safety & Reflexes","stem":"You accidentally touch a hot stove and immediately pull your hand away before you even think about it. Why does your brain make you do this so fast?","options":["Your brain wants to make you cry","Your brain's alarm system quickly warns you 'Danger!' to protect you from getting hurt worse","Your brain is trying to make you afraid of cooking","Your brain doesn't care if you get hurt"],"correctIndex":1,"explanation":"Your brain is like having the world's fastest bodyguard inside your head! When something might hurt you - like something hot, sharp, or dangerous - your brain's special alarm goes 'BEEP BEEP DANGER!' and makes your body move away super quickly, even before you have time to think about it. Pain might not feel good, but it's actually your brain being your best friend and trying to keep you safe!"},
+  {"id":"interests_01_q1","batchId":"interests_01","theme":"Individual Differences","stem":"One child loves building with blocks, another loves drawing pictures. What does this show?","options":["Everyone has different personalities and interests.","Only blocks are the best way to play.","Drawing is the only way to learn.","Kids should all like the same things."],"correctIndex":0,"explanation":"Every person's brain is like a special, one-of-a-kind recipe! Just like some people love chocolate ice cream while others prefer vanilla, our brains are made differently, which means we naturally like different activities. This makes the world much more interesting and fun because we can learn from each other and try new things. Your special interests and talents are what make you perfectly YOU!"},
+  {"id":"interests_01_q2","batchId":"interests_01","theme":"Individual Differences","stem":"In your class, Maya loves to read books, Alex enjoys building with LEGOs, Sam likes to sing songs, and Jordan prefers playing soccer. Why are they all interested in different things?","options":["They haven't found the 'right' activity that everyone should like","Each person's brain is unique and special, so we naturally enjoy different things","They're just copying what their parents like to do","One activity is better than all the others"],"correctIndex":1,"explanation":"Every person's brain is like a special, one-of-a-kind recipe! Just like some people love chocolate ice cream while others prefer vanilla, our brains are made differently, which means we naturally like different activities. This makes the world much more interesting and fun because we can learn from each other and try new things. Your special interests and talents are what make you perfectly YOU!"},
+  {"id":"basic_needs_01_q1","batchId":"basic_needs_01","theme":"Needs & Motivation","stem":"Before you can start learning new things, what does everyone need first?","options":["Food, water, and feeling safe.","A brand-new toy.","A big bag of candy.","A gold star from the teacher."],"correctIndex":0,"explanation":"Every single person in the world - kids and grown-ups everywhere - needs the same basic things to be healthy and happy: food when hungry, water when thirsty, sleep when tired, and to feel safe and loved. These are like the foundation of a house that everyone needs! But then, each person also has their own special needs - like some kids need quiet time while others need lots of activity. We're all the same in some ways, but special and different in others!"},
+  {"id":"basic_needs_01_q2","batchId":"basic_needs_01","theme":"Needs & Motivation","stem":"Which of these needs do ALL children have, no matter where they live or what they like to do?","options":["The need to play the same exact games","The need for food, water, sleep, and to feel safe and loved","The need to have the same favorite color","The need to be good at the same subjects in school"],"correctIndex":1,"explanation":"Every single person in the world - kids and grown-ups everywhere - needs the same basic things to be healthy and happy: food when hungry, water when thirsty, sleep when tired, and to feel safe and loved. These are like the foundation of a house that everyone needs! But then, each person also has their own special needs - like some kids need quiet time while others need lots of activity. We're all the same in some ways, but special and different in others!"},
+  {"id":"conditioning_01_q1","batchId":"conditioning_01","theme":"Learning by Association","stem":"When you hear the ice cream truck's music, do you start feeling excited and wanting ice cream - even before you see the truck?","options":["I want to know that it really is the ice cream truck","No, I only get excited when I see the actual ice cream","I don't like ice cream trucks","Yes, the music makes me think of ice cream!"],"correctIndex":3,"explanation":"Your brain is like a really smart detective that notices patterns! When two things happen together many times - like hearing a special song while smelling delicious pancakes - your brain connects them like puzzle pieces. After a while, just hearing that song is enough to make your brain say 'Pancake time!' and your mouth might even start watering before you see any food. It's like your brain learned a special code!"},
+  {"id":"conditioning_01_q2","batchId":"conditioning_01","theme":"Learning by Association","stem":"You smell popcorn at the movies and suddenly feel hungry, even before you see the popcorn. What does this show?","options":["Our brains connect smells with things we enjoy.","Popcorn makes us hungry by magic.","We only get hungry when we see food.","Smells don’t have anything to do with feelings."],"correctIndex":0,"explanation":"Your brain is like a really smart detective that notices patterns! When two things happen together many times - like hearing a special song while smelling delicious pancakes - your brain connects them like puzzle pieces. After a while, just hearing that song is enough to make your brain say 'Pancake time!' and your mouth might even start watering before you see any food. It's like your brain learned a special code!"},
+  {"id":"conditioning_01_q3","batchId":"conditioning_01","theme":"Learning by Association","stem":"Every morning, your mom plays the same happy song while making your favorite pancakes. After a few weeks, you notice that just hearing that song - even when you're not in the kitchen - makes your mouth water and makes you feel hungry for pancakes. Why does this happen?","options":["The song has magical powers that make you hungry","Your brain learned to connect the song with yummy pancakes, so now the song alone makes you think of food","You only get hungry when you hear music","It's just a coincidence that happens sometimes"],"correctIndex":1,"explanation":"Your brain is like a really smart detective that notices patterns! When two things happen together many times - like hearing a special song while smelling delicious pancakes - your brain connects them like puzzle pieces. After a while, just hearing that song is enough to make your brain say 'Pancake time!' and your mouth might even start watering before you see any food. It's like your brain learned a special code!"},
+  {"id":"object_permanence_01_q1","batchId":"object_permanence_01","theme":"Cognitive Development","stem":"When you were very little (like 3 years old), if someone hid a toy under a blanket, what did you probably think?","options":["The toy was gone forever","The toy was still there, just hidden","The blanket turned into the toy","The toy is invisible"],"correctIndex":0,"explanation":"When you were really little, your brain was still learning a very important idea: that things and people don't disappear just because you can't see them! It's like your brain had to grow a special understanding that your mom is still your mom even when she goes to another room, and your favorite stuffed animal is still real even if it's in your closet. As you got older, your brain became much smarter about knowing that hidden things are still there, just waiting to be found!"},
+  {"id":"object_permanence_01_q2","batchId":"object_permanence_01","theme":"Cognitive Development","stem":"A ball rolls under the couch. A very young child thinks the ball is gone forever. What about an older child?","options":["They know the ball is still there, just hiding.","They think the ball has vanished into thin air.","They believe the ball has turned into a toy car.","They forget the ball ever existed."],"correctIndex":0,"explanation":"When you were really little, your brain was still learning a very important idea: that things and people don't disappear just because you can't see them! It's like your brain had to grow a special understanding that your mom is still your mom even when she goes to another room, and your favorite stuffed animal is still real even if it's in your closet. As you got older, your brain became much smarter about knowing that hidden things are still there, just waiting to be found!"},
+  {"id":"object_permanence_01_q3","batchId":"object_permanence_01","theme":"Cognitive Development","stem":"When you were 2 years old and your dad went behind a tree during hide-and-seek, you thought he was completely gone and might have gotten upset. Now that you're older, what do you understand when someone hides behind a tree?","options":["They have magically disappeared and might never come back","They are still there behind the tree, just hidden from view, and will come back out","Trees can make people vanish forever","People can only exist when you can see them"],"correctIndex":1,"explanation":"When you were really little, your brain was still learning a very important idea: that things and people don't disappear just because you can't see them! It's like your brain had to grow a special understanding that your mom is still your mom even when she goes to another room, and your favorite stuffed animal is still real even if it's in your closet. As you got older, your brain became much smarter about knowing that hidden things are still there, just waiting to be found!"},
+  {"id":"observational_02_q1","batchId":"observational_02","theme":"Observational Learning","stem":"You watch your older brother or sister solve a puzzle in a special way, then you solve it the same way. This shows that we learn by:","options":["Only reading about it in books","Watching and copying others","Being born knowing how to do it","Watching the TV"],"correctIndex":1,"explanation":"Your brain has an amazing ability to watch other people do things and then copy their good ideas! When you see someone do something that works well - like how your sister organizes her things, or how your friend shares toys nicely - your brain saves that information like taking a mental picture. Then you can try doing it the same way. It's like having a super helpful 'learning by watching' superpower that helps you pick up new skills and good ideas from the people around you!"},
+  {"id":"observational_02_q2","batchId":"observational_02","theme":"Observational Learning","stem":"You see your friend ride a bike without training wheels. Then you try riding the same way. What does this show?","options":["We can learn new skills by watching others.","Bikes only work for some kids.","We can only learn if a teacher explains every step.","Riding a bike happens by magic."],"correctIndex":0,"explanation":"Your brain has an amazing ability to watch other people do things and then copy their good ideas! When you see someone do something that works well - like how your sister organizes her things, or how your friend shares toys nicely - your brain saves that information like taking a mental picture. Then you can try doing it the same way. It's like having a super helpful 'learning by watching' superpower that helps you pick up new skills and good ideas from the people around you!"},
+  {"id":"observational_02_q3","batchId":"observational_02","theme":"Observational Learning","stem":"You see your big sister organize her backpack by putting all her pencils in one pocket, books in another, and snacks in the front. The next day, you organize your backpack exactly the same way. How did you learn this organizing method?","options":["You figured it out completely on your own","You learned by watching your sister and copying her smart way of doing it","Someone told you the steps without showing you","You read about it in a book"],"correctIndex":1,"explanation":"Your brain has an amazing ability to watch other people do things and then copy their good ideas! When you see someone do something that works well - like how your sister organizes her things, or how your friend shares toys nicely - your brain saves that information like taking a mental picture. Then you can try doing it the same way. It's like having a super helpful 'learning by watching' superpower that helps you pick up new skills and good ideas from the people around you!"},
+  {"id":"memory_types_01_q1","batchId":"memory_types_01","theme":"Memory Types","stem":"Our brains have different types of memory. Which type helps you remember how to ride a bike?","options":["Smelling memory (remembering the smell of something)","Word memory (remembering someone told you how)","Picture memory (remembering photos of bikes)","Muscle memory (your body remembers the movements)"],"correctIndex":3,"explanation":"Your brain is like a super organized closet with different sections! It has a special drawer for remembering words and songs, another drawer for storing math facts and information you learned, and a completely different drawer for remembering how your body moves - like riding a bike or throwing a ball. This is why you might forget a phone number but still remember how to tie your shoes perfectly - they're stored in different 'memory boxes' in your amazing brain!"},
+  {"id":"memory_types_01_q2","batchId":"memory_types_01","theme":"Memory Types","stem":"Which of these shows a 'how-to' memory?","options":["Remembering how to brush your teeth every morning.","Remembering the story your teacher read in class.","Remembering your best friend’s birthday.","Remembering the name of your school."],"correctIndex":0,"explanation":"Your brain is like a super organized closet with different sections! It has a special drawer for remembering words and songs, another drawer for storing math facts and information you learned, and a completely different drawer for remembering how your body moves - like riding a bike or throwing a ball. This is why you might forget a phone number but still remember how to tie your shoes perfectly - they're stored in different 'memory boxes' in your amazing brain!"},
+  {"id":"memory_types_01_q3","batchId":"memory_types_01","theme":"Memory Types","stem":"You can remember the words to your favorite song, you remember that 2+2=4, and you remember how to swing on the playground swings. These are all stored in different parts of your brain's memory. Why does your brain organize memories this way?","options":["Your brain randomly puts memories anywhere it wants","Your brain has special 'memory boxes' - one for songs and words, one for facts and numbers, and one for body movements","All memories are stored in exactly the same place","Your brain can only remember one type of thing at a time"],"correctIndex":1,"explanation":"Your brain is like a super organized closet with different sections! It has a special drawer for remembering words and songs, another drawer for storing math facts and information you learned, and a completely different drawer for remembering how your body moves - like riding a bike or throwing a ball. This is why you might forget a phone number but still remember how to tie your shoes perfectly - they're stored in different 'memory boxes' in your amazing brain!"},
+  {"id":"reinforcement_01_q1","batchId":"reinforcement_01","theme":"Reinforcement","stem":"If you get a sticker every time you clean your room, you'll probably clean your room more often. This is because:","options":["Stickers are magic","We’ll get bored","Cleaning rooms is always fun","Good things after doing something makes us want to do them again."],"correctIndex":3,"explanation":"Your brain is like a smart detective that notices when good things happen after you do something nice! When you help your brother and then get a happy high-five and praise, your brain thinks 'Hey, that felt really good! I want that happy feeling again!' So you're more likely to help next time. It's like your brain is collecting good feelings and wants to do more of them."},
+  {"id":"reinforcement_01_q2","batchId":"reinforcement_01","theme":"Reinforcement","stem":"If you get a high-five from your coach every time you practice kicking the ball, what will probably happen?","options":["You’ll practice more because the high-five feels good.","You’ll stop practicing because high-fives are boring.","You’ll only practice if nobody is watching.","You’ll forget how to kick the ball."],"correctIndex":0,"explanation":"Your brain is like a smart detective that notices when good things happen after you do something nice! When you help your brother and then get a happy high-five and praise, your brain thinks 'Hey, that felt really good! I want that happy feeling again!' So you're more likely to help next time. It's like your brain is collecting good feelings and wants to do more of them."},
+  {"id":"reinforcement_01_q3","batchId":"reinforcement_01","theme":"Reinforcement","stem":"Every time you help your little brother tie his shoes, your mom gives you a high-five and says 'What a great helper!' After a few weeks, you notice you help your brother with his shoes much more often. Why did this happen?","options":["You suddenly became better at tying shoes","Getting praise and high-fives made you want to help more because it feels good","Your brother got better at asking for help","You had nothing else to do"],"correctIndex":1,"explanation":"Your brain is like a smart detective that notices when good things happen after you do something nice! When you help your brother and then get a happy high-five and praise, your brain thinks 'Hey, that felt really good! I want that happy feeling again!' So you're more likely to help next time. It's like your brain is collecting good feelings and wants to do more of them."},
+  {"id":"theory_of_mind_01_q1","batchId":"theory_of_mind_01","theme":"Theory of Mind","stem":"Your friend Sarah is looking for her favorite teddy bear. You saw her teddy bear fall behind the couch, but Sarah didn't see it happen. Where will Sarah look for her teddy bear first?","options":["Behind the couch (where it actually is)","In her toy box (where she last put it)","Under her bed","In the kitchen"],"correctIndex":1,"explanation":"Sarah will look where she thinks her teddy bear is, not where it actually is! She doesn't know what you know. This shows that Sarah has her own thoughts about where the teddy might be, and her thoughts are different from yours. Pretty cool how everyone's brain works differently, right?"},
+  {"id":"theory_of_mind_01_q2","batchId":"theory_of_mind_01","theme":"Theory of Mind","stem":"Your little brother hides his toy car under the bed. You see him hide it. Later, your friend comes in. Where will your friend think the toy car is?","options":["Under the bed","In the toy box","In your backpack","At the zoo"],"correctIndex":1,"explanation":"Because your friend didn’t see the car being hidden, they will think it’s in the usual place."},
+  {"id":"theory_of_mind_01_q3","batchId":"theory_of_mind_01","theme":"Theory of Mind","stem":"Around age 4, we start to understand that:","options":["Other people have their own thoughts and feelings that might be different from yours","Everyone thinks exactly the same thoughts as you","Only grown-ups can think","We’re smarter than everyone else"],"correctIndex":0,"explanation":"Sarah will look where she thinks her teddy bear is, not where it actually is! She doesn't know what you know. This shows that Sarah has her own thoughts about where the teddy might be, and her thoughts are different from yours. Pretty cool how everyone's brain works differently, right?"}
+]
+</script>
+
+<audio id="bgm" src="assets/audio/reflection-psychology-bgm.mp3" loop preload="auto"></audio>
+<audio id="sfxCelebrate" src="assets/audio/celebrate.mp3" preload="auto"></audio>
+
+<script>
+(function(){
+  const $ = sel => document.querySelector(sel);
+  const byId = id => document.getElementById(id);
+
+  /* Elements */
+  const startCard = byId('startCard');
+  const btnStart = byId('btnStart');
+
+  const quizCard = byId('quizCard');
+  const stimulusText = byId('stimulusText');
+  const optionsRow = byId('optionsRow');
+  const feedbackBox = byId('feedbackBox');
+  const correctLine = byId('correctLine');
+  const explanationLine = byId('explanationLine');
+  const btnNext = byId('btnNext');
+  const scorePill = byId('scorePill');
+
+  const endCard = byId('endCard');
+  const summaryList = byId('summaryList');
+  const btnNextLevel = byId('btnNextLevel');
+
+  const bgm = byId('bgm');
+  const sfxCelebrate = byId('sfxCelebrate');
+  const confettiCanvas = byId('confettiCanvas');
+  const ctx = confettiCanvas.getContext('2d');
+
+  /* Data */
+  function getDATA(){
+    const raw = byId('reflection-data').textContent;
+    return JSON.parse(raw);
+  }
+  const FULL_DATA = getDATA();
+
+  /* State */
+  let level = 1;                 // 1..4
+  let score = 0;
+  let streak = 0;
+  let rounds = [];               // 7-item array for current round
+  let idx = 0;                   // index within round
+  let transcript = [];           // for summary
+
+  function updateScorePill(){
+    scorePill.textContent = "Score: " + score + " (L" + level + ")";
+  }
+
+  /* Utils */
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+  function sampleRound(data){
+    // group by batchId
+    const byBatch = new Map();
+    data.forEach(it=>{
+      if(!byBatch.has(it.batchId)) byBatch.set(it.batchId, []);
+      byBatch.get(it.batchId).push(it);
+    });
+    const batches = Array.from(byBatch.keys());
+    shuffle(batches);
+    const out = [];
+    for(const b of batches){
+      const arr = byBatch.get(b);
+      const pick = arr[Math.floor(Math.random()*arr.length)];
+      out.push(pick);
+      if(out.length===7) break;
+    }
+    if(out.length<7){
+      console.warn("QA: fewer than 7 distinct batchIds available; rendering max:", out.length);
+    }
+    return out;
+  }
+
+  /* Start / Audio */
+  function firstInteraction(){
+    window.removeEventListener('keydown', firstInteraction);
+    window.removeEventListener('pointerdown', firstInteraction);
+    try{
+      if(bgm){
+        bgm.volume = 0.25;
+        const p = bgm.play();
+        if(p && typeof p.catch === 'function'){ p.catch(()=>{}); }
+      }
+    }catch(e){}
+    toQuiz();
+  }
+
+  function init(){
+    updateScorePill();
+    // prepare first round preview-less (reflection mode)
+  }
+
+  function toQuiz(){
+    startCard.classList.add('hidden');
+    endCard.classList.add('hidden');
+    quizCard.classList.remove('hidden');
+    score = 0; streak = 0; idx = 0; transcript = [];
+    rounds = sampleRound(FULL_DATA);
+    renderQuestion();
+    const firstBtn = optionsRow.querySelector('button');
+    if(firstBtn) firstBtn.focus();
+    updateScorePill();
+  }
+
+  function renderQuestion(){
+    const item = rounds[idx];
+    stimulusText.textContent = item.stem;
+    optionsRow.innerHTML = "";
+    feedbackBox.classList.add('hidden');
+    const options = item.options.slice();
+    // ensure exactly 4 options
+    while(options.length < 4){ options.push(""); }
+    // label A-D visually in text content
+    const labels = ['A','B','C','D'];
+    options.forEach((opt, i)=>{
+      const b = document.createElement('button');
+      b.className = 'btn option';
+      b.type = 'button';
+      b.setAttribute('data-index', i);
+      b.textContent = (labels[i] ? labels[i] + ': ' : '') + opt;
+      b.addEventListener('click', ()=>onAnswer(item, i));
+      optionsRow.appendChild(b);
+    });
+  }
+
+  function onAnswer(item, chosenIndex){
+    // lock options
+    Array.from(optionsRow.querySelectorAll('button')).forEach(b=>b.disabled = true);
+
+    // scoring
+    const isCorrect = (chosenIndex === item.correctIndex);
+    if(isCorrect){
+      score += 5;
+      streak += 1;
+      if(streak >= 3){ score += 5; } // streak bonus
+    }else{
+      streak = 0;
+    }
+    updateScorePill();
+
+    // feedback UI
+    const labels = ['A','B','C','D'];
+    const chosenLabel = labels[chosenIndex] || '?';
+    const correctLabel = labels[item.correctIndex] || '?';
+
+    correctLine.innerHTML =
+      'Correct answer: <span class="answer-emph">' + correctLabel + ' — ' + item.options[item.correctIndex] + '</span>';
+    explanationLine.textContent = item.explanation;
+
+    // record for summary (stem, chosen, correct, explanation)
+    transcript.push({
+      stem: item.stem,
+      chosen: chosenLabel + ' — ' + (item.options[chosenIndex] || ''),
+      correct: correctLabel + ' — ' + item.options[item.correctIndex],
+      explanation: item.explanation,
+      wasRight: isCorrect
+    });
+
+    feedbackBox.classList.remove('hidden');
+    btnNext.disabled = false;
+    btnNext.focus();
+  }
+
+  btnNext.addEventListener('click', function(){
+    btnNext.disabled = true;
+    idx++;
+    if(idx < rounds.length){
+      renderQuestion();
+    }else{
+      renderEnd();
+    }
+  });
+
+  function renderEnd(){
+    quizCard.classList.add('hidden');
+    endCard.classList.remove('hidden');
+    summaryList.innerHTML = "";
+    transcript.forEach(t=>{
+      const li = document.createElement('li');
+      li.className = 'summary-item';
+      const pStem = document.createElement('p');
+      pStem.className = 'summary-stem';
+      pStem.textContent = t.stem;
+      const pAns = document.createElement('p');
+      pAns.className = 'summary-ans';
+      pAns.innerHTML = 'You chose: <strong>' + t.chosen + '</strong> · Correct: <strong>' + t.correct + '</strong>';
+      const pExp = document.createElement('p');
+      pExp.className = 'summary-exp';
+      pExp.textContent = t.explanation;
+      li.appendChild(pStem);
+      li.appendChild(pAns);
+      li.appendChild(pExp);
+      summaryList.appendChild(li);
+    });
+
+    // Level-up conditions
+    const qualified = (score >= 25);
+    const atMaxLevel = (level >= 4);
+    btnNextLevel.classList.toggle('hidden', !(qualified && !atMaxLevel));
+
+    // Celebrate if finished L4
+    if(atMaxLevel){
+      celebrate();
+    }
+  }
+
+  btnNextLevel.addEventListener('click', function(){
+    if(level < 4){
+      level += 1;
+      score = 0;
+      streak = 0;
+      updateScorePill();
+      toQuiz();
+      // ensure pill reflects new level early
+      updateScorePill();
+    }
+  });
+
+  /* Confetti (lightweight, no external libs) */
+  let confettiActive = false, particles = [];
+  function celebrate(){
+    try{
+      if(sfxCelebrate){
+        const p = sfxCelebrate.play();
+        if(p && typeof p.catch === 'function'){ p.catch(()=>{}); }
+      }
+    }catch(e){}
+    startConfetti();
+    // stop after 3 seconds
+    setTimeout(stopConfetti, 3000);
+  }
+  function startConfetti(){
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+    particles = Array.from({length: 120}).map(()=>({
+      x: Math.random()*confettiCanvas.width,
+      y: -10,
+      vx: (Math.random()*2-1)*2,
+      vy: 2 + Math.random()*3,
+      r: 2 + Math.random()*4,
+      a: Math.random()*Math.PI*2
+    }));
+    confettiActive = true;
+    confettiCanvas.style.display = 'block';
+    requestAnimationFrame(tickConfetti);
+  }
+  function tickConfetti(){
+    if(!confettiActive) return;
+    const ctx = confettiCanvas.getContext('2d');
+    ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+    particles.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.a += 0.1;
+      // simple color cycle
+      const hue = (p.y/3)%360;
+      ctx.fillStyle = 'hsl(' + hue + ', 80%, 60%)';
+      ctx.beginPath();
+      ctx.ellipse(p.x, p.y, p.r, p.r*0.6*Math.sin(p.a), 0, 0, Math.PI*2);
+      ctx.fill();
+    });
+    // remove offscreen
+    particles = particles.filter(p=> p.y < confettiCanvas.height + 20);
+    if(particles.length===0){ stopConfetti(); return; }
+    requestAnimationFrame(tickConfetti);
+  }
+  function stopConfetti(){
+    confettiActive = false;
+    confettiCanvas.style.display = 'none';
+  }
+  window.addEventListener('resize', ()=>{
+    if(confettiActive){
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+  });
+
+  /* Events */
+  btnStart.addEventListener('click', firstInteraction);
+  window.addEventListener('keydown', firstInteraction, {once:false});
+  window.addEventListener('pointerdown', firstInteraction, {once:false});
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
