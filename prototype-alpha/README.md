@@ -18,8 +18,8 @@ It is not the final technical design. Advanced features will be built in the Bet
 | Unit 1 – What is Psychology? | Carpool | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html |
 | Unit 1 – What is Psychology? | Balloon Race | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/balloon-race.html |
 | Unit 2 – What Are Feelings? | Emotions | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/emotions.html |
-| Unit 3 – Memory Through Play | Memory | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html |
-| Unit 3 – Memory Through Play | Memory 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html |
+| Unit 3 – How Memory Works | Memory | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html |
+| Unit 3 – How Memory Works | Memory 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html |
 | Unit 4 – Simple Sensory Exploration | Senses | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/senses.html |
 | Unit 5 – Basic Attention and Focus | Attention | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention.html |
 | Unit 5 – Basic Attention and Focus | Attention 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention2.html |
@@ -38,8 +38,8 @@ If a gamified practice does not load, you can view a video demonstration.
 |--------------|------------|
 | Unit 1 – What is Psychology? (Carpool) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
 | Unit 2 – What Are Feelings? (Emotions) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4) |
-| Unit 3 – Memory Through Play (Memory) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
-| Unit 3 – Memory Through Play (Memory 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory2.mp4) |
+| Unit 3 – How Memory Works (Memory) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
+| Unit 3 – How Memory Works (Memory 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory2.mp4) |
 | Unit 4 – Simple Sensory Exploration (Senses) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4) |
 | Unit 5 – Basic Attention and Focus (Attention) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4) |
 | Unit 5 – Basic Attention and Focus (Attention 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention2.mp4) |
@@ -61,7 +61,7 @@ Each Grade 1 unit introduces a key psychology literacy concept. Gamified Practic
 2. **What Are Feelings?** – Naming emotions and body cues  
    • Emotions  
 
-3. **Memory Through Play** – Using memory to learn and share experiences  
+3. **How Memory Works** – Using memory to learn and share experiences  
    • Memory, Memory 2  
 
 4. **Simple Sensory Exploration** – Connecting senses to feelings and thoughts  
