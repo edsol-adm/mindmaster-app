@@ -97,8 +97,8 @@ MindMaster Grade 1 Curriculum: Unit Specifications
 <table>
 <colgroup>
 <col style="width: 19%" />
-<col style="width: 41%" />
-<col style="width: 38%" />
+<col style="width: 44%" />
+<col style="width: 36%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -194,8 +194,8 @@ MindMaster Grade 1 Curriculum: Unit Specifications
 <table>
 <colgroup>
 <col style="width: 19%" />
-<col style="width: 41%" />
-<col style="width: 38%" />
+<col style="width: 44%" />
+<col style="width: 36%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -289,8 +289,8 @@ MindMaster Grade 1 Curriculum: Unit Specifications
 <table>
 <colgroup>
 <col style="width: 19%" />
-<col style="width: 41%" />
-<col style="width: 38%" />
+<col style="width: 44%" />
+<col style="width: 36%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -380,8 +380,8 @@ MindMaster Grade 1 Curriculum: Unit Specifications
 <table>
 <colgroup>
 <col style="width: 19%" />
-<col style="width: 41%" />
-<col style="width: 38%" />
+<col style="width: 44%" />
+<col style="width: 36%" />
 </colgroup>
 <thead>
 <tr class="header">
