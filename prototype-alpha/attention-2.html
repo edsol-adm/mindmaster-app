@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindMaster – Attention 2 (Shadow Match)</title>
+  <style>
+    :root{
+      --pink:#FFB6C1;
+      --yellow:#FFD700;
+      --rail:#ffd9e6;
+      --bar:#e01967;
+      --green:#2ecc71;
+      --shadow:#000000;
+      --gap:14px;
+    }
+    html,body{height:100%}
+    body{
+      margin:0; padding:0;
+      font-family:'Comic Neue', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background:var(--pink);
+      color:#111;
+      display:flex; flex-direction:column; align-items:center;
+      min-height:100vh;
+    }
+    h1{margin:24px 0 6px; font-size:2.1rem;}
+    .sub{margin:0 0 12px; font-size:1.05rem;}
+    .hidden{display:none !important;}
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* Intro background only */
+    #introWrap{
+      position:fixed; inset:0; background:#0006 center/cover no-repeat;
+      display:flex; align-items:center; justify-content:center;
+    }
+    #introWrap::before{
+      content:""; position:absolute; inset:0;
+      background: url('assets/attention-2/images/ui/bg-launch.png') center/cover no-repeat;
+      filter: none;
+    }
+    .intro-card{
+      position:relative; z-index:1;
+      background:#fffdfdd9; border-radius:18px; padding:20px; width:min(720px, 92vw);
+      box-shadow:0 12px 30px rgba(0,0,0,0.20);
+      text-align:center;
+    }
+
+    /* Unit pill (separate from main title) */
+    .unit-pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:.95rem;
+      background:#ffbb00;
+      border:2px solid #222;
+      margin-bottom:8px;
+    }
+
+    .controls{ margin:12px 0; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+
+    button{
+      background:var(--yellow); color:#000;
+      padding:10px 18px; border:none; border-radius:14px;
+      font-size:1rem; cursor:pointer; box-shadow:0 3px 0 #d1b100;
+      transition:transform .08s ease;
+    }
+    /* Requested button colors */
+    #startBtn{ background:#90EE90; box-shadow:0 3px 0 #6fb86f; }
+    #howToBtn{ background:#FFD700; box-shadow:0 3px 0 #d1b100; }
+    #homeBtn, #homeBtn2{ background:#87CEFA; box-shadow:0 3px 0 #5ea8d4; }
+
+    button:active{ transform:translateY(1px) }
+    button:focus{ outline:3px solid #000; outline-offset:2px }
+    #howToPanel{ background:#fff8; padding:12px; border-radius:12px; text-align:left; }
+
+    /* Game stage */
+    #game{ width:min(980px, 96vw); margin:16px auto; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    #topBar{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .progress{ font-weight:800; font-size:1.05rem; }
+    .timer-rail{ flex:1 1 auto; height:10px; background:var(--rail); border-radius:999px; overflow:hidden; }
+    .timer-bar{ height:100%; width:100%; background:var(--bar); transform-origin:left; }
+
+    .board{ width:100%; display:grid; gap:var(--gap); grid-template-columns:repeat(6,1fr); }
+    .slot{
+      aspect-ratio:1/1; border-radius:14px; background:#fff8;
+      position:relative; display:flex; align-items:center; justify-content:center;
+      outline:2px dashed #0002;
+    }
+    .slot img{ width:80%; height:80%; object-fit:contain; pointer-events:none; }
+    .slot.filled{ outline: none; }
+    .slot .shadow-img{ filter: grayscale(1) brightness(0) contrast(1.2); opacity:0.95; }
+
+    .tray{
+      width:100%; display:flex; flex-wrap:wrap; gap:var(--gap);
+      justify-content:center; align-items:center; margin-top:8px;
+    }
+    .piece{
+      width:110px; height:110px; border-radius:14px; background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; touch-action:none;
+    }
+    .piece img{ width:84%; height:84%; object-fit:contain; }
+    .piece.dragging{ opacity:0.8; }
+
+    /* Drag ghost layer */
+    #dragLayer{ position:fixed; inset:0; pointer-events:none; z-index:20; }
+    .ghost{
+      position:absolute; width:110px; height:110px; border-radius:14px; background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.25);
+      transition: transform 120ms ease;
+    }
+    .ghost img{ width:84%; height:84%; object-fit:contain; }
+
+    /* Feedback */
+    #feedback{ min-height:1.6rem; font-size:1.15rem; text-align:center; }
+    .pulse{ animation:pulse 520ms ease; } 
+    @keyframes pulse{ 0%{transform:scale(1)} 50%{transform:scale(1.06)} 100%{transform:scale(1)} }
+    .wobble{ animation:wobble 450ms ease; }
+    @keyframes wobble{
+      0%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)}
+      60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} 100%{transform:translateX(0)}
+    }
+    .fade-in{ animation:fadein 200ms ease forwards; }
+    @keyframes fadein{ from{opacity:0} to{opacity:1} }
+
+    /* Between-round overlay */
+    #between{
+      position:fixed; inset:0; background:rgba(0,0,0,0.35);
+      display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center;
+      z-index:30;
+    }
+    .star-burst{ display:flex; gap:10px; }
+    .burst-star{ width:56px; height:56px; display:inline-block; }
+    .sparkle{ animation:sparkle 900ms ease infinite; }
+    @keyframes sparkle{ 0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(1.2) rotate(10deg)} }
+
+    /* End screen */
+    #end{ text-align:center; margin-top:16px; }
+    #starsRow img{ width:90px; height:90px; margin:0 6px; }
+  </style>
+</head>
+<body>
+  <!-- INTRO -->
+  <section id="introWrap">
+    <div class="intro-card" role="dialog" aria-labelledby="t1">
+      <div class="unit-pill" aria-label="Unit title">Unit 3: Basics of Attention and Focus</div>
+      <h1 id="t1">Shadow Match</h1>
+      <p class="sub">Drag the picture to its shadow. How many can you match before time runs out?</p>
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="howToBtn">How to play</button>
+        <button id="homeBtn">Return to the Park</button>
+      </div>
+      <div id="howToPanel" class="hidden" aria-live="polite">
+        <ol style="margin:8px 0 0 18px;">
+          <li>Look at the shadows.</li>
+          <li>Drag each picture to the matching shadow.</li>
+          <li>Ignore look-alikes! Focus on the edges.</li>
+          <li>Beat the timer to get stars.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="hidden" aria-live="polite">
+    <div id="topBar">
+      <div class="progress" id="roundLabel">Round 1/5</div>
+      <div class="timer-rail" aria-hidden="true"><div id="timerBar" class="timer-bar"></div></div>
+      <img src="assets/attention-2/images/ui/timer-icon.png" alt="" aria-hidden="true" style="width:22px;height:22px"/>
+    </div>
+    <p id="feedback"></p>
+    <div id="board" class="board" role="group" aria-label="Shadow board"></div>
+    <div id="tray" class="tray" role="group" aria-label="Object tray"></div>
+  </section>
+
+  <!-- BETWEEN ROUNDS -->
+  <div id="between" class="hidden" aria-hidden="true">
+    <img src="assets/attention-2/images/ui/hand-drag.png" alt="" style="width:72px;height:72px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))"/>
+    <div class="star-burst">
+      <img class="burst-star sparkle" src="assets/attention-2/images/ui/star-full.png" alt=""/>
+      <img class="burst-star sparkle" src="assets/attention-2/images/ui/star-full.png" alt=""/>
+      <img class="burst-star sparkle" src="assets/attention-2/images/ui/star-full.png" alt=""/>
+    </div>
+  </div>
+
+  <!-- END -->
+  <section id="end" class="hidden">
+    <h2 id="endHeadline">You matched them all!</h2>
+    <div id="starsRow" aria-label="Star rating"></div>
+    <p id="endSub" class="sub"></p>
+    <div class="controls">
+      <button id="playAgainBtn">Play Again</button>
+      <button id="homeBtn2">Return to the Park</button>
+    </div>
+  </section>
+
+  <!-- AUDIO -->
+  <audio id="bgm" src="assets/attention-2/audio/bgm.mp3" loop></audio>
+  <audio id="sfxCorrect" src="assets/attention-2/sfx/correct.mp3"></audio>
+  <audio id="sfxWrong" src="assets/attention-2/sfx/wrong.mp3"></audio>
+  <audio id="sfxCountdown" src="assets/attention-2/sfx/countdown.mp3"></audio>
+  <audio id="sfxTimesUp" src="assets/attention-2/sfx/timesup.mp3"></audio>
+
+  <!-- VOICE LINES -->
+  <audio id="v_awesome_work" src="assets/attention-2/voice/awesome_work.mp3"></audio>
+  <audio id="v_fantastic" src="assets/attention-2/voice/fantastic.mp3"></audio>
+  <audio id="v_great_job" src="assets/attention-2/voice/great_job.mp3"></audio>
+  <audio id="v_great_match" src="assets/attention-2/voice/great_match.mp3"></audio>
+  <audio id="v_check_carefully" src="assets/attention-2/voice/check_carefully.mp3"></audio>
+  <audio id="v_try_agin" src="assets/attention-2/voice/try_agin.mp3"></audio>
+  <audio id="v_drag_to_shadow" src="assets/attention-2/voice/drag_to_shadow.mp3"></audio>
+
+  <div id="dragLayer"></div>
+
+  <script>
+  // =============== CONFIG & DATA ===============
+  const ROUND_SPECS = [
+    { round:1, count:4, category:'shapes', distractors:2 },
+    { round:2, count:4, category:'food',   distractors:2 },
+    { round:3, count:5, category:'toys',   distractors:2 },
+    { round:4, count:6, category:'mixed',  distractors:3 },
+    { round:5, count:6, category:'mixed',  distractors:4 }
+  ];
+  const ROUND_TOTAL = 5;
+  const ROUND_TIME_MS = 15000;
+  const BETWEEN_MS = 2000;
+  const SNAP_PX = 80; // generous snap radius
+
+  // Items
+  const ITEMS = [
+    // shapes
+    I('shapes/circle'),
+    I('shapes/hexagon'),
+    I('shapes/triangle'),
+    I('shapes/star'),
+    I('shapes/heart'),
+    I('shapes/diamond'),
+    // food
+    I('food/apple'),
+    I('food/pineapple'),
+    I('food/sandwich'),
+    I('food/icecream'),
+    I('food/carrot'),
+    I('food/bread'),
+    // toys
+    I('toys/drum'),
+    I('toys/teddy'),
+    I('toys/robot'),
+    I('toys/doll'),
+    I('toys/car'),
+    I('toys/kite'),
+  ];
+  function I(path){ // helper to build item records
+    const id = path; // use path as id
+    return {
+      id,
+      img: `assets/attention-2/images/${path}.png`,
+      shadow: `assets/attention-2/images/shadows/${path}_shadow.png`,
+      cat: path.split('/')[0]
+    };
+  }
+  const byCat = {
+    shapes: ITEMS.filter(i=>i.cat==='shapes'),
+    food:   ITEMS.filter(i=>i.cat==='food'),
+    toys:   ITEMS.filter(i=>i.cat==='toys')
+  };
+
+  // Local Storage namespace (UPDATED)
+  const NS = 'shadow-match/';
+  const LS = {
+    roundsPlayed: NS+'roundsPlayed',
+    bestScore:    NS+'bestScore',
+    avgMs:        NS+'avgMsPerMatch',
+    lastUsed:     NS+'lastUsedIds'
+  };
+  function lsGet(k, d){ try{ const v = localStorage.getItem(k); return v==null? d : JSON.parse(v); }catch{ return d; } }
+  function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+  if(localStorage.getItem(LS.roundsPlayed)===null) lsSet(LS.roundsPlayed, 0);
+  if(localStorage.getItem(LS.bestScore)===null) lsSet(LS.bestScore, 0);
+  if(localStorage.getItem(LS.avgMs)===null) lsSet(LS.avgMs, 0);
+  if(localStorage.getItem(LS.lastUsed)===null) lsSet(LS.lastUsed, []);
+
+  // =============== ELEMENTS ===============
+  const introWrap   = document.getElementById('introWrap');
+  const startBtn    = document.getElementById('startBtn');
+  const howToBtn    = document.getElementById('howToBtn');
+  const homeBtn     = document.getElementById('homeBtn');
+  const howToPanel  = document.getElementById('howToPanel');
+
+  const game        = document.getElementById('game');
+  const roundLabel  = document.getElementById('roundLabel');
+  const timerBar    = document.getElementById('timerBar');
+  const board       = document.getElementById('board');
+  const tray        = document.getElementById('tray');
+  const feedback    = document.getElementById('feedback');
+
+  const between     = document.getElementById('between');
+  const end         = document.getElementById('end');
+  const endHeadline = document.getElementById('endHeadline');
+  const endSub      = document.getElementById('endSub');
+  const starsRow    = document.getElementById('starsRow');
+  const playAgain   = document.getElementById('playAgainBtn');
+  const homeBtn2    = document.getElementById('homeBtn2');
+  const dragLayer   = document.getElementById('dragLayer');
+
+  // Audio
+  const bgm           = document.getElementById('bgm');
+  const sfxCorrect    = document.getElementById('sfxCorrect');
+  const sfxWrong      = document.getElementById('sfxWrong');
+  const sfxCountdown  = document.getElementById('sfxCountdown');
+  const sfxTimesUp    = document.getElementById('sfxTimesUp');
+
+  const vPos = [
+    document.getElementById('v_awesome_work'),
+    document.getElementById('v_fantastic'),
+    document.getElementById('v_great_job'),
+    document.getElementById('v_great_match')
+  ];
+  const vTry = [
+    document.getElementById('v_check_carefully'),
+    document.getElementById('v_try_agin') // exact spelling per inventory
+  ];
+  const vInstruction = document.getElementById('v_drag_to_shadow');
+
+  // =============== STATE ===============
+  let roundIndex = 0;           // 0..4
+  let matchesThisRound = 0;
+  let totalMatches = 0;         // across session
+  let startMs = 0;
+  let timerId = null;
+  let countdownPlayed = false;
+  let instructionPlayed = false;
+  let dragCtx = null;           // drag context
+  const slotStates = [];        // per-slot expected id & filled flag
+  let emaMs = lsGet(LS.avgMs, 0);
+
+  // =============== HELPERS ===============
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  function sample(arr, n){ const c=[...arr]; shuffle(c); return c.slice(0,n); }
+  function play(audio){ try{ audio.currentTime=0; audio.play().catch(()=>{}); }catch{} }
+  function stopAfter(audio, ms){ try{ setTimeout(()=>{ try{ audio.pause(); audio.currentTime=0; }catch{} }, ms); }catch{} }
+  function nearestSlot(x,y){
+    let best = null, bestDist = Infinity;
+    const rects = Array.from(board.querySelectorAll('.slot')).map(el=>({el, rect: el.getBoundingClientRect()}));
+    rects.forEach(({el, rect}, idx)=>{
+      if(el.dataset.filled==='1') return;
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const d = Math.hypot(cx - x, cy - y);
+      if(d < bestDist){ bestDist = d; best = el; }
+    });
+    return (bestDist <= SNAP_PX) ? best : null;
+  }
+  function setProgress(){
+    roundLabel.textContent = `Round ${roundIndex+1}/${ROUND_TOTAL}`;
+  }
+  function updateEMA(ms){
+    emaMs = emaMs===0 ? ms : Math.round(emaMs*0.8 + ms*0.2);
+    lsSet(LS.avgMs, emaMs);
+  }
+  function recordLastUsed(ids){
+    const prev = lsGet(LS.lastUsed, []);
+    const merged = [...ids, ...prev];
+    const uniq = Array.from(new Set(merged)).slice(0, 40);
+    lsSet(LS.lastUsed, uniq);
+  }
+  function preferFresh(arr, need){
+    const recent = new Set(lsGet(LS.lastUsed, []));
+    const fresh = arr.filter(i=>!recent.has(i.id));
+    if(fresh.length >= need) return fresh;
+    return arr; // fallback
+  }
+
+  // =============== ROUND SETUP ===============
+  function startGame(){
+    totalMatches = 0;
+    roundIndex = 0;
+    instructionPlayed = false;
+    lsSet(LS.roundsPlayed, lsGet(LS.roundsPlayed,0)+1);
+    bgm.volume = 0.35;
+    bgm.play().catch(()=>{});
+    document.body.style.background = 'var(--pink)';
+    introWrap.classList.add('hidden');
+    end.classList.add('hidden');
+    game.classList.remove('hidden');
+    nextRound();
+  }
+
+  function nextRound(){
+    // clear UI
+    board.innerHTML=''; tray.innerHTML=''; feedback.textContent='';
+    matchesThisRound = 0; countdownPlayed = false;
+    setProgress();
+    // spec
+    const spec = ROUND_SPECS[roundIndex];
+    // choose pool
+    let pool;
+    if(spec.category==='mixed'){
+      pool = ITEMS;
+    }else{
+      pool = byCat[spec.category];
+    }
+    pool = preferFresh(pool, spec.count + spec.distractors);
+    // slots (targets) -> choose exact items
+    const targets = sample(pool, spec.count);
+    // tray candidates -> start from targets then add distractors
+    const remaining = ITEMS.filter(i=>!targets.includes(i) && (spec.category==='mixed' ? true : i.cat===spec.category));
+    const distractors = sample(remaining, spec.distractors);
+    const trayItems = shuffle([...targets, ...distractors]);
+
+    // render slots with shadows
+    slotStates.length = 0;
+    board.style.gridTemplateColumns = `repeat(${Math.min(6, spec.count)}, 1fr)`;
+    targets.forEach((it, idx)=>{
+      const el = document.createElement('div');
+      el.className='slot';
+      el.setAttribute('role','img');
+      el.setAttribute('aria-label', `${it.id.split('/').pop()} shadow`);
+      el.dataset.expect = it.id;
+      el.dataset.filled = '0';
+      const img = document.createElement('img');
+      img.src = it.shadow;
+      img.alt = '';
+      img.className = 'shadow-img';
+      el.appendChild(img);
+      board.appendChild(el);
+      slotStates.push({id: it.id, el});
+    });
+
+    // render tray pieces
+    trayItems.forEach(it=>{
+      const btn = document.createElement('button');
+      btn.className='piece';
+      btn.setAttribute('aria-label', it.id.split('/').pop());
+      btn.dataset.id = it.id;
+      const img = document.createElement('img');
+      img.src = it.img; img.alt = '';
+      btn.appendChild(img);
+      tray.appendChild(btn);
+      makeDraggable(btn);
+    });
+
+    // TIMER: start after instruction audio on Round 1; otherwise start immediately
+    if(!instructionPlayed && roundIndex===0){
+      instructionPlayed = true;
+      // play instruction and start timer only after it finishes
+      try{
+        vInstruction.currentTime = 0;
+        vInstruction.play().catch(()=>{});
+        const startAfterInstruction = () => {
+          vInstruction.removeEventListener('ended', startAfterInstruction);
+          startTimer();
+        };
+        vInstruction.addEventListener('ended', startAfterInstruction);
+      }catch{
+        // fallback: start timer if audio fails
+        startTimer();
+      }
+    }else{
+      startTimer();
+    }
+  }
+
+  // =============== TIMER ===============
+  function startTimer(){
+    const start = performance.now();
+    startMs = start;
+    timerBar.style.transition = 'none';
+    timerBar.style.width = '100%';
+    requestAnimationFrame(()=>{
+      timerBar.style.transition = `width ${ROUND_TIME_MS}ms linear`;
+      timerBar.style.width = '0%';
+    });
+    clearInterval(timerId);
+    timerId = setInterval(()=>{
+      const t = performance.now() - start;
+      const remaining = Math.max(0, ROUND_TIME_MS - t);
+      if(!countdownPlayed && remaining <= 3000){
+        countdownPlayed = true;
+        play(sfxCountdown);
+        stopAfter(sfxCountdown, 3000);
+      }
+      if(remaining <= 0){
+        clearInterval(timerId);
+        play(sfxTimesUp);
+        endRound();
+      }
+    }, 50);
+  }
+
+  // =============== DRAG & DROP (pointer events) ===============
+  function makeDraggable(btn){
+    btn.addEventListener('pointerdown', (ev)=>{
+      ev.preventDefault();
+      btn.classList.add('dragging');
+      btn.setPointerCapture(ev.pointerId);
+      const rect = btn.getBoundingClientRect();
+      const ghost = btn.cloneNode(true);
+      ghost.classList.remove('dragging'); ghost.classList.add('ghost');
+      dragLayer.appendChild(ghost);
+      const offsetX = ev.clientX - rect.left, offsetY = ev.clientY - rect.top;
+      const startX = rect.left, startY = rect.top;
+      let lastX = startX, lastY = startY;
+      positionGhost(ghost, startX, startY);
+
+      const onMove = (e)=>{
+        lastX = e.clientX - offsetX; lastY = e.clientY - offsetY;
+        positionGhost(ghost, lastX, lastY);
+      };
+      const onUp = (e)=>{
+        btn.classList.remove('dragging');
+        btn.releasePointerCapture(ev.pointerId);
+        btn.removeEventListener('pointermove', onMove);
+        btn.removeEventListener('pointerup', onUp);
+        const drop = nearestSlot(e.clientX, e.clientY);
+        if(drop && drop.dataset.filled==='0'){
+          const expect = drop.dataset.expect;
+          const id = btn.dataset.id;
+          if(id === expect){
+            // correct
+            play(sfxCorrect);
+            play(vPos[Math.floor(Math.random()*vPos.length)]);
+            // morph: replace shadow with colored image
+            drop.innerHTML='';
+            const img = document.createElement('img');
+            img.src = ITEMS.find(it=>it.id===id).img;
+            img.alt = '';
+            drop.appendChild(img);
+            drop.classList.add('filled','fade-in');
+            drop.dataset.filled='1';
+            tray.removeChild(btn);
+            matchesThisRound += 1;
+            totalMatches += 1;
+            updateEMA(performance.now() - startMs);
+            // check completion
+            const spec = ROUND_SPECS[roundIndex];
+            if(matchesThisRound >= spec.count){
+              clearInterval(timerId);
+              endRound();
+            }
+          }else{
+            // wrong
+            play(sfxWrong);
+            play(vTry[Math.floor(Math.random()*vTry.length)]);
+            animateBack(ghost, startX, startY, ()=>{
+              ghost.remove();
+            });
+            btn.classList.add('wobble');
+            setTimeout(()=>btn.classList.remove('wobble'), 450);
+            return; // keep piece in tray
+          }
+          ghost.remove();
+        }else{
+          // no valid drop; return
+          animateBack(ghost, startX, startY, ()=>{
+            ghost.remove();
+          });
+        }
+      };
+      btn.addEventListener('pointermove', onMove);
+      btn.addEventListener('pointerup', onUp);
+    }, {passive:false});
+  }
+  function positionGhost(el, x, y){
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  }
+  function animateBack(el, x, y, done){
+    el.style.transition = 'transform 200ms ease';
+    requestAnimationFrame(()=>{
+      el.style.transform = `translate(${x}px, ${y}px)`;
+      setTimeout(done, 200);
+    });
+  }
+
+  // =============== ROUND END / BETWEEN / END SCREEN ===============
+  function endRound(){
+    // pause between rounds with praise and sparkle
+    between.classList.remove('hidden');
+    play(vPos[Math.floor(Math.random()*vPos.length)]);
+    setTimeout(()=>{
+      between.classList.add('hidden');
+      // next or end
+      roundIndex++;
+      if(roundIndex < ROUND_TOTAL){
+        nextRound();
+      }else{
+        showEnd();
+      }
+    }, BETWEEN_MS);
+  }
+
+  function showEnd(){
+    game.classList.add('hidden');
+    end.classList.remove('hidden');
+    // headline + praise
+    if(totalMatches === 25){
+      endHeadline.textContent = 'You matched them all!';
+      endSub.textContent = 'Fantastic focus!';
+    }else{
+      const praises = ['Fantastic focus!','Great effort!','Good try!'];
+      endHeadline.textContent = praises[Math.floor(Math.random()*praises.length)];
+      endSub.textContent = 'Keep practicing and you’ll master it.';
+    }
+    // stars by thresholds
+    let stars = 0;
+    if(totalMatches >= 20) stars = 3;
+    else if(totalMatches >= 15) stars = 2;
+    else if(totalMatches >= 8) stars = 1;
+    else stars = 0;
+    starsRow.innerHTML='';
+    for(let i=0;i<3;i++){
+      const img = document.createElement('img');
+      img.src = i<stars ? 'assets/attention-2/images/ui/star-full.png' : 'assets/attention-2/images/ui/star-empty.png';
+      img.alt = i<stars ? 'star' : 'empty star';
+      img.className = 'sparkle';
+      starsRow.appendChild(img);
+    }
+    // persist metrics
+    const best = lsGet(LS.bestScore, 0);
+    if(totalMatches > best) lsSet(LS.bestScore, totalMatches);
+  }
+
+  // =============== NAV & UI ===============
+  startBtn.addEventListener('click', ()=>{
+    howToPanel.classList.add('hidden');
+    startGame();
+  });
+  howToBtn.addEventListener('click', ()=> howToPanel.classList.toggle('hidden'));
+  function goHome(){ try{ bgm.pause(); }catch{} window.location.href='lesson-screen-htmls/lesson-03.02.html'; }
+  homeBtn.addEventListener('click', goHome);
+  homeBtn2.addEventListener('click', goHome);
+  playAgain.addEventListener('click', startGame);
+
+  // expose debug
+  window.__attention2__ = {
+    getMetrics: () => ({
+      roundsPlayed: lsGet(LS.roundsPlayed,0),
+      bestScore: lsGet(LS.bestScore,0),
+      avgMsPerMatch: lsGet(LS.avgMs,0),
+      lastUsedIds: lsGet(LS.lastUsed,[])
+    })
+  };
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MindMaster Memory Game</title>
+  <title>Memory Flip</title>
   <style>
     body{
       font-family: 'Comic Neue', sans-serif;
@@ -17,6 +17,8 @@
     .feedback{ min-height:1.6rem; margin:8px 0 12px; font-size:1.2rem; }
     .hidden{ display:none; }
     .controls{ margin:10px 0; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+
+    /* Buttons (default) */
     button{
       background:#FFD700; color:#000;
       padding:10px 18px; border:none; border-radius:12px;
@@ -24,6 +26,25 @@
     }
     .mode-btn{ background:#fff; border:2px solid #FFD700; }
     .mode-btn.active{ background:#FFD700; }
+
+    /* Ensure anchors styled like buttons (Navigation Standard) */
+    a.btnlike{
+      background:#FFD700; color:#000;
+      padding:10px 18px; border:none; border-radius:12px;
+      font-size:1rem; cursor:pointer; text-decoration:none; display:inline-block;
+    }
+    /* Accessible focus ring for both buttons and anchors */
+    button:focus, a.btnlike:focus{ outline:4px solid #000; outline-offset:2px; }
+
+    /* Specific launch button colours to mirror emotions.html */
+    #startBtn{ background:#90EE90; }
+    #howBtn{  background:#FFD700; }
+    #homeBtn{ background:#87CEFA; }
+
+    /* Between/End screen return anchors colour */
+    #homeBtn2{ background:#87CEFA; }
+    #homeBtnEnd{ background:#87CEFA; }
+
     /* Boards */
     .game-board{ display:grid; gap:12px; margin:12px auto 24px; }
     .easy-board { grid-template-columns: repeat(4, 100px); }
@@ -58,35 +79,125 @@
     }
     .matched{ opacity:0; pointer-events:none; transition: opacity 0.25s ease; }
     #end{ text-align:center; margin-top:20px; }
+
+    /* ---------- Launch screen (mirror emotions.html) ---------- */
+    /* Full-bleed, fixed viewport container */
+    #instructions{
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      box-sizing: border-box;
+      z-index: 10; /* above body content until hidden */
+    }
+    /* Full-screen background image layer */
+    #instructions::before{
+      content: "";
+      position: absolute; inset: 0;
+      background: url('assets/memory/images/ui/bg-launch.png') center/cover no-repeat;
+      z-index: 0;
+    }
+    #instructions > *{ position: relative; z-index: 1; }
+
+    /* Intro card */
+    .intro-card{
+      width: min(720px, 92vw);
+      background: rgba(255,253,253,0.85);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+      padding: 20px 18px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    /* Unit pill (match reference look & color token) */
+    .unit-overline{
+      margin-top: 4px;
+      margin-bottom: 8px;
+      padding: 6px 12px;
+      display: inline-block;
+      border-radius: 999px;
+      background: #f5c242;
+      color: #111;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      border: 1px solid rgba(0,0,0,0.08);
+      text-transform: none; /* preserve text as provided */
+    }
+
+    /* Legacy launch inner (kept for how-to panel styling parity) */
+    #howTo {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff8cc;
+      border: 2px dashed #FFD700;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 1rem;
+    }
+  
+    /* Force-hide launch overlay when hidden */
+    #instructions.hidden { display: none !important; }
+
   </style>
 </head>
 <body>
-  <h1>Memory Game</h1>
 
+  <!-- Launch screen -->
   <div id="instructions">
-    <p class="sub">Can you find all the matching pairs?</p>
-    <div class="controls">
-      <button id="easyBtn" class="mode-btn active">Easy (4×4)</button>
-      <button id="hardBtn" class="mode-btn">Hard (6×4)</button>
-      <button id="startBtn">Start</button>
+    <div class="intro-card">
+      <div class="unit-overline" role="text">Unit 4: How Memory Works</div>
+      <h1 style="margin-top:8px;">Memory Flip</h1>
+      <p class="sub">Flip the cards and find all the pairs!</p>
+
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="howBtn" class="mode-btn">How to Play</button>
+        <!-- Navigation Standard: semantic anchor for park -->
+        <a id="homeBtn" class="btnlike" href="lesson-screen-htmls/lesson-04.01.html">Return to the Park</a>
+      </div>
+
+      <div id="howTo" class="hidden">
+        <p><strong>How to Play:</strong></p>
+        <ul>
+          <li>Tap a card to flip it. Then flip another to find a match.</li>
+          <li>Find all pairs in <em>Round 1</em>, then continue to <em>Round 2</em>!</li>
+          <li>Use your memory power—look, think, and match!</li>
+        </ul>
+      </div>
     </div>
   </div>
 
+  <!-- Game screen -->
   <div id="game" class="hidden">
     <div class="feedback" id="feedback"></div>
     <div id="gameBoard" class="game-board easy-board"></div>
   </div>
 
+  <!-- Between-round screen -->
+  <div id="between" class="hidden">
+    <h2>Great job! Get ready for Round 2!</h2>
+    <div class="controls">
+      <button id="nextRoundBtn">Start Round 2</button>
+      <!-- Semantic anchor for park navigation -->
+      <a id="homeBtn2" class="btnlike" href="lesson-screen-htmls/lesson-04.01.html">Return to the Park</a>
+    </div>
+  </div>
+
+  <!-- End screen -->
   <div id="end" class="hidden">
     <h2>You found all the pairs! Your memory is amazing.</h2>
     <p>Your brain is like a treasure chest for memories!</p>
     <div class="controls">
       <button id="playAgainBtn">Play Again</button>
-      <button id="homeBtn">Home</button>
+      <!-- Semantic anchor for park navigation -->
+      <a id="homeBtnEnd" class="btnlike" href="lesson-screen-htmls/lesson-04.01.html">Return to the Park</a>
     </div>
   </div>
 
-  <audio id="bgm" src="assets/audio/memory-bgm.mp3" loop></audio>
+  <audio id="bgm" src="assets/memory/audio/memory-bgm.mp3" loop></audio>
 
   <script>
     // --- Base names (no extension) ---
@@ -131,34 +242,41 @@
     const instructionsEl = document.getElementById('instructions');
     const gameEl = document.getElementById('game');
     const endEl = document.getElementById('end');
+    const betweenEl = document.getElementById('between');
     const boardEl = document.getElementById('gameBoard');
     const feedbackEl = document.getElementById('feedback');
     const bgm = document.getElementById('bgm');
 
     // Controls
-    const easyBtn = document.getElementById('easyBtn');
-    const hardBtn = document.getElementById('hardBtn');
     const startBtn = document.getElementById('startBtn');
+    const howBtn = document.getElementById('howBtn');
+    const howToEl = document.getElementById('howTo');
     const homeBtn = document.getElementById('homeBtn');
+    const homeBtn2 = document.getElementById('homeBtn2');
+    const homeBtnEnd = document.getElementById('homeBtnEnd');
     const playAgainBtn = document.getElementById('playAgainBtn');
+    const nextRoundBtn = document.getElementById('nextRoundBtn');
 
-    // Mode state
-    let mode = 'easy'; // 'easy' | 'hard'
+    // Game state
+    let round = 1; // 1 -> easy; 2 -> hard
     let firstCard = null;
     let secondCard = null;
     let lockBoard = false;
     let totalPairs = 0;
     let matchedPairs = 0;
 
-    easyBtn.addEventListener('click', () => { mode = 'easy'; easyBtn.classList.add('active'); hardBtn.classList.remove('active'); });
-    hardBtn.addEventListener('click', () => { mode = 'hard'; hardBtn.classList.add('active'); easyBtn.classList.remove('active'); });
-    startBtn.addEventListener('click', startGame);
-    if (homeBtn) homeBtn.addEventListener('click', goHome);
+    // Wire up controls (NOTE: Navigation uses anchors; no JS for park links)
+    startBtn.addEventListener('click', () => { round = 1; startGame(); });
+    howBtn.addEventListener('click', () => { howToEl.classList.toggle('hidden'); });
+    // Removed JS listeners for homeBtn/homeBtn2/homeBtnEnd to comply with Navigation Standard
     if (playAgainBtn) playAgainBtn.addEventListener('click', restartGame);
+    if (nextRoundBtn) nextRoundBtn.addEventListener('click', () => { betweenEl.classList.add('hidden'); gameEl.classList.remove('hidden'); round = 2; initBoard(); });
 
     function startGame(){
       instructionsEl.classList.add('hidden');
+      instructionsEl.style.display = 'none';
       endEl.classList.add('hidden');
+      betweenEl.classList.add('hidden');
       gameEl.classList.remove('hidden');
 
       bgm.currentTime = 0;
@@ -174,11 +292,12 @@
       lockBoard = false;
       matchedPairs = 0;
 
-      const BASES = mode === 'hard' ? HARD_BASES : EASY_BASES;
-      const BACK = mode === 'hard' ? HARD_BACK : EASY_BACK;
+      const isHard = (round === 2);
+      const BASES = isHard ? HARD_BASES : EASY_BASES;
+      const BACK = isHard ? HARD_BACK : EASY_BACK;
 
       // adjust board sizing
-      boardEl.className = 'game-board ' + (mode === 'hard' ? 'hard-board' : 'easy-board');
+      boardEl.className = 'game-board ' + (isHard ? 'hard-board' : 'easy-board');
 
       // Build deck
       const deck = [...BASES, ...BASES]
@@ -227,7 +346,7 @@
           secondCard.classList.add('matched');
           resetPick();
           matchedPairs++;
-          if (matchedPairs === totalPairs) endGame();
+          if (matchedPairs === totalPairs) handleRoundComplete();
         }, 200);
       } else {
         feedbackEl.textContent = 'Not quite – try again.';
@@ -243,16 +362,32 @@
 
     function resetPick(){ [firstCard, secondCard, lockBoard] = [null, null, false]; }
 
+    function handleRoundComplete(){
+      if (round === 1){
+        // Transition to Round 2 (like memory-2 multi-round flow)
+        gameEl.classList.add('hidden');
+        betweenEl.classList.remove('hidden');
+      } else {
+        // Finished Round 2 -> End screen
+        endGame();
+      }
+    }
+
     function endGame(){
       gameEl.classList.add('hidden');
+      betweenEl.classList.add('hidden');
       endEl.classList.remove('hidden');
     }
 
-    function restartGame(){ startGame(); }
+    function restartGame(){
+      round = 1;
+      startGame();
+    }
 
+    /* Retained for compatibility; not used for primary navigation anymore */
     function goHome(){
       try { bgm.pause(); bgm.currentTime = 0; } catch(e){}
-      window.location.href = 'home.html';
+      window.location.href = 'lesson-screen-htmls/lesson-03.01.html';
     }
   </script>
 </body>
