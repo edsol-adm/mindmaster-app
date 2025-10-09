@@ -44,13 +44,32 @@
       box-shadow:0 12px 30px rgba(0,0,0,0.20);
       text-align:center;
     }
+
+    /* Unit pill (separate from main title) */
+    .unit-pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:.95rem;
+      background:#ffbb00;
+      border:2px solid #222;
+      margin-bottom:8px;
+    }
+
     .controls{ margin:12px 0; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+
     button{
       background:var(--yellow); color:#000;
       padding:10px 18px; border:none; border-radius:14px;
       font-size:1rem; cursor:pointer; box-shadow:0 3px 0 #d1b100;
       transition:transform .08s ease;
     }
+    /* Requested button colors */
+    #startBtn{ background:#90EE90; box-shadow:0 3px 0 #6fb86f; }
+    #howToBtn{ background:#FFD700; box-shadow:0 3px 0 #d1b100; }
+    #homeBtn, #homeBtn2{ background:#87CEFA; box-shadow:0 3px 0 #5ea8d4; }
+
     button:active{ transform:translateY(1px) }
     button:focus{ outline:3px solid #000; outline-offset:2px }
     #howToPanel{ background:#fff8; padding:12px; border-radius:12px; text-align:left; }
@@ -126,12 +145,13 @@
   <!-- INTRO -->
   <section id="introWrap">
     <div class="intro-card" role="dialog" aria-labelledby="t1">
-      <h1 id="t1">Attention 2 – Shadow Match</h1>
+      <div class="unit-pill" aria-label="Unit title">Unit 3: Basics of Attention and Focus</div>
+      <h1 id="t1">Shadow Match</h1>
       <p class="sub">Drag the picture to its shadow. How many can you match before time runs out?</p>
       <div class="controls">
         <button id="startBtn">Start</button>
         <button id="howToBtn">How to play</button>
-        <button id="homeBtn">Home</button>
+        <button id="homeBtn">Return to the Park</button>
       </div>
       <div id="howToPanel" class="hidden" aria-live="polite">
         <ol style="margin:8px 0 0 18px;">
@@ -173,7 +193,7 @@
     <p id="endSub" class="sub"></p>
     <div class="controls">
       <button id="playAgainBtn">Play Again</button>
-      <button id="homeBtn2">Home</button>
+      <button id="homeBtn2">Return to the Park</button>
     </div>
   </section>
 
@@ -248,8 +268,8 @@
     toys:   ITEMS.filter(i=>i.cat==='toys')
   };
 
-  // Local Storage namespace
-  const NS = 'attention2/';
+  // Local Storage namespace (UPDATED)
+  const NS = 'shadow-match/';
   const LS = {
     roundsPlayed: NS+'roundsPlayed',
     bestScore:    NS+'bestScore',
@@ -423,13 +443,24 @@
       makeDraggable(btn);
     });
 
-    // Timer
-    startTimer();
-
-    // one-time instruction at Round 1 start
+    // TIMER: start after instruction audio on Round 1; otherwise start immediately
     if(!instructionPlayed && roundIndex===0){
       instructionPlayed = true;
-      play(vInstruction);
+      // play instruction and start timer only after it finishes
+      try{
+        vInstruction.currentTime = 0;
+        vInstruction.play().catch(()=>{});
+        const startAfterInstruction = () => {
+          vInstruction.removeEventListener('ended', startAfterInstruction);
+          startTimer();
+        };
+        vInstruction.addEventListener('ended', startAfterInstruction);
+      }catch{
+        // fallback: start timer if audio fails
+        startTimer();
+      }
+    }else{
+      startTimer();
     }
   }
 
@@ -598,7 +629,7 @@
     startGame();
   });
   howToBtn.addEventListener('click', ()=> howToPanel.classList.toggle('hidden'));
-  function goHome(){ try{ bgm.pause(); }catch{} window.location.href='home.html'; }
+  function goHome(){ try{ bgm.pause(); }catch{} window.location.href='lesson-screen-htmls/lesson-03.02.html'; }
   homeBtn.addEventListener('click', goHome);
   homeBtn2.addEventListener('click', goHome);
   playAgain.addEventListener('click', startGame);
