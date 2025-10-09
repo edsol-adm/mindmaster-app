@@ -2,114 +2,100 @@
 
 MindMaster is a psychology literacy app that builds children’s resilience by turning knowledge into self-efficacy and everyday problem-solving skills.  
 This Alpha prototype validates the **psychology literacy curriculum and pedagogy** with children and teachers.  
-It is not the final technical design. Advanced features will be built in the Beta stage under a Rapid Application Development (RAD) approach.  
+It is not the final technical design. Advanced features will be built in the Beta stage under a Rapid Application Development (RAD) approach.
 
 ---
 
 ## How to run
 - **Start with the Student Home page:**  
-  👉 https://edsol-adm.github.io/mindmaster-app/prototype-alpha/student-home.html  
+  👉 https://edsol-adm.github.io/mindmaster-app/prototype-alpha/student-home.html
 
 - From the Student Home page, learners can access their roadmap and gamified practice.  
-- You can also open individual games directly:  
+- You can also open individual games directly:
 
-| Unit & Topic | Gamified Practice | Direct Link |
-|--------------|------------------|-------------|
-| Unit 1 – What is Psychology? | Carpool | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html |
-| Unit 1 – What is Psychology? | Balloon Race | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/balloon-race.html |
-| Unit 2 – What Are Feelings? | Emotions | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/emotions.html |
-| Unit 3 – How Memory Works | Memory | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html |
-| Unit 3 – How Memory Works | Memory 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html |
-| Unit 4 – Simple Sensory Exploration | Senses | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/senses.html |
-| Unit 5 – Basic Attention and Focus | Attention | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention.html |
-| Unit 5 – Basic Attention and Focus | Attention 2 | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention2.html |
-| Unit 6 – Imagination and Storytelling | Storytime | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/storytime.html |
-| Unit 7 – Family and Friendship Dynamics | Good Apple, Bad Apple | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/good-apple-bad-apple.html |
-| Unit 8 – Problem-Solving Basics | Magic Looking Glass | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/magic-looking-glass.html |
-| Unit 9 – Our Actions and Impact | Domino Choices | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/domino-choices.html |
-| Unit 10 – Teamwork and Cooperation | Teamwork | https://edsol-adm.github.io/mindmaster-app/prototype-alpha/teamwork.html |
+| Unit & Topic | Gamified Practice (Game Title) | Direct Link |
+|--------------|-------------------------------|-------------|
+| Unit 1 – What is Psychology? | 🏁 Balloon Race, 🚗 Carpool | [Balloon Race](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/balloon-race.html) / [Carpool](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/carpool.html) |
+| Unit 2 – Exploring Our Senses | 🐘 Sound Safari | [Sound Safari](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/senses.html) |
+| Unit 3 – Basic Attention and Focus | 🔦 Brain Spotlight, 🧩 Shadow Match | [Brain Spotlight](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention.html) / [Shadow Match](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/attention2.html) |
+| Unit 4 – How Memory Works | 🧠 Memory Flip, 👀 What’s Missing? | [Memory Flip](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory.html) / [What’s Missing?](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/memory2.html) |
+| Unit 5 – Imagination and Storytelling | 🌈 Story Tangle | [Story Tangle](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/storytime.html) |
+| Unit 6 – What Are Feelings? | 🌿 Feeling Finder | [Feeling Finder](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/emotions.html) |
+| Unit 7 – Family and Friendship Dynamics | 🍎 Good Apple, Bad Apple | [Good Apple, Bad Apple](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/good-apple-bad-apple.html) |
+| Unit 8 – Problem-Solving Basics | 🪞 Magic Looking Glass | [Magic Looking Glass](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/magic-looking-glass.html) |
+| Unit 9 – Our Actions and Impact | 🧱 Domino Choices | [Domino Choices](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/domino-choices.html) |
+| Unit 10 – Teamwork and Cooperation | 🧑‍🤝‍🧑 Maze Mates | [Maze Mates](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/teamwork.html) |
 
 ---
 
 ## Video fallbacks
-If a gamified practice does not load, you can view a video demonstration.  
+If a gamified practice does not load, you can view a video demonstration.
 
-| Unit & Topic | Video Link |
-|--------------|------------|
-| Unit 1 – What is Psychology? (Carpool) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
-| Unit 2 – What Are Feelings? (Emotions) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4) |
-| Unit 3 – How Memory Works (Memory) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
-| Unit 3 – How Memory Works (Memory 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory2.mp4) |
-| Unit 4 – Simple Sensory Exploration (Senses) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4) |
-| Unit 5 – Basic Attention and Focus (Attention) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4) |
-| Unit 5 – Basic Attention and Focus (Attention 2) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention2.mp4) |
-| Unit 6 – Imagination and Storytelling (Storytime) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_story-sequencing_storytime.mp4) |
-| Unit 7 – Family and Friendship (Good Apple, Bad Apple) | *Coming soon* |
-| Unit 8 – Problem-Solving Basics (Magic Looking Glass) | *Coming soon* |
-| Unit 9 – Our Actions and Impact (Domino Choices) | *Coming soon* |
-| Unit 10 – Teamwork and Cooperation (Teamwork) | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_teamwork-cooperation_teamwork.mp4) |
+| Unit & Topic | Game Title | Video Link |
+|--------------|------------|------------|
+| Unit 1 – What is Psychology? | Balloon Race | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
+| Unit 2 – Exploring Our Senses | Sound Safari | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4) |
+| Unit 3 – Basic Attention and Focus | Brain Spotlight, Shadow Match | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4) |
+| Unit 4 – How Memory Works | Memory Flip, What’s Missing? | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
+| Unit 5 – Imagination and Storytelling | Story Tangle | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_story-sequencing_storytime.mp4) |
+| Unit 6 – What Are Feelings? | Feeling Finder | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4) |
+| Unit 7 – Family and Friendship | Good Apple, Bad Apple | *Coming soon* |
+| Unit 8 – Problem-Solving Basics | Magic Looking Glass | *Coming soon* |
+| Unit 9 – Our Actions and Impact | Domino Choices | *Coming soon* |
+| Unit 10 – Teamwork and Cooperation | Maze Mates | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/prototype-alpha/videos_alpha/alpha_teamwork-cooperation_teamwork.mp4) |
 
 ---
 
 ## Curriculum and Gamified Practice (Alpha Prototype)
 
-Each Grade 1 unit introduces a key psychology literacy concept. Gamified Practice reinforces learning through interactive play.  
+Each Grade 1 unit introduces a key psychology literacy concept. Gamified Practice reinforces learning through interactive play.
 
-1. **What is Psychology?** – Thinking, feeling, and doing  
-   • Carpool, Balloon Race  
+| # | Unit & Concept | Game Title(s) |
+|---|----------------|--------------|
+| 1 | **What is Psychology?** – Thinking, feeling, and doing | 🏁 Balloon Race, 🚗 Carpool |
+| 2 | **Exploring Our Senses** – Connecting senses to feelings and thoughts | 🐘 Sound Safari |
+| 3 | **Basic Attention and Focus** – Practising focus and ignoring distractions | 🔦 Brain Spotlight, 🧩 Shadow Match |
+| 4 | **How Memory Works** – Using memory to learn and share experiences | 🧠 Memory Flip, 👀 What’s Missing? |
+| 5 | **Imagination and Storytelling** – Linking stories to inner worlds | 🌈 Story Tangle |
+| 6 | **What Are Feelings?** – Naming emotions and body cues | 🌿 Feeling Finder |
+| 7 | **Family and Friendship Dynamics** – Belonging and trust in relationships | 🍎 Good Apple, Bad Apple |
+| 8 | **Problem-Solving Basics** – Exploring everyday dilemmas step by step | 🪞 Magic Looking Glass |
+| 9 | **Our Actions and Impact** – Choices and their consequences | 🧱 Domino Choices |
+| 10 | **Teamwork and Cooperation** – Sharing, turn-taking, and fairness | 🧑‍🤝‍🧑 Maze Mates |
 
-2. **What Are Feelings?** – Naming emotions and body cues  
-   • Emotions  
-
-3. **How Memory Works** – Using memory to learn and share experiences  
-   • Memory, Memory 2  
-
-4. **Simple Sensory Exploration** – Connecting senses to feelings and thoughts  
-   • Senses  
-
-5. **Basic Attention and Focus** – Practice focusing and ignoring distractions  
-   • Attention, Attention 2  
-
-6. **Imagination and Storytelling** – Linking stories to inner worlds  
-   • Storytime  
-
-7. **Family and Friendship Dynamics** – Belonging and trust in relationships  
-   • Good Apple, Bad Apple  
-
-8. **Problem-Solving Basics** – Exploring everyday dilemmas step by step  
-   • Magic Looking Glass  
-
-9. **Our Actions and Impact** – Choices and their consequences  
-   • Domino Choices  
-
-10. **Teamwork and Cooperation** – Sharing, turn-taking, and fairness  
-    • Teamwork  
-
-👉 For the full Grade 1 curriculum outline with detailed unit descriptions, see [Curriculum Outline](docs/curriculum-outline.md).  
+👉 For the full Grade 1 curriculum outline with detailed unit descriptions, see [Curriculum Outline](docs/curriculum-outline.md).
 
 ---
 
 ## Roadmap logic
-The **student-home.html** screen ties everything into a coherent flow:  
+
+The **student-home.html** screen ties everything into a coherent flow:
 
 - **Explore** – Lesson summaries that introduce key concepts (future chatbot).  
 - **Practice** – Gamified Practice activities (this Alpha).  
-- **Reflection** – Prompts that help children connect learning to their own experiences (future chatbot).  
+- **Reflection** – Prompts that help children connect learning to their own experiences (future chatbot).
 
-This roadmap models **knowledge → application → reflection**, ensuring children not only learn concepts but also apply them to build resilience.  
+This roadmap models **knowledge → application → reflection**, ensuring children not only learn concepts but also apply them to build resilience.
 
 ---
 
 ## Assets
-All images and audio are stored in the `assets/` subfolders:  
-- `assets/attention/` → sprites for the Attention games  
-- `assets/emotions/` → positive/negative emotions  
-- `assets/thoughts/` → positive/negative thoughts  
-- `assets/audio/` → background music & sound effects  
+All images and audio are stored in the `assets/` subfolders:
+- `assets/attention/` → sprites for the Attention games
+- `assets/emotions/` → positive/negative emotions
+- `assets/thoughts/` → positive/negative thoughts
+- `assets/audio/` → background music & sound effects
 
 ---
 
 ## Next steps
 - **Beta Prototype**: advanced app features (teacher dashboards, analytics, offline-first design, chatbot Explore & Reflection).  
 - **Iterative RAD testing**: multiple cycles of user testing and refinement.  
-- **User testing**: This Alpha has already been piloted with children and teachers. A feedback summary will be uploaded here.  
+- **User testing**: This Alpha has already been piloted with children and teachers. A feedback summary will be uploaded here.
+
+---
+
+## 📅 Changelog – October 2025
+- ✅ Curriculum sequence updated to align with official Grade 1 structure.  
+- ✨ Integrated game titles (e.g. *Sound Safari*, *Memory Flip*, *Maze Mates*) for clearer communication with education partners and funders.  
+- 🧭 Improved curriculum table for visibility and engagement.  
