@@ -148,8 +148,6 @@ The structure moves from complex individual psychology → social influence and 
 
 ---
 
----
-
 ## Grade 5: Thinking, Problem-Solving, and Morality
 
 **Focus:**  
@@ -221,3 +219,4 @@ The Grade 6 curriculum serves as both culmination and preparation, consolidating
 The structure moves from individual differences → scientific methodology → motivation and stress → bias awareness and influence → self-regulation → comprehensive application. By Grade 6's end, students are psychologically literate citizens ready for advanced study, equipped with scientific knowledge, practical tools, and ethical awareness to apply psychology responsibly throughout their lives.
 
 ---
+
