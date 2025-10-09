@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MindMaster – Memory 2 (What’s Missing?)</title>
+  <title>MindMaster — What’s Missing?</title>
   <style>
     :root{ --pink:#FFB6C1; --yellow:#FFD700; --gap:12px; }
     html,body{ height:100%; }
@@ -30,18 +30,86 @@
     .timer-bar{ height:100%; width:0; background:#e01967; }
     #end{text-align:center; margin-top:16px;}
     .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* Launch background slot (intro screen only) */
+    #instructions{ position:relative; overflow:hidden; }
+    #instructions .launch-bg{
+      position:absolute; inset:0;
+      background-image:url('assets/memory2/images/ui/bg-launch.png');
+      background-size:cover; background-position:center; background-repeat:no-repeat;
+      z-index:0;
+    }
+    #instructions > *:not(.launch-bg){ position:relative; z-index:1; }
+    .unit-overline{
+      margin-top:12px;
+      padding:4px 10px; display:inline-block;
+      border-radius:999px; background:#f5c242; color:#111;
+      font-size:0.95rem; font-weight:700; letter-spacing:0.2px;
+    }
+
+  
+/* === Launch screen: full-viewport background & intro card (mirror shadow-match) === */
+#instructions{
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 100vw; height: 100vh;
+  padding: 16px;
+}
+#instructions::before{
+  content: ""; position: absolute; inset: 0;
+  background: url('assets/memory2/images/ui/bg-launch.png') center/cover no-repeat;
+  z-index: 0;
+}
+#instructions > *{ position: relative; z-index: 1; }
+
+/* Hide legacy background layer */
+#instructions .launch-bg{ display:none !important; }
+
+/* Intro card */
+.intro-card{
+  width: min(720px, 92vw);
+  background: rgba(255,253,253,0.85);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+  padding: 20px 18px 18px;
+  text-align: center;
+}
+
+/* Unit pill colour update */
+.unit-overline{
+  margin-top: 12px;
+  padding: 6px 12px;
+  display: inline-block;
+  border-radius: 999px;
+  background: #f5c242;  /* updated to requested colour */
+  color: #111;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Button colours to mirror shadow-match */
+#startBtn{ background:#90EE90; }
+#howToBtn{ background:#FFD700; }
+#homeBtn{  background:#87CEFA; }
+#playAgainBtn{ background:#FFD700; } /* end screen styling parity */
+#homeBtn2{ background:#87CEFA; }
+
   </style>
 </head>
-<body>
-  <h1>Memory 2</h1>
-
-  <!-- Intro / Instructions (Storytime-style: Start, How to play, Home) -->
+<body><!-- Intro / Instructions (Storytime-style: Start, How to play, Home) -->
   <section id="instructions" class="game-wrap">
+        <div class="intro-card">
+<div class="unit-overline" role="text">Unit 4: How Memory Works</div>
+    <h1>What’s Missing?</h1>
+    <div class="launch-bg" aria-hidden="true"></div>
+
     <p class="sub">Look at the 6 pictures. One will disappear! Can you remember which?</p>
     <div class="controls">
       <button id="startBtn">Start</button>
       <button id="howToBtn">How to play</button>
-      <button id="homeBtn">Home</button>
+      <button id="homeBtn">Return to the Park</button>
     </div>
     <div id="howToPanel" class="hidden" aria-live="polite" style="background:#fff8;padding:12px;border-radius:12px;">
       <ul style="margin:8px 0 0 18px;">
@@ -51,6 +119,7 @@
         <li>Get it right to move to the next round.</li>
         <li>Finish all 5 rounds to see your score and stars.</li>
       </ul>
+    </div>
     </div>
   </section>
 
@@ -69,7 +138,7 @@
     <div id="starRow" class="controls" aria-label="Star rating" style="gap:8px;"></div>
     <div class="controls">
       <button id="playAgainBtn">Play Again</button>
-      <button id="homeBtn2">Home</button>
+      <button id="homeBtn2">Return to the Park</button>
     </div>
   </section>
 
@@ -251,7 +320,7 @@
     // Controls
     startBtn.addEventListener('click', ()=>{ roundIndex=0; sessionFirstTryCount=0; goStudy(); });
     playAgainBtn.addEventListener('click', ()=>{ roundIndex=0; sessionFirstTryCount=0; goStudy(); });
-    function goHome(){ stopAllAudio(); window.location.href='home.html'; }
+    function goHome(){ stopAllAudio(); window.location.href='lesson-screen-htmls/lesson-04.02.html'; }
     homeBtn.addEventListener('click', goHome);
     homeBtn2.addEventListener('click', goHome);
     howToBtn.addEventListener('click', ()=>{ howToPanel.classList.toggle('hidden'); });
