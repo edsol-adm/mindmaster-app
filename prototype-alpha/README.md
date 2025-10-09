@@ -48,22 +48,22 @@ If a gamified practice does not load, you can view a video demonstration.
 
 ## Curriculum and Gamified Practice (Alpha Prototype)
 
-Each Grade 1 unit introduces a key psychology literacy concept. Gamified Practice reinforces learning through interactive play.
+Each Grade 1 unit introduces a **core psychology literacy concept**, structured to follow how children naturally develop psychological understanding—from recognising their inner world, to managing focus, memory, emotions, relationships, and social problem-solving.
 
-| # | Unit & Concept | Game Title(s) |
-|---|----------------|--------------|
-| 1 | **What is Psychology?** – Thinking, feeling, and doing | 🏁 Balloon Race, 🚗 Carpool |
-| 2 | **Exploring Our Senses** – Connecting senses to feelings and thoughts | 🐘 Sound Safari |
-| 3 | **Basic Attention and Focus** – Practising focus and ignoring distractions | 🔦 Brain Spotlight, 🧩 Shadow Match |
-| 4 | **How Memory Works** – Using memory to learn and share experiences | 🧠 Memory Flip, 👀 What’s Missing? |
-| 5 | **Imagination and Storytelling** – Linking stories to inner worlds | 🌈 Story Tangle |
-| 6 | **What Are Feelings?** – Naming emotions and body cues | 🌿 Feeling Finder |
-| 7 | **Family and Friendship Dynamics** – Belonging and trust in relationships | 🍎 Good Apple, Bad Apple |
-| 8 | **Problem-Solving Basics** – Exploring everyday dilemmas step by step | 🪞 Magic Looking Glass |
-| 9 | **Our Actions and Impact** – Choices and their consequences | 🧱 Domino Choices |
-| 10 | **Teamwork and Cooperation** – Sharing, turn-taking, and fairness | 🧑‍🤝‍🧑 Maze Mates |
+| # | Unit Title | Core Concept |
+|---|------------|--------------|
+| 1 | **What is Psychology?** | Minds have three connected parts — Thinking, Feeling, and Doing — that shape how we experience and act in the world. |
+| 2 | **Exploring Our Senses** | The senses are the “doorways” of the mind, gathering different types of information that shape perception and understanding. |
+| 3 | **Basic Attention and Focus** | Attention works like a spotlight — selecting what to notice, learn, and remember. It can be trained and supported. |
+| 4 | **How Memory Works** | Memory is a flexible tool for collecting, keeping, and bringing back information to make sense of past and present. |
+| 5 | **Imagination and Storytelling** | Imagination is the mind’s playground; storytelling gives it structure, allowing us to explore, plan, and share ideas. |
+| 6 | **What Are Feelings?** | Feelings are information messengers that help us understand ourselves and our world. |
+| 7 | **Family and Friendship Dynamics** | Relationships are systems we can understand, nurture, and navigate through kindness, trust, and cooperation. |
+| 8 | **Problem-Solving Basics** | Problem-solving integrates thinking and feeling to find constructive pathways through everyday dilemmas. |
+| 9 | **Our Actions and Impact** | Our choices have effects on others and the environment — awareness builds responsibility. |
+| 10 | **Teamwork and Cooperation** | Working together requires turn-taking, fairness, shared goals, and respect. |
 
-👉 For the full Grade 1 curriculum outline with detailed unit descriptions, see [Curriculum Outline](docs/curriculum-outline.md).
+👉 For the full Grade 1 curriculum outline with detailed unit descriptions and learning outcomes, see [Grade 1 Curriculum Framework](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/curriculum-framework/grade-1/02_unit-description-and-learning-outcomes-grade1.md).
 
 ---
 
@@ -98,4 +98,5 @@ All images and audio are stored in the `assets/` subfolders:
 ## 📅 Changelog – October 2025
 - ✅ Curriculum sequence updated to align with official Grade 1 structure.  
 - ✨ Integrated game titles (e.g. *Sound Safari*, *Memory Flip*, *Maze Mates*) for clearer communication with education partners and funders.  
-- 🧭 Improved curriculum table for visibility and engagement.  
+- 🧠 Refined curriculum section to focus on core concepts, with detailed unit descriptions linked externally.  
+- 🔗 Updated link to [Grade 1 Curriculum Framework](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/curriculum-framework/grade-1/02_unit-description-and-learning-outcomes-grade1.md).
