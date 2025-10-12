@@ -67,9 +67,3 @@ This phased strategy ensures the programme matures sustainably while delivering 
 | **Evidence and Impact** | Clear, measurable outcomes after Module 1 (Grade 1) pilot |
 
 ---
-
-✅ **Summary**  
-- SEL focuses on symptom management; Psychology Literacy empowers learners at the root.  
-- MindMaster delivers a **complete Grade 1 module** as a market-ready product in Year 1.  
-- A modular roadmap enables sustainable scaling to all six grades of primary education.  
-- This is a decisive, evidence-based shift in how we build resilience and mental strength in children.
