@@ -2,9 +2,13 @@
 
 ## 1. Vision and Purpose
 
-MindMaster is a primary-level psychology literacy programme designed to build mental resilience, self-understanding, and cognitive skills in children aged 6–12. Unlike traditional SEL (Social Emotional Learning) programmes, MindMaster treats psychology as a foundational science, taught through age-appropriate, gamified learning experiences.
+MindMaster is a primary-level **psychology literacy** programme designed to build mental resilience, self-understanding, and cognitive skills in children aged 6–12.  
 
-Our vision is to empower every child to **understand how their mind works**, **build self-regulation skills**, and **foster positive social connection** — starting in Grade 1 and scaling through the full primary cycle (Grades 1–6).
+While traditional **Social Emotional Learning (SEL)** programmes have been widely endorsed and implemented globally, their impact has remained largely **short-term and surface-level**. SEL focuses on teaching coping behaviours — emotional regulation scripts, interpersonal routines, and social skills — but it does **not teach learners how their mind works**. As a result, children often remain **dependent**, applying coping strategies without the deeper understanding required to generalise, adapt, and sustain resilience over time.
+
+**Psychology Literacy**, the foundation of MindMaster, directly addresses this gap. Instead of training children to manage symptoms reactively, it **teaches the science of the mind proactively** — how attention, memory, emotion, perception, and reasoning function and interact. By understanding these mechanisms, learners build lasting **mental agency**, **self-regulation**, and **adaptive problem-solving skills**.
+
+If SEL is *symptom management*, **Psychology Literacy is root cause empowerment** — equipping children not merely to cope, but to **understand**, **adapt**, and **thrive**. In a world facing rising mental health crises, this shift represents a decisive step from reactive support toward preventive, evidence-based resilience building.
 
 ---
 
@@ -52,5 +56,20 @@ This phased strategy ensures the programme matures sustainably while delivering 
 
 ---
 
-## 5. GitHub Repository Structure (Curriculum Layer)
+## 5. Strategic Fit with UNICEF Venture Fund Criteria
 
+| UNICEF Priority | MindMaster Alignment |
+|-----------------|-----------------------|
+| **Digital Public Goods** | Open-source deployment, reusable modular architecture, local adaptation |
+| **Equity and Inclusion** | Access for underserved schools and communities in Thailand; offline capability |
+| **Innovation in Learning** | Introduces Psychology Literacy as a new paradigm beyond traditional SEL |
+| **Scalability** | Modular development roadmap; scalable technology stack |
+| **Evidence and Impact** | Clear, measurable outcomes after Module 1 (Grade 1) pilot |
+
+---
+
+✅ **Summary**  
+- SEL focuses on symptom management; Psychology Literacy empowers learners at the root.  
+- MindMaster delivers a **complete Grade 1 module** as a market-ready product in Year 1.  
+- A modular roadmap enables sustainable scaling to all six grades of primary education.  
+- This is a decisive, evidence-based shift in how we build resilience and mental strength in children.
