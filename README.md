@@ -59,7 +59,8 @@ MindMaster’s learning design is grounded in three principles:
 - Complete **Grade 1 curriculum framework** (10 units, 40 lessons).  
 - Fully playable HTML prototype demonstrating the Explore → Practise → Reflect arc.  
 - AI component designs specified and ready for Beta integration.  
-- Initial classroom and home-use pilots validating pedagogy and usability.
+- **Pilot testing** conducted with Grade 3 students and teachers at an international school to validate pedagogy and usability using the English-language prototype.  
+- With upcoming funding, MindMaster will be developed with **English as the internal base** and **full Thai localisation for learners and teachers**.
 
 ---
 
@@ -81,4 +82,5 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
+
 
