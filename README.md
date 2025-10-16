@@ -4,11 +4,9 @@
 ---
 
 ### Overview
-MindMaster is an EdTech platform that teaches **psychology literacy** to primary students — helping them understand how the mind works and how thoughts, feelings, and actions connect.  
-By turning knowledge into self-efficacy, MindMaster builds lasting mental resilience and everyday problem-solving ability.
+MindMaster is an EdTech platform that teaches **psychology literacy** to primary students, helping them understand how the mind works and how thoughts, feelings, and actions connect. By turning knowledge into self-efficacy, MindMaster builds lasting mental resilience and everyday problem-solving ability.
 
-Unlike typical SEL programmes that focus mainly on coping skills, MindMaster treats psychology as a **science subject** that children can learn, apply, and master.  
-Its pedagogy follows a consistent **Explore → Practise → Reflect** learning arc, moving students from knowledge to self-understanding, self-efficacy, and mental resilience.
+Unlike typical SEL programmes that focus mainly on coping skills, MindMaster treats psychology as a **science subject** that children can learn, apply, and master. Its pedagogy follows a consistent **Explore → Practise → Reflect** learning arc, moving students from knowledge to self-understanding, self-efficacy, and mental resilience.
 
 This repository brings together the **curriculum framework**, **Alpha-stage prototype**, and **submission materials** for the **UNICEF Venture Fund 2025 (Stage 2 RFP)**.
 
@@ -83,3 +81,4 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
+
