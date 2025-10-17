@@ -44,4 +44,12 @@ By the end of this unit, students will be able to:
 
 ---
 
-## File Map
+## Connection to Curriculum Arc
+Unit 1 provides the organising framework for understanding all later topics — attention, memory, imagination, emotion, relationships, and problem-solving.  
+By framing the mind as an understandable system rather than a mystery, students gain early **psychological literacy** and self-efficacy (“I can understand how my mind works”), creating the foundation for resilience and empathy throughout the six-year programme.
+
+---
+
+**Version:** v0.1-draft **Updated:** 10 October 2025  
+**License:** CC BY 4.0 © EdSol Technology (Thailand) Co., Ltd.
+
