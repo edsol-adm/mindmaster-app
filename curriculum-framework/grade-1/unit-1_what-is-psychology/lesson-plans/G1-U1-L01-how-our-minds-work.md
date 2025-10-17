@@ -142,5 +142,6 @@ Emphasize:
 ## Connection to Unit Arc
 This foundational lesson introduces the **three-part framework** that will structure all subsequent learning.  
 Lesson 2 will zoom in on **THINKING (the Idea Factory)**, exploring its many jobs.  
-Understanding these three parts as separate but connected gives students the vocabulary and conceptual structure for analysing mental experiences throughout the unit:contentReference[oaicite:3]{index=3}.
+Understanding these three parts as separate but connected gives students the vocabulary and conceptual structure for analysing mental experiences throughout the unit.
+
 
