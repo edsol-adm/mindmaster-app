@@ -51,5 +51,6 @@ By framing the mind as an understandable system rather than a mystery, students 
 ---
 
 **Version:** v0.1-draft **Updated:** 10 October 2025  
-**License:** CC BY 4.0 © EdSol Technology (Thailand) Co., Ltd.
+**License:** CC BY-SA 4.0 © EdSol Technology (Thailand) Co., Ltd.
+
 
