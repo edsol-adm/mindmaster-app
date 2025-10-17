@@ -8,7 +8,7 @@ audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "2025-10-10"
+updated: "10 October 2025"
 ---
 
 ## Lesson Objective
@@ -105,7 +105,7 @@ Students see simple situations and choose whether the example shows **Thinking**
 **Scoring:** 1 point per correct answer; show individual and class average.  
 **Goal:** 7 + correct answers → students can identify all three mind parts.
 
-**Materials:** MindMaster app, student clickers:contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+**Materials:** MindMaster app, student clickers
 
 ---
 
@@ -135,7 +135,7 @@ Instructions:
 Emphasize:  
 “You can always see doing, but thinking and feeling are invisible—so you make scientific guesses based on clues!”  
 
-**Materials:** MindMaster app demonstration:contentReference[oaicite:2]{index=2}
+**Materials:** MindMaster app demonstration
 
 ---
 
@@ -143,5 +143,6 @@ Emphasize:
 This foundational lesson introduces the **three-part framework** that will structure all subsequent learning.  
 Lesson 2 will zoom in on **THINKING (the Idea Factory)**, exploring its many jobs.  
 Understanding these three parts as separate but connected gives students the vocabulary and conceptual structure for analysing mental experiences throughout the unit.
+
 
 
