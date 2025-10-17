@@ -3,7 +3,7 @@ grade: 1
 unit: 2
 lesson: 1
 title: "Our Senses — The Mind’s Doorways"
-duration_mins: 45
+duration_mins: 50
 audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
@@ -48,10 +48,11 @@ Students will identify the three main senses (**sight**, **sound**, **touch**) a
 
 ---
 
-### Psychology Video (3 min)
+### Psychology Video (Sample Placeholder) (3 min)
 **Title:** *The Five Senses Song | Noodle & Pals*  
 **Link:** [https://www.youtube.com/watch?v=KVymeq5NSTI](https://www.youtube.com/watch?v=KVymeq5NSTI)  
 **Purpose:** Introduces the five senses in a fun, age-appropriate way while focusing on three for the lesson.  
+**Usage Note:** This is a **sample reference only** for concept illustration. A final version will use original or properly licensed content.  
 **Discussion:** “This song shows all five doorways that help our minds collect information from the world. Today we’ll explore sight, sound, and touch.”
 
 ---
@@ -160,8 +161,9 @@ This builds **self-efficacy** (“I understand how my mind works”) and **menta
 
 ---
 
-## Video Reference
-- [The Five Senses Song | Noodle & Pals](https://www.youtube.com/watch?v=KVymeq5NSTI)
+## Video Reference (Sample Placeholder)
+- [The Five Senses Song | Noodle & Pals](https://www.youtube.com/watch?v=KVymeq5NSTI)  
+*Note: Referenced for concept illustration only. Final version will use original or licensed content.*
 
 ---
 
@@ -170,5 +172,11 @@ This builds **self-efficacy** (“I understand how my mind works”) and **menta
 - **Quiz:** Doorway Knowledge Check  
 - **Home:** Sense Hunt  
 - Clicker-based interactivity and immediate feedback for all activities.
+
+---
+
+## Media Disclaimer
+The media referenced in this lesson plan is used solely for concept illustration and review purposes.  
+Final versions of MindMaster will use original or appropriately licensed content in compliance with copyright law and UNICEF partnership standards.
 
 ---
