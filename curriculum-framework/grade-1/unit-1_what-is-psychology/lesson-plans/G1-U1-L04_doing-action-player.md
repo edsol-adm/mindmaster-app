@@ -8,7 +8,7 @@ audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "17 October 2025"
+updated: "16 September 2025"
 ---
 
 ## Lesson Objective
@@ -160,3 +160,4 @@ This final lesson completes the three-part framework by integrating **Thinking (
 Students see how thinking plans, feeling sends signals, and doing makes the mind visible.  
 Most importantly, they recognise agency — they cannot control thoughts or feelings appearing, but they can choose their actions.  
 This scientific understanding of mind systems forms the foundation for future topics such as attention, memory, emotion, relationships and problem-solving:contentReference[oaicite:9]{index=9}.
+
