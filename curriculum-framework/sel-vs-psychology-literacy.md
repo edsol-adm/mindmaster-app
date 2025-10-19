@@ -30,10 +30,13 @@ It highlights key conceptual, pedagogical, and resilience-building differences b
 
 ## 🧭 Strategic Takeaway
 
-- SEL has made important contributions in building foundational social and emotional skills, but its impact on **long-term mental health resilience** has been modest and time-limited.  
-- This is because SEL largely focuses on *coping strategies and behavioural skills* without fully equipping learners to understand how their own mind works.  
-- **Psychology Literacy** builds on this foundation by teaching *the science of mental processes* — giving learners **agency**, **conceptual understanding**, and **transferable resilience**.  
-- If SEL focuses on coping, **Psychology Literacy focuses on root cause empowerment**, offering a pathway to deeper, longer-lasting impact.
+The global mental health crisis among children and youth has escalated to alarming levels. Anxiety disorders have more than doubled since 1990, depression continues to rise, and suicide remains one of the leading causes of death worldwide. In Thailand, the crisis starts shockingly early — children as young as five show significant rates of mental health disorders, and nearly one in five adolescents have attempted suicide. Girls are disproportionately affected, burdened by gendered social pressures and stigma that silence their distress.
+
+Despite years of investment in Social Emotional Learning (SEL), the evidence shows it is not enough. SEL helps learners cope, but it does not equip them to truly understand the mind or take charge of their own mental health. Coping is not comprehension. The world urgently needs a new foundation — one that treats children not as patients to be soothed, but as thinkers capable of learning how their own minds work.
+
+Psychology Literacy offers this shift. It gives children a clear, reasoned framework for understanding the mind — what we can and cannot control, how thoughts and feelings arise, and how perception shapes our reality. It helps them see that emotions are signals, not verdicts; that detachment can bring clarity; and that understanding is the first step to resilience. This knowledge becomes an anchor — protecting young minds from fear, distortion, and despair.
+
+This is not just an educational reform; it is a life-saving necessity for the next generation.
 
 ---
 
@@ -50,3 +53,4 @@ It highlights key conceptual, pedagogical, and resilience-building differences b
 ---
 
 📌 *This document is part of the conceptual foundation of the MindMaster programme and is maintained in the `curriculum-framework/` directory for reference by partners, funders, and development teams.*
+
