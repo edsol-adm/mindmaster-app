@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hr-01.01</title>
+<style>
+  :root{
+    --bg-pink:#F8BBD0;
+    --text:#111827;
+    --card:#FFF9C4;
+    --shadow:0 2px 6px rgba(0,0,0,0.08);
+    --rule:#9CA3AF;
+    --box:#cbd5e1;
+    --cta:#22C55E;
+    --ctaText:#0b2b14;
+  }
+
+  html, body { height: 100%; }
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    background: #F8BBD0 url("../../assets/images/hr-01.01-back.webp") center / cover no-repeat fixed;
+    color:var(--text);
+    line-height:1.6;
+    font-size:18px;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  @media (min-width:900px){
+    body{font-size:20px}
+  }
+
+  .logo-wrap{
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:20;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:8px;
+  }
+  .logo{width:128px;height:auto}
+  .mimi{width:110px; height:auto; max-width:28vw}
+  @media (min-width:900px){
+    .logo-wrap{top:24px;right:24px}
+    .logo{width:160px}
+    .mimi{width:120px}
+  }
+
+  .back-wrap{
+    position:fixed;
+    top:16px;
+    left:16px;
+    z-index:20;
+  }
+  @media (min-width:900px){
+    .back-wrap{top:24px;left:24px}
+  }
+
+  .page{
+    min-height:100%;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:96px 20px 56px;
+  }
+  .col{
+    width:100%;
+    max-width:720px;
+  }
+  @media (min-width:900px){
+    .col{max-width:840px}
+  }
+
+  h1,h2{margin:0 0 12px 0; line-height:1.25}
+  h1{font-size:clamp(1.5rem, 2.5vw, 2rem)}
+  h2{font-size:clamp(1.25rem, 2.2vw, 1.6rem)}
+  p{margin:0 0 14px 0}
+  ul{margin:0 0 14px 1.2rem; padding:0}
+
+  .section{margin:18px 0 22px}
+  .bold{font-weight:800}
+
+  .step2{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  @media (min-width:900px){
+    .step2{
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+    }
+    .span-2{grid-column:1 / -1}
+  }
+
+  .qblock{
+    background:rgba(255,255,255,0.5);
+    padding:16px;
+    border-radius:12px;
+    box-shadow:var(--shadow);
+  }
+  .qtitle{font-weight:800; margin-bottom:0}
+
+  .reminder{
+    background:var(--card);
+    padding:16px;
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    margin-top:6px;
+  }
+
+  .btn{
+    display:inline-block;
+    background:var(--cta);
+    color:var(--ctaText);
+    text-decoration:none;
+    font-weight:800;
+    padding:12px 18px;
+    border-radius:9999px;
+    box-shadow:var(--shadow);
+    transition:transform .06s ease, filter .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn:active{transform:translateY(0); filter:brightness(.98)}
+  .btn:focus-visible{
+    outline:3px solid var(--ctaText);
+    outline-offset:2px;
+  }
+
+  .sr-only{
+    position:absolute;
+    width:1px;height:1px;
+    padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  @media print{
+    @page{ margin:14mm 14mm 15mm 14mm; }
+    body{
+      background:#ffffff !important;
+      color:#000 !important;
+      font-size:12pt;
+    }
+    .logo-wrap{
+      position:static;
+      text-align:right;
+      margin-bottom:8mm;
+    }
+    .mimi{width:90px}
+    .back-wrap{display:none}
+    .page{padding:0}
+    .col{max-width:100%}
+    .qblock, .reminder{box-shadow:none; background:#fff}
+  }
+</style>
+</head>
+<body>
+  <div class="logo-wrap">
+    <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
+    <img class="mimi" src="../../assets/images/mimi.webp" alt="Mimi assistant">
+  </div>
+
+  <div class="back-wrap">
+    <a class="btn" href="../lesson-01.01.html">Return to the park</a>
+  </div>
+
+  <main class="page">
+    <div class="col">
+      <header class="section">
+        <div class="qblock">
+          <h1>MindMaster – Unit 1, Lesson 1</h1>
+          <h2>At-Home Reflection Activity: “What Do Psychologists Study?”</h2>
+        </div>
+      </header>
+
+      <section class="section" aria-labelledby="inst-title">
+        <div class="qblock">
+          <h2 id="inst-title" class="sr-only">Instructions</h2>
+          <p><span class="bold">Instructions for Parent/Guardian:</span><br>
+          This activity is about helping your child think about psychology.<br>
+          Psychologists study things that we can’t always see—like thoughts and feelings.<br>
+          Please read the questions together, talk about them, and let your child write or draw their answers.</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="talk-title">
+        <div class="qblock">
+          <h2 id="talk-title" class="bold">Step 1: Talk Together</h2>
+          <p>Ask your child:</p>
+          <ul>
+            <li>“Why might psychologists want to study things like thoughts and feelings, even though we can’t see them?”</li>
+            <li>Encourage your child to give an example from their own life. (e.g., feeling nervous before a test, feeling happy when seeing a friend).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="resp-title">
+        <h2 id="resp-title" class="bold">Step 2: Student Response</h2>
+
+        <div class="step2">
+          <article class="qblock avoid-break" aria-labelledby="q1-title">
+            <div id="q1-title" class="qtitle">Question 1: Write or draw one thought you had today (bring your answer into next class)</div>
+          </article>
+
+          <article class="qblock avoid-break" aria-labelledby="q2-title">
+            <div id="q2-title" class="qtitle">Question 2: Write or draw one feeling you had today (bring your answer into next class)</div>
+          </article>
+
+          <article class="qblock avoid-break span-2" aria-labelledby="q3-title">
+            <div id="q3-title" class="qtitle">Question 3: Question 3: Why do you think it is important for psychologists to study thoughts and feelings? (bring your answer into next class)</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="reminder-title">
+        <h2 id="reminder-title" class="sr-only">Reflection Reminder</h2>
+        <div class="reminder">
+          <div class="bold" style="margin-bottom:6px;">Reflection Reminder</div>
+          <p>Psychology isn’t only about what we can see on the outside (like actions). It’s also about the invisible world inside our minds—our thoughts and feelings.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
