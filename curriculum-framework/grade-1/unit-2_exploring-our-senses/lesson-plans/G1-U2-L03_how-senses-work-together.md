@@ -3,12 +3,12 @@ grade: 1
 unit: 2
 lesson: 3
 title: "How Senses Work Together"
-duration_mins: 50
+duration_mins: 45
 audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "2025-10-17"
+updated: "22 September 2025"
 ---
 
 ## Lesson Objective
@@ -182,3 +182,4 @@ The media referenced in this lesson plan is used solely for concept illustration
 Final versions of MindMaster will use original or appropriately licensed content in compliance with copyright law and UNICEF partnership standards.
 
 ---
+
