@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>quiz-pos-neg.html</title>
+<style>
+:root{
+  --bg:#F8BBD0;
+  --card:#ffffff;
+  --text:#222;
+  --muted:#555;
+  --accent:#3a7afe;
+  --accent-2:#7c4dff;
+  --btn:#fff;
+  --btn-border:#222;
+  --focus:#000;
+  --pill:#222;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  background: var(--bg) url('assets/images/quiz-pos-neg-back.webp') center / cover no-repeat fixed;
+  color: var(--text);
+}
+.topbar{
+  position:fixed;
+  top:16px;
+  left:16px;
+  right:16px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  z-index:10;
+}
+.left-actions{display:flex;gap:12px;align-items:center}
+.right-brand{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:8px;
+}
+.right-brand img{
+  display:block;
+  max-width:140px;
+  height:auto;
+}
+a.btn, button.btn{
+  display:inline-block;
+  padding:.75rem 1.25rem;
+  background:var(--btn);
+  color:var(--text);
+  border:2px solid var(--btn-border);
+  border-radius:999px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  transition: transform .02s ease-in-out;
+}
+a.btn:focus, button.btn:focus{
+  outline:4px solid var(--focus);
+  outline-offset:2px;
+}
+a.btn:active, button.btn:active{ transform: scale(.98); }
+.main{
+  padding:120px 16px 32px;
+  max-width:960px;
+  margin:0 auto;
+}
+.card{
+  background:var(--card);
+  border:2px solid #e7e9ef;
+  border-radius:16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  padding:24px;
+}
+.header-line{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.progress{font-weight:800}
+.category-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:.25rem .75rem;
+  border-radius:999px;
+  border:2px solid var(--pill);
+  font-weight:800;
+}
+.stimulus{
+  margin-top:8px;
+  font-size:1.35rem;
+  line-height:1.4;
+}
+.stimulus q{quotes: "“" "”" "‘" "’"}
+.question{
+  margin-top:18px;
+  font-size:1.15rem;
+  color:var(--muted);
+  font-weight:600;
+}
+.actions{
+  margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.actions .btn{
+  min-width:140px;
+  text-align:center;
+}
+.divider{
+  height:2px;
+  background:#eceef5;
+  margin:20px 0;
+  border-radius:2px;
+}
+.subtle{color:var(--muted); font-size:.95rem}
+.hidden{display:none !important}
+.center{display:flex; justify-content:center; align-items:center}
+.end-title{
+  font-size:1.6rem;
+  font-weight:900;
+  margin:0 0 12px 0;
+}
+.summary-list{
+  margin:0; padding:0; list-style:none; display:grid; gap:10px;
+}
+.summary-item{
+  padding:12px;
+  border:2px dashed #e1e4ee;
+  border-radius:12px;
+  background:#fcfdff;
+}
+.summary-stimulus{margin:0 0 6px 0; font-size:1rem}
+.summary-class{
+  margin:0;
+  font-weight:900;
+  font-size:1.15rem;
+}
+.footer-actions{
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.badge{
+  display:inline-block;
+  font-size:.8rem;
+  font-weight:800;
+  padding:.25rem .6rem;
+  border-radius:999px;
+  border:2px solid #222;
+}
+.btn.yes{background:#e8f0ff;border-color:#1a56ff}
+.btn.no{background:#fff0f0;border-color:#ff3b3b}
+.btn.maybe{background:#fff7e6;border-color:#ff9900}
+.btn.def{background:#eaffea;border-color:#1db954}
+.logo{max-width:160px}
+.mimi{max-width:120px}
+@media (max-width: 480px){
+  .right-brand img.logo{max-width:120px}
+  .right-brand img.mimi{max-width:96px}
+}
+/* End screen should fit vertically; width unchanged */
+#endCard {
+  max-height: 70vh;
+  overflow: auto;
+}
+
+/* Fit quiz sentences without scrolling; width unchanged */
+.header-line{ margin-bottom:8px }
+.stimulus{ margin-top:6px; font-size:clamp(1rem,2.6vw,1.15rem); line-height:1.3 }
+.question{ margin-top:12px; font-size:clamp(.95rem,2.2vw,1.05rem); line-height:1.3 }
+.actions{ margin-top:12px; gap:10px }
+
+#startCard{ min-height:50vh; text-align:center }
+.btn.start{
+  display:inline-block;
+  text-align:center;
+  padding:1rem 1.5rem;
+  border-radius:16px;
+  font-size:1.125rem;
+  line-height:1.35;
+  background:linear-gradient(135deg,#ff9a9e 0%, #fad0c4 100%);
+  border-color:#222;
+}
+.btn.start span{ display:block }
+
+/* 1) Tighten quiz typography & spacing by ~10% */
+.header-line{ margin-bottom:7px }
+.stimulus{ margin-top:5px; font-size:clamp(0.9rem,2.34vw,1.035rem); line-height:1.17 }
+.question{ margin-top:11px; font-size:clamp(0.855rem,1.98vw,0.945rem); line-height:1.17 }
+.actions{ margin-top:11px; gap:9px }
+
+/* 2) Increase summary card height by ~15% */
+#endCard{ max-height: 80.5vh }
+
+.correct-answer{margin-top:12px;font-weight:900;font-size:1.25rem;color:#000}
+.btn.next{
+  display:inline-block;
+  margin-top:12px;
+  padding:.75rem 1.25rem;
+  border-radius:12px;
+  font-weight:800;
+  background:#e8f0ff;
+  border:2px solid #1a56ff;
+}
+/* End summary: tighten vertical spacing by ~10% */
+.summary-list{ gap:8px }                 /* was 10px */
+.summary-item{ padding:10px }            /* was 12px */
+.summary-stimulus{                       /* first line of each item */
+  margin:0 0 4px 0;                      /* was 6px */
+  line-height:1.15                       /* tighter lines */
+}
+.summary-class{                           /* second line (bold classification) */
+  margin:0;
+  line-height:1.15
+}
+
+/* End summary: reduce overall card height + text size/spacing (~10%) */
+#endCard{
+  max-height:72vh;      /* was ~80.5vh */
+  overflow:auto;
+}
+.summary-list{ gap:7px }                 /* tighter between items */
+.summary-item{ padding:9px }             /* was 10px */
+.summary-stimulus{
+  margin:0 0 3px 0;                      /* was 4–6px */
+  font-size:0.9rem;                      /* slightly smaller text */
+  line-height:1.1                        /* was 1.15–1.3 */
+}
+.summary-class{
+  margin:0;
+  font-size:1rem;                        /* slightly smaller bold text */
+  line-height:1.1                        /* was 1.15 */
+}
+
+/* Summary: buttons always visible; list scrolls */
+#endCard{
+  display:flex;
+  flex-direction:column;
+  max-height:72vh;       /* keep compact card height */
+  overflow:hidden;       /* prevent the whole card from scrolling */
+  min-height:0;          /* allow inner flex children to shrink/scroll */
+}
+.summary-list{
+  flex:1 1 auto;         /* take remaining vertical space */
+  overflow:auto;         /* only the list scrolls */
+  min-height:0;          /* required for overflow:auto inside flex */
+}
+.footer-actions{
+  position:sticky;       /* keep buttons in view at bottom of card */
+  bottom:0;
+  background:var(--card);
+  padding-top:8px;
+  margin-top:12px;
+  border-top:2px solid #eceef5;
+  z-index:1;
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="left-actions">
+    <a class="btn nav" href="lesson-screen-htmls/lesson-01.01.html">Return to the Park</a>
+  </div>
+  <div class="right-brand">
+    <img class="logo" src="assets/images/mindmaster-logo.png" alt="MindMaster logo">
+    <img class="mimi" src="assets/images/mimi.webp" alt="Mimi">
+  </div>
+</nav>
+
+<main class="main">
+  <section id="startCard" class="card center">
+    <button id="btnStart" class="btn start" type="button">
+      <span>Press any key to start game</span><br>
+      <span>Read the sentence and answer the question. Click on "Yes" or "No" button</span>
+    </button>
+  </section>
+
+  <section id="quizCard" class="card hidden">
+    <div class="header-line">
+      <div class="progress" id="progressText">Question 1 of 7</div>
+      <div class="category-pill"><span id="categoryLabel">Category</span></div>
+    </div>
+    <div class="stimulus"><q id="stimulusText"></q></div>
+    <div class="question" id="questionLine"></div>
+    <div class="actions" id="answerRow">
+      <button class="btn yes" id="btnYes" type="button">Yes</button>
+      <button class="btn no" id="btnNo" type="button">No</button>
+    </div>
+    <div class="divider"></div>
+    <div class="subtle hidden" id="surePrompt">How sure are you?</div>
+    <div class="actions hidden" id="sureRow">
+      <button class="btn maybe" id="btnMaybe" type="button">Maybe correct</button>
+      <button class="btn def" id="btnDef" type="button">Definitely correct</button>
+    </div>
+    <div id="correctAnswer" class="correct-answer hidden"></div>
+    <button id="btnNext" class="btn next hidden" type="button">click for next question</button>
+  </section>
+
+  <section id="endCard" class="card hidden">
+    <div class="end-title">Summary</div>
+    <ul class="summary-list" id="summaryList"></ul>
+    <div class="footer-actions">
+      <a class="btn nav" href="quiz-pos-neg.html">Replay Quiz</a>
+      <a class="btn nav" href="lesson-screen-htmls/in-class-game-htmls/icg-01.01.html">Back to Class Activities</a>
+      <a class="btn nav" href="lesson-screen-htmls/lesson-01.01.html">Back to Park</a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const EXPERIENCES_NEG = [
+    "There’s lots of yelling at home – mum and dad shout at each other and at us kids",
+    "At night time, where I live it's dangerous to go out on the street",
+    "My friend got bullied but I didn't stand up for her",
+    "I'm never sure how mum will be when I get home - sometimes she's happy, sometimes she's really angry",
+    "Most of my clothes are very old and have holes in them – the other kids laugh at me",
+    "My teacher is unkind when I need help - she gets annoyed and tells me I should know already",
+    "We had a big argument at dinner and everyone was shouting and crying",
+    "We have to move home again - this is the third time this year",
+    "I'm lonely at school because I don't have any friends to play with",
+    "My dad told me to tell a lie to my teacher about why I was late",
+    "My teacher always picks on me - she never picks on anyone else when they do the same things"
+  ];
+  const EXPERIENCES_POS = [
+    "We always celebrate with all the family and my grandparents too",
+    "For my sister's birthday this year, dad brought home a cute puppy",
+    "Teacher is always kind, even when I'm naughty",
+    "I've got lots of friends at school and around the neighborhood",
+    "At their house, there’s always plenty of food - the cupboards are never empty",
+    "We had a big adventure in the park and discovered new places.",
+    "My friend stood up for me when others were being unkind.",
+    "When he falls over, someone always helps him get back up.",
+    "They live in a nice, safe area where children can play outside.",
+    "My parents always explain things to me - they never just shout when I do something wrong"
+  ];
+  const FEELINGS_NEG = [
+    "We don't trust Peter now because he told a lie",
+    "She is jealous because her sister got a better present than she did",
+    "She is lonely because all her friends are playing without her",
+    "We are afraid of the loud noises coming from downstairs",
+    "She hates him because he was mean to her little brother",
+    "I am nervous about the test tomorrow - my tummy feels funny",
+    "They are confused about what they're supposed to do next",
+    "He is angry because he can’t play with his tablet",
+    "I feel unsafe when the big kids are around - they might hurt me",
+    "I am sad because my best friend moved away to another city",
+    "He feels guilty because he knows he did something wrong"
+  ];
+  const FEELINGS_POS = [
+    "I feel safe everywhere at school",
+    "My dad cares about me - he always helps me when something goes wrong",
+    "She is calm today - her voice is soft and she's not worried about anything",
+    "I am confident that I can do this - I've practiced and I know I'm ready",
+    "They are excited about tomorrow because something really fun is going to happen",
+    "I trust him completely - I know he would never hurt me or lie to me",
+    "They are so relieved now that their mum and dad are here.",
+    "She is motivated to do well in the concert - she practices every day and never gives up",
+    "She feels brave enough to try the scary slide at the playground",
+    "I feel appreciated when my teacher says nice things about my work"
+  ];
+  const THOUGHTS_NEG = [
+    "I always mess up - i never get anything right",
+    "Everyone is better than me - I bet they don't like me",
+    "It's fun causing trouble - class is so boring otherwise",
+    "No one likes me - that's why I always eat lunch by myself",
+    "I can't do this - it's too hard and I'm not smart enough",
+    "There's no point trying because I'll just fail again like I always do",
+    "Everything is my fault - if bad things happen, it's because of something I did",
+    "Things will never get better – this is the worst day of my life",
+    "I'm different to everyone else - I don't fit in anywhere"
+  ];
+  const THOUGHTS_POS = [
+    "The weather is perfect - it's going to be a great day",
+    "I can ask for help when I don't understand - there's always someone who will explain",
+    "It’s OK to make mistakes – they teach us how to do things better next time",
+    "I'm proud of what I did today - I helped someone and it felt really good",
+    "I did my best and that's what matters most",
+    "I'll keep practicing until I get really good at this",
+    "I'm getting better every day - I can already do things I couldn't do before",
+    "Things will work out in the end - even when they seem difficult now",
+    "That was really kind of them to share their lunch with me",
+    "People care about me - I can see it in the way they help me"
+  ];
+  const ACTIONS_NEG = [
+    "I stole someone's favorite toy and had to go to the head teacher",
+    "I called my classmate a mean name that made them cry",
+    "I started a fight with my brother because he wouldn't share his sweets",
+    "When someone made a mistake, I laughed at them really loudly",
+    "I refused to share my pencils even though my friend forgot theirs",
+    "I broke someone's bike on purpose because I was angry at them",
+    "At lunchtime, I cut in front of everyone in the line to get food first",
+    "I told a lie to my mom about where I went after school",
+    "I had a big tantrum in the store because mum wouldn’t let me have the toy I wanted",
+    "I told the teacher that my classmate did something bad even though they didn't"
+  ];
+  const ACTIONS_POS = [
+    "We played a new game today, it's called Hide and Seek",
+    "I painted a colorful picture of my family with lots of bright blues and yellows",
+    "After lunch, I helped clean up all the toys without anyone asking me to",
+    "We sang a funny song about a silly monkey that made everyone laugh",
+    "I gave my favorite toy to a classmate who was feeling sad about losing theirs",
+    "Yesterday we planted sunflower seeds in the garden behind the school",
+    "I told the teacher when I saw someone being bullied in the playground",
+    "In the playground I played with the new girl who just joined our class",
+    "When my friend fell down, I helped them up and got a band-aid for their knee",
+    "We played football today and I scored a goal for my team"
+  ];
+
+  const POOL = [];
+  EXPERIENCES_NEG.forEach(t=>POOL.push({text:t, cat:"experience", val:"negative"}));
+  EXPERIENCES_POS.forEach(t=>POOL.push({text:t, cat:"experience", val:"positive"}));
+  FEELINGS_NEG.forEach(t=>POOL.push({text:t, cat:"feeling", val:"negative"}));
+  FEELINGS_POS.forEach(t=>POOL.push({text:t, cat:"feeling", val:"positive"}));
+  THOUGHTS_NEG.forEach(t=>POOL.push({text:t, cat:"thought", val:"negative"}));
+  THOUGHTS_POS.forEach(t=>POOL.push({text:t, cat:"thought", val:"positive"}));
+  ACTIONS_NEG.forEach(t=>POOL.push({text:t, cat:"action", val:"negative"}));
+  ACTIONS_POS.forEach(t=>POOL.push({text:t, cat:"action", val:"positive"}));
+
+  const quizCard = document.getElementById("quizCard");
+  const endCard = document.getElementById("endCard");
+  const progressText = document.getElementById("progressText");
+  const categoryLabel = document.getElementById("categoryLabel");
+  const stimulusText = document.getElementById("stimulusText");
+  const questionLine = document.getElementById("questionLine");
+  const answerRow = document.getElementById("answerRow");
+  const btnYes = document.getElementById("btnYes");
+  const btnNo = document.getElementById("btnNo");
+  const surePrompt = document.getElementById("surePrompt");
+  const sureRow = document.getElementById("sureRow");
+  const btnMaybe = document.getElementById("btnMaybe");
+  const btnDef = document.getElementById("btnDef");
+  const summaryList = document.getElementById("summaryList");
+  const correctAnswerBox = document.getElementById("correctAnswer");
+  const btnNext = document.getElementById("btnNext");
+
+  const CATS = ["experience","feeling","thought","action"];
+  let session = [];
+  let idx = 0;
+  let current = null;
+  let askedVal = null;
+  let askedCat = null;
+  const transcript = [];
+
+  function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+  function startSession(){
+    session = shuffle(POOL.slice()).slice(0,7);
+    idx = 0;
+    transcript.length = 0;
+    quizCard.classList.remove("hidden");
+    endCard.classList.add("hidden");
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    current = session[idx];
+    askedVal = Math.random()<0.5 ? "positive" : "negative";
+    askedCat = current.cat;
+    progressText.textContent = "Question " + (idx+1) + " of 7";
+    categoryLabel.textContent = cap(current.cat);
+    stimulusText.textContent = current.text;
+    questionLine.textContent = "Is it a " + askedVal + " " + askedCat + "?";
+    answerRow.classList.remove("hidden");
+    surePrompt.classList.add("hidden");
+    sureRow.classList.add("hidden");
+    btnYes.disabled = btnNo.disabled = false;
+    correctAnswerBox.textContent = "";
+    correctAnswerBox.classList.add("hidden");
+    btnNext.classList.add("hidden");
+    btnNext.disabled = true;
+  }
+
+  function onYN(){
+    answerRow.classList.add("hidden");
+    btnYes.disabled = btnNo.disabled = true;
+    surePrompt.textContent = "How sure are you?";
+    surePrompt.classList.remove("hidden");
+    sureRow.classList.remove("hidden");
+  }
+
+  function onConfidence(){
+    const cls = cap(current.val) + " " + cap(current.cat);
+    transcript.push({text:"“"+current.text+"”", cls});
+    correctAnswerBox.innerHTML = "<strong>This is a " + cls + "</strong>";
+    correctAnswerBox.classList.remove("hidden");
+    btnNext.disabled = false;
+    btnNext.classList.remove("hidden");
+    btnNext.focus();
+  }
+
+  function renderEnd(){
+    quizCard.classList.add("hidden");
+    endCard.classList.remove("hidden");
+    summaryList.innerHTML = "";
+    transcript.forEach(row=>{
+      const li = document.createElement("li");
+      li.className = "summary-item";
+      const p1 = document.createElement("p");
+      p1.className = "summary-stimulus";
+      p1.textContent = row.text;
+      const p2 = document.createElement("p");
+      p2.className = "summary-class";
+      p2.innerHTML = "<strong style='font-size:1.15rem'>"+row.cls+"</strong>";
+      li.appendChild(p1);
+      li.appendChild(p2);
+      summaryList.appendChild(li);
+    });
+  }
+
+  btnYes.addEventListener("click", onYN);
+  btnNo.addEventListener("click", onYN);
+  btnMaybe.addEventListener("click", onConfidence);
+  btnDef.addEventListener("click", onConfidence);
+  btnNext.addEventListener("click", function(){
+    btnNext.disabled = true;
+    btnNext.classList.add("hidden");
+    idx++;
+    if(idx<7){
+      renderQuestion();
+      btnYes.focus();
+    }else{
+      renderEnd();
+    }
+  });
+
+  const startCard = document.getElementById("startCard");
+  const btnStart = document.getElementById("btnStart");
+
+  function startGame(){
+    if(startCard.classList.contains("hidden")) return;
+    startCard.classList.add("hidden");
+    quizCard.classList.remove("hidden");
+    startSession();
+    btnYes.focus();
+  }
+
+  btnStart.addEventListener("click", startGame);
+  window.addEventListener("keydown", startGame);
+})();
+
+/* keep the existing script content above unchanged; append only this: */
+(function(){
+  var bgmStarted = false;
+  function initBgm(){
+    if (bgmStarted) return;
+    var el = document.getElementById('bgm');
+    if (el) {
+      try { el.volume = 0.25; } catch(e){}
+      var p = el.play();
+      if (p && typeof p.catch === 'function') { p.catch(function(){}); }
+      bgmStarted = true;
+      document.removeEventListener('click', initBgm);
+      document.removeEventListener('keydown', initBgm);
+    }
+  }
+  document.addEventListener('click', initBgm, false);
+  document.addEventListener('keydown', initBgm, false);
+})();
+</script>
+<audio id="bgm" src="assets/audio/quiz-pos-neg-bgm.mp3" loop preload="auto"></audio>
+</body>
+</html>

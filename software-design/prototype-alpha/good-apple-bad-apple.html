@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindMaster – Good Apple, Bad Apple</title>
+  <meta name="color-scheme" content="light"/>
+  <style>
+    :root{
+      --brand:#FFD700; /* MindMaster button yellow */
+      --ink:#111;
+      --bg-sky:#cfe9ff;
+      --success:#2ecc71;
+      --error:#e74c3c;
+      --shadow:#000;
+      --bubbleStroke:#000;
+      --ground:#89a86b;
+      --groundLine:#5c7742;
+      --basketLabel:#000;
+      --scoreBg:#fffdfd;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; padding:0;
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Inter,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background: var(--bg-sky);
+      overflow:hidden; /* zero-scroll during GAME */
+    }
+
+    .hidden{display:none !important;}
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* ---- Intro backdrop (matches Attention-2) ---- */
+    #introWrap{
+      position:fixed; inset:0; z-index:40;
+      display:flex; align-items:center; justify-content:center;
+      background:#0006 center/cover no-repeat;
+    }
+    #introWrap::before{
+      content:""; position:absolute; inset:0;
+      background: url('assets/good-apple-bad-apple/images/ui/bg-launch.png') center/cover no-repeat;
+      filter:none;
+    }
+
+    /* Compact launch card (mirror attention-2) */
+    .intro-card{
+      position:relative; z-index:1; text-align:center;
+      background:#fffdfdd9; border-radius:18px; padding:20px; width:min(720px, 92vw);
+      box-shadow:0 12px 30px rgba(0,0,0,.20);
+    }
+
+    /* Unit pill (copied from attention-2) */
+    .unit-pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:.95rem;
+      background:#ffbb00;
+      border:2px solid #222;
+      margin-bottom:8px;
+    }
+
+    .controls{ margin:12px 0; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+
+    /* Buttons + anchor buttons visual parity */
+    button,
+    a.btn{ /* anchors styled like buttons */
+      background:var(--brand); color:#000;
+      padding:10px 18px; border:none; border-radius:14px;
+      font-size:1rem; cursor:pointer; box-shadow:0 3px 0 #d1b100;
+      transition:transform .08s ease; text-decoration:none; display:inline-block;
+    }
+    /* Specific ID color mapping to match attention-2 */
+    #startBtn{ background:#90EE90; box-shadow:0 3px 0 #6fb86f; }
+    #howToBtn{ background:#FFD700; box-shadow:0 3px 0 #d1b100; }
+    #homeBtn, #homeBtn2{ background:#87CEFA; box-shadow:0 3px 0 #5ea8d4; }
+
+    button:active, a.btn:active{ transform:translateY(1px) }
+    button:focus{ outline:3px solid #000; outline-offset:2px }
+    /* Navigation Standard focus (4px) for anchors */
+    a.btn.nav:focus{ outline:4px solid #000; outline-offset:2px; }
+
+    #howToPanel{ background:#fff8; padding:12px; border-radius:12px; text-align:left; }
+
+    /* ---- GAME LAYOUT ---- */
+    #game{
+      position:fixed; inset:0; display:grid; grid-template-rows: auto 1fr auto;
+      z-index:10;
+    }
+
+    /* Top bar */
+    #topBar{
+      display:flex; align-items:center; gap:18px;
+      padding:10px 14px;
+      background:var(--scoreBg);
+      box-shadow:0 2px 0 rgba(0,0,0,.08);
+    }
+    #roundLabel{ font-weight:700; }
+    #scoreBox{
+      margin-left:auto;
+      display:flex; align-items:center; gap:10px;
+      font-size:1.25rem; font-weight:800;
+    }
+    #scoreNum{
+      padding:6px 12px; border-radius:12px; background:#fff; border:2px solid #000;
+      min-width:3ch; text-align:center;
+    }
+
+    /* Playfield */
+    #stage{
+      position:relative; overflow:hidden;
+      width:100%; height:100%;
+      background: url('assets/good-apple-bad-apple/images/tree/canopy-4k.png') center/cover no-repeat,
+                  linear-gradient(#cfe9ff,#eaf4ff);
+    }
+    /* Tree canopy across top */
+    #canopy{display:none;}
+
+    /* Ground line & baskets zone */
+    #groundLine{
+      position:absolute; left:0; right:0; bottom:26%; height:4px; background:var(--groundLine);
+      box-shadow:0 -2px 0 rgba(0,0,0,.18);
+    }
+    #baskets{
+      position:absolute; left:0; right:0; bottom:0; height:26%;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      padding:0 5vw;
+      background: none;
+    }
+    .basket{
+      position:relative; width:220px; height:180px;
+      display:flex; align-items:center; justify-content:center;
+      user-select:none;
+    }
+    .basket img{ width:100%; height:100%; object-fit:contain; image-rendering:auto; }
+    .label{
+      position:absolute; top:-28px; left:50%; transform:translateX(-50%);
+      padding:4px 10px; border-radius:12px; background:#fff; border:2px solid #000;
+      font-weight:800; font-size:0.95rem; color:var(--basketLabel);
+    }
+
+    /* Apple + bubble */
+    .appleWrap{
+      position:absolute; width:96px; height:96px; will-change:transform;
+      /* start near canopy; y set by JS */
+    }
+    .appleWrap img.apple{ width:100%; height:100%; object-fit:contain; display:block; }
+    .bubble{
+      position:absolute; left:50%; bottom:100%; transform:translate(-50%, -12px);
+      width:340px; height:140px;
+      background: url('assets/good-apple-bad-apple/images/ui/phrase-bubble.png') center/contain no-repeat;
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      padding:16px 20px; line-height:1.12; font-weight:800;
+      color:#000; text-shadow:none;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.16));
+    }
+    .bubble .txt{
+      width:100%;
+      font-size: clamp(18px, 2.2vw, 28px);
+      word-wrap:break-word;
+    }
+
+    /* Feedback flashes */
+    .flashOk{ box-shadow: 0 0 0 6px rgba(46,204,113,.28) inset; transition:box-shadow 160ms; }
+    .flashBad{ box-shadow: 0 0 0 6px rgba(231,76,60,.28) inset; transition:box-shadow 160ms; }
+
+    /* Between-round overlay (mirrors Attention 2 vibe) */
+    #between{
+      position:fixed; inset:0; background:rgba(0,0,0,0.35);
+      display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center;
+      z-index:30;
+    }
+    .star-burst{ display:flex; gap:10px; }
+    .burst-star{ width:56px; height:56px; display:inline-block; }
+    .sparkle{ animation:sparkle 900ms ease infinite; }
+    @keyframes sparkle{ 0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(1.2) rotate(10deg)} }
+
+    /* End screen */
+    #end{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; z-index:35; }
+    #endCard{
+      background:#fffdfdd9; border-radius:18px; padding:20px; width:min(720px, 92vw);
+      box-shadow:0 12px 30px rgba(0,0,0,.20);
+    }
+    #starsRow img{ width:90px; height:90px; margin:0 6px; }
+
+    /* On-screen big tap zones (left/right halves) */
+    #tapLeft, #tapRight{
+      position:absolute; top:0; bottom:0; width:50%; z-index:5;
+    }
+    #tapLeft{ left:0; } #tapRight{ right:0; }
+    .bigBtnRow{
+      position:absolute; left:0; right:0; bottom:calc(26% + 8px);
+      display:flex; justify-content:space-between; padding:0 5vw; z-index:8;
+    }
+    .bigBtn{ min-height:64px; font-weight:800; }
+
+    /* Small helpers */
+    .fade-in{ animation:fadein 220ms ease forwards; }
+    @keyframes fadein{ from{opacity:0} to{opacity:1} }
+    /* Hide basket top labels to avoid double text; keep yellow buttons below */
+    .basket .label{ display:none !important; }
+  </style>
+</head>
+<body>
+  <!-- INTRO -->
+  <section id="introWrap" role="dialog" aria-labelledby="introTitle">
+    <div class="intro-card">
+      <div class="unit-pill" aria-label="Unit title">Unit 7: Family and Friendship Dynamics</div>
+      <h1 id="introTitle">Good Apple, Bad Apple</h1>
+      <p class="sub">Sort the falling apples by their phrases: Kind on the left, Unkind on the right.</p>
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="howToBtn">How to Play</button>
+        <!-- Navigation anchor per Navigation Standard -->
+        <a id="homeBtn" class="btn nav" href="lesson-screen-htmls/lesson-07.02.html">Return to the Park</a>
+      </div>
+      <div id="howToPanel" class="hidden" aria-live="polite">
+        <ol style="margin:8px 0 0 18px;">
+          <li>Read or listen to the phrase.</li>
+          <li>Put <strong>Kind Words</strong> in the green basket (left).</li>
+          <li>Put <strong>Unkind Words</strong> in the brown basket (right).</li>
+          <li>Correct = +1. Wrong or missed = –1.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="hidden" aria-live="polite">
+    <div id="topBar">
+      <div id="roundLabel">Round 1/3</div>
+      <div id="scoreBox" aria-live="polite" aria-atomic="true">
+        <span>Score</span>
+        <span id="scoreNum">0</span>
+      </div>
+    </div>
+
+    <div id="stage" role="application" aria-label="Apple sorting playfield">
+      <div id="canopy" aria-hidden="true"></div>
+      <div id="tapLeft" aria-hidden="true"></div>
+      <div id="tapRight" aria-hidden="true"></div>
+      <div id="groundLine" aria-hidden="true"></div>
+
+      <!-- Baskets -->
+      <div id="baskets" aria-hidden="false">
+        <div class="basket" id="basketLeft" aria-label="Kind Words basket">
+          <span class="label">Kind Words</span>
+          <img id="imgBasketLeft" alt="Kind Words basket"
+               src="assets/good-apple-bad-apple/images/baskets/basket-green.png"
+               onerror="this.onerror=null;this.src=GOODAPPLE.fallbacks.basketGreen"/>
+        </div>
+        <div class="basket" id="basketRight" aria-label="Unkind Words basket">
+          <span class="label">Unkind Words</span>
+          <img id="imgBasketRight" alt="Unkind Words basket"
+               src="assets/good-apple-bad-apple/images/baskets/basket-brown.png"
+               onerror="this.onerror=null;this.src=GOODAPPLE.fallbacks.basketBrown"/>
+        </div>
+      </div>
+
+      <!-- On-screen buttons (optional) -->
+      <div class="bigBtnRow">
+        <button class="bigBtn" id="btnKind" aria-label="Sort to Kind (left)">Kind Words</button>
+        <button class="bigBtn" id="btnUnkind" aria-label="Sort to Unkind (right)">Unkind Words</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BETWEEN -->
+  <div id="between" class="hidden" aria-hidden="true">
+    <img src="assets/good-apple-bad-apple/images/ui/hand-next.png" alt="" style="width:72px;height:72px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))"
+         onerror="this.onerror=null;this.src=GOODAPPLE.fallbacks.hand"/>
+    <div class="star-burst">
+      <img class="burst-star sparkle" src="assets/good-apple-bad-apple/images/ui/star-full.png" alt=""
+           onerror="this.onerror=null;this.src=GOODAPPLE.fallbacks.starFull"/>
+      <img class="burst-star sparkle" src="assets/good-apple-bad-apple/images/ui/star-full.png" alt=""
+           onerror="this.onerror=null;this.src=GOODAPPLE.fallbacks.starFull"/>
+      <img class="burst-star sparkle" src="assets/good-apple-bad-apple/images/ui/star-full.png" alt=""
+           onerror="this.onerror=null;this.src=GOODAPPLE.fallbacks.starFull"/>
+    </div>
+    <p id="betweenText" style="color:#fff; font-weight:800; font-size:1.4rem; text-shadow:0 2px 8px rgba(0,0,0,.4)"></p>
+  </div>
+
+  <!-- END -->
+  <section id="end" class="hidden">
+    <div id="endCard" role="dialog" aria-labelledby="endHeadline">
+      <h2 id="endHeadline">Great sorting!</h2>
+      <p id="endStats" class="sub">You got 0 out of 24 correct.</p>
+      <div id="starsRow" aria-label="Star rating"></div>
+      <p class="sub">Using kind words builds strong friendships and families.</p>
+      <div class="controls">
+        <button id="playAgainBtn">Play Again</button>
+        <!-- Navigation anchor per Navigation Standard -->
+        <a id="homeBtn2" class="btn nav" href="lesson-screen-htmls/lesson-07.02.html">Return to the Park</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARIA live region -->
+  <div id="ariaLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- AUDIO (created dynamically; guarded) -->
+
+  <script>
+  // =============== CONFIG ===============
+  const ASSET_ROOT = 'assets/good-apple-bad-apple/';
+  const IMG = (p)=> ASSET_ROOT+'images/'+p;
+  const SFX = (p)=> ASSET_ROOT+'sfx/'+p;
+  const BGM = ASSET_ROOT+'audio/bgm.mp3';
+  const VO  = (p)=> ASSET_ROOT+'voice/'+p;
+
+  const LANE_PCTS = [33,58,82]; // right-biased lanes (avoid trunk on far left)
+  const ROUND_SPECS = [
+    { count:6,  fallMs:5000, betweenText:"Great sorting! Get ready for Round 2!", v:'v_round2.mp3' },
+    { count:8,  fallMs:4000, betweenText:"Nice focus! Round 3 — challenge time!", v:'v_round3.mp3' },
+    { count:10, fallMs:3000, betweenText:"All done! Let’s see your stars.", v:'v_end.mp3' }
+  ];
+  const ROUND_TOTAL = 3;
+  const BETWEEN_MS = 1800;
+  const NEXT_GAP_MS = 300;
+  const SNAP_MS = 180; // snap tween duration
+  const VOICE_MAX_S = 1.2;
+
+  // Star thresholds out of 24
+  const STAR_RULES = [
+    {min:20, stars:3},
+    {min:15, stars:2},
+    {min:10, stars:1},
+    {min: 0, stars:0}
+  ];
+
+  // Phrase manifest (Prompt 3)
+  const PHRASES = [
+    // Round 1 (6) – simplest, mostly kind
+    { text:"Thank you",          audio:"phrases/v_phrase-01.wav", isKind:true,  round:1 },
+    { text:"Let’s play",         audio:"phrases/v_phrase-02.wav", isKind:true,  round:1 },
+    { text:"Let’s try again",    audio:"phrases/v_phrase-03.wav", isKind:true,  round:1 },
+    { text:"Go away",            audio:"phrases/v_phrase-04.wav", isKind:false, round:1 },
+    { text:"Not yours",          audio:"phrases/v_phrase-05.wav", isKind:false, round:1 },
+    { text:"That’s your fault",  audio:"phrases/v_phrase-06.wav", isKind:false, round:1 },
+
+    // Round 2 (8) – mixed
+    { text:"Join us",            audio:"phrases/v_phrase-07.wav", isKind:true,  round:2 },
+    { text:"After you",          audio:"phrases/v_phrase-08.wav", isKind:true,  round:2 },
+    { text:"I’ll help",          audio:"phrases/v_phrase-09.wav", isKind:true,  round:2 },
+    { text:"Are you okay?",      audio:"phrases/v_phrase-10.wav", isKind:true,  round:2 },
+    { text:"That’s mine",        audio:"phrases/v_phrase-11.wav", isKind:false, round:2 },
+    { text:"I don’t care",       audio:"phrases/v_phrase-12.wav", isKind:false, round:2 },
+    { text:"Shut up!",           audio:"phrases/v_phrase-13.wav", isKind:false, round:2 },
+    { text:"You can’t",          audio:"phrases/v_phrase-14.wav", isKind:false, round:2 },
+
+    // Round 3 (10) – trickier
+    { text:"Well done",          audio:"phrases/v_phrase-15.wav", isKind:true,  round:3 },
+    { text:"It’s okay",          audio:"phrases/v_phrase-16.wav", isKind:true,  round:3 },
+    { text:"Love you",           audio:"phrases/v_phrase-17.wav", isKind:true,  round:3 },
+    { text:"Good idea!",         audio:"phrases/v_phrase-18.wav", isKind:true,  round:3 },
+    { text:"Too slow",           audio:"phrases/v_phrase-19.wav", isKind:false, round:3 },
+    { text:"Stop crying!",       audio:"phrases/v_phrase-20.wav", isKind:false, round:3 },
+    { text:"I told you so",      audio:"phrases/v_phrase-21.wav", isKind:false, round:3 },
+    { text:"You’re wrong",       audio:"phrases/v_phrase-22.wav", isKind:false, round:3 },
+    { text:"Don’t embarrass me", audio:"phrases/v_phrase-23.wav", isKind:false, round:3 },
+    { text:"Stop being silly",   audio:"phrases/v_phrase-24.wav", isKind:false, round:3 },
+  ];
+
+  // Fallback inline SVGs for resilience (no console errors if assets missing)
+  const GOODAPPLE = window.GOODAPPLE = {
+    fallbacks:{
+      apple:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><circle cx="48" cy="54" r="30" fill="#c62828"/><rect x="44" y="14" width="8" height="16" rx="2" fill="#6d4c41"/><circle cx="60" cy="40" r="8" fill="#2e7d32"/></svg>'),
+      appleRotten:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><ellipse cx="50" cy="56" rx="34" ry="26" fill="#6d4c41"/><circle cx="64" cy="44" r="9" fill="#2e7d32"/></svg>'),
+      appleSplat:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="128" height="64"><ellipse cx="64" cy="40" rx="54" ry="18" fill="#b71c1c"/></svg>'),
+      basketGreen:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="220" height="180"><rect x="10" y="40" width="200" height="120" rx="18" fill="#a5d6a7" stroke="#000" stroke-width="3"/><circle cx="85" cy="110" r="6" fill="#000"/><circle cx="135" cy="110" r="6" fill="#000"/><path d="M85 130 Q110 145 135 130" stroke="#000" stroke-width="3" fill="none"/></svg>'),
+      basketBrown:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="220" height="180"><rect x="10" y="40" width="200" height="120" rx="18" fill="#8d6e63" stroke="#000" stroke-width="3"/><circle cx="90" cy="110" r="6" fill="#000"/><circle cx="140" cy="110" r="6" fill="#000"/></svg>'),
+      starFull:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><polygon points="28,2 36,20 56,22 42,36 46,56 28,46 10,56 14,36 0,22 20,20" fill="#FFD700" stroke="#000"/></svg>'),
+      starEmpty:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><polygon points="28,2 36,20 56,22 42,36 46,56 28,46 10,56 14,36 0,22 20,20" fill="#fff" stroke="#000"/></svg>'),
+      check:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><path d="M20 52 l18 18 40 -40" stroke="#2ecc71" stroke-width="12" fill="none" stroke-linecap="round"/></svg>'),
+      cross:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><path d="M22 22 L74 74 M74 22 L22 74" stroke="#e74c3c" stroke-width="12" stroke-linecap="round"/></svg>'),
+      hand:`data:image/svg+xml;utf8,`+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72"><circle cx="36" cy="36" r="32" fill="#fff" stroke="#000"/><path d="M38 18 v26" stroke="#000" stroke-width="6" stroke-linecap="round"/></svg>')
+    }
+  };
+
+  // =============== ELEMENTS ===============
+  const introWrap   = document.getElementById('introWrap');
+  const howToBtn    = document.getElementById('howToBtn');
+  const howToPanel  = document.getElementById('howToPanel');
+  const startBtn    = document.getElementById('startBtn');
+  const homeBtn     = document.getElementById('homeBtn');
+
+  const game        = document.getElementById('game');
+  const roundLabel  = document.getElementById('roundLabel');
+  const scoreNum    = document.getElementById('scoreNum');
+  const stage       = document.getElementById('stage');
+  const tapLeft     = document.getElementById('tapLeft');
+  const tapRight    = document.getElementById('tapRight');
+  const basketsEl   = document.getElementById('baskets');
+  const basketLeft  = document.getElementById('basketLeft');
+  const basketRight = document.getElementById('basketRight');
+
+  const btnKind     = document.getElementById('btnKind');
+  const btnUnkind   = document.getElementById('btnUnkind');
+
+  const between     = document.getElementById('between');
+  const betweenText = document.getElementById('betweenText');
+
+  const end         = document.getElementById('end');
+  const endHeadline = document.getElementById('endHeadline');
+  const endStats    = document.getElementById('endStats');
+  const starsRow    = document.getElementById('starsRow');
+  const playAgain   = document.getElementById('playAgainBtn');
+  const homeBtn2    = document.getElementById('homeBtn2');
+
+  const ariaLive    = document.getElementById('ariaLive');
+
+  // =============== AUDIO (guarded) ===============
+  let bgm, sfxCorrect, sfxWrong, sfxSplat, vInstruction, vPraise, vRound2, vRound3, vEnd;
+  let currentVoice = null;
+
+  function makeAudio(src, {loop=false, vol=1}={}) {
+    const a = new Audio();
+    a.src = src;
+    a.loop = loop;
+    a.preload = 'auto';
+    a.volume = vol;
+    return a;
+  }
+  function tryPlay(a){ if(!a) return; try{ a.currentTime=0; a.play().catch(()=>{});}catch{} }
+  function tryPause(a){ if(!a) return; try{ a.pause(); }catch{} }
+  function stopVoice(){ tryPause(currentVoice); currentVoice=null; }
+  function playVoice(a){
+    stopVoice();
+    currentVoice = a;
+    // duck bgm
+    if(bgm){ const old = bgm.volume; bgm.volume = Math.max(0, old*0.7); setTimeout(()=>{ try{bgm.volume=old;}catch{} }, Math.ceil(VOICE_MAX_S*1000)+250); }
+    tryPlay(a);
+  }
+
+  // =============== STATE ===============
+  let roundIndex = 0; // 0..2
+  let score=0, shown=0, correct=0, wrong=0, missed=0;
+
+  // per-apple loop handles
+  let rafId=null, activeApple=null, fallStart=0, fallDur=0, groundY=0, inputLocked=false;
+
+  // =============== UTILS ===============
+  const clamp=(v,min,max)=> Math.min(max, Math.max(min,v));
+  const rnd=(n)=> Math.floor(Math.random()*n);
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+  function announce(msg){ ariaLive.textContent=''; setTimeout(()=>{ ariaLive.textContent = msg; }, 10); }
+
+  function appleAt(lanePct){
+    const wrap = document.createElement('div');
+    wrap.className = 'appleWrap fade-in';
+    const img = document.createElement('img');
+    img.className = 'apple';
+    img.alt = 'Apple';
+    img.src = IMG('apples/apple-red.png');
+    img.onerror = ()=>{ img.onerror=null; img.src = GOODAPPLE.fallbacks.apple; };
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    const txt = document.createElement('div');
+    txt.className = 'txt';
+    bubble.appendChild(txt);
+
+    wrap.appendChild(bubble);
+    wrap.appendChild(img);
+
+    // initial position
+    const x = (stage.clientWidth * lanePct/100) - 48; // centre by 96px width
+    wrap.style.transform = `translate(${x}px, ${Math.max(10, stage.clientHeight*0.10)}px)`; // start under canopy
+    stage.appendChild(wrap);
+    return {wrap, img, bubble, txt, x};
+  }
+
+  function removeApple(a){ if(!a) return; try{ a.wrap.remove(); }catch{} }
+
+  function snapTo(targetEl, apple){
+    const rectA = apple.wrap.getBoundingClientRect();
+    const rectB = targetEl.getBoundingClientRect();
+    const tx = (rectB.left + rectB.width/2) - (rectA.left + rectA.width/2);
+    const ty = (rectB.top + rectB.height*0.25) - (rectA.top + rectA.height/2);
+    apple.wrap.style.transition = `transform ${SNAP_MS}ms ease`;
+    // parse current translate
+    const m = apple.wrap.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+    const cx = m? parseFloat(m[1]) : 0, cy = m? parseFloat(m[2]) : 0;
+    requestAnimationFrame(()=>{ apple.wrap.style.transform = `translate(${cx+tx}px, ${cy+ty}px)`; });
+  }
+
+  function flash(ok){
+    stage.classList.remove('flashOk','flashBad');
+    void stage.offsetWidth; // reflow
+    stage.classList.add(ok?'flashOk':'flashBad');
+    setTimeout(()=>stage.classList.remove('flashOk','flashBad'), 240);
+  }
+
+  // =============== GAME FLOW ===============
+  function setupAudioOnce(){
+    if(bgm) return; // already created
+    bgm        = makeAudio(BGM, {loop:true, vol:0.25});
+    sfxCorrect = makeAudio(SFX('correct.mp3'), {vol:0.9});
+    sfxWrong   = makeAudio(SFX('wrong.mp3'), {vol:0.9});
+    sfxSplat   = makeAudio(SFX('splat.mp3'), {vol:0.9});
+    vInstruction = makeAudio(VO('v_instruction.mp3'), {vol:1});
+    vRound2    = makeAudio(VO('v_round2.mp3'));
+    vRound3    = makeAudio(VO('v_round3.mp3'));
+    vEnd       = makeAudio(VO('v_end.mp3'));
+    vPraise = [
+      makeAudio(VO('v_great_job.mp3')),
+      makeAudio(VO('v_fantastic.mp3')),
+      makeAudio(VO('v_well_done.mp3')),
+    ];
+  }
+
+  function goHome(){ tryPause(bgm); window.location.href='lesson-screen-htmls/lesson-07.02.html'; }
+
+  function startSession(){
+    // reset totals
+    roundIndex=0; score=0; shown=0; correct=0; wrong=0; missed=0;
+    scoreNum.textContent = score;
+    introWrap.classList.add('hidden');
+    game.classList.remove('hidden');
+    setupAudioOnce();
+    tryPlay(bgm);
+    // instruction then start R1
+    vInstruction.onended = ()=> beginRound(0);
+    playVoice(vInstruction);
+  }
+
+  function beginRound(idx){
+    roundIndex = idx;
+    stopVoice();
+    // UI
+    roundLabel.textContent = `Round ${idx+1}/3`;
+    // pick phrases for this round
+    const pool = PHRASES.filter(p=>p.round===idx+1);
+    const order = shuffle(pool.slice(0)); // no repeats within round
+    stateRound = { order, i:0, count:ROUND_SPECS[idx].count, fallMs:ROUND_SPECS[idx].fallMs };
+    spawnNext();
+  }
+
+  let stateRound = null;
+
+  function spawnNext(){
+    // clear previous apple (if any)
+    removeApple(activeApple); activeApple=null; inputLocked=false;
+
+    // round done?
+    if(stateRound.i >= stateRound.count){
+      // BETWEEN or END
+      showBetween();
+      return;
+    }
+    const item = stateRound.order[stateRound.i];
+    stateRound.i++;
+
+    // Create apple at lane
+    const lanePct = LANE_PCTS[rnd(LANE_PCTS.length)];
+    const apple = appleAt(lanePct);
+    activeApple = { ...apple, item };
+    activeApple.txt.textContent = item.text;
+
+    // phrase voice
+    const voice = makeAudio(VO(item.audio));
+    voice.onended = null;
+    playVoice(voice);
+
+    // compute ground
+    const basketsRect = basketsEl.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    groundY = (basketsRect.top - stageRect.top) - 16; // just above ground line
+    fallDur = stateRound.fallMs;
+    fallStart = performance.now();
+
+    // start RAF fall
+    rafId = requestAnimationFrame(fallStep);
+  }
+
+  function fallStep(ts){
+    if(!activeApple) return;
+    const elapsed = ts - fallStart;
+    const p = clamp(elapsed / fallDur, 0, 1);
+    const y0 = Math.max(10, stage.clientHeight*0.10);
+    const y = y0 + (groundY - y0) * p;
+    activeApple.wrap.style.transform = `translate(${activeApple.x}px, ${y}px)`;
+
+    if(p >= 1 && !inputLocked){
+      // Missed
+      resolve('miss');
+      return;
+    }
+    rafId = requestAnimationFrame(fallStep);
+  }
+
+  function resolve(kind){
+    // stop fall
+    if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
+    inputLocked = true; shown++;
+
+    if(kind==='left' || kind==='right'){
+      const chosenIsKind = (kind==='left');
+      const ok = (chosenIsKind === !!activeApple.item.isKind);
+      snapTo(chosenIsKind ? basketLeft : basketRight, activeApple);
+      if(ok){
+        score = Math.max(0, score+1); correct++;
+        tryPlay(sfxCorrect); flash(true); announce("Correct, plus one");
+        // show check overlay near apple
+        showIcon(true, activeApple);
+      }else{
+        score = Math.max(0, score-1); wrong++;
+        tryPlay(sfxWrong); flash(false); announce("Wrong, minus one");
+        showIcon(false, activeApple);
+      }
+    }else{
+      // missed
+      score = Math.max(0, score-1); missed++; wrong++;
+      tryPlay(sfxSplat); flash(false); announce("Missed, minus one");
+      // swap sprite to splat
+      activeApple.img.src = IMG('apples/apple-splat.png');
+      activeApple.img.onerror = ()=>{ activeApple.img.onerror=null; activeApple.img.src=GOODAPPLE.fallbacks.appleSplat; };
+    }
+
+    scoreNum.textContent = score;
+
+    // next spawn
+    setTimeout(()=> spawnNext(), NEXT_GAP_MS);
+  }
+
+  function showIcon(ok, apple){
+    const icon = document.createElement('img');
+    icon.alt = ok ? 'Correct' : 'Wrong';
+    icon.src = ok ? IMG('ui/check.png') : IMG('ui/cross.png');
+    icon.onerror = ()=>{ icon.onerror=null; icon.src = ok?GOODAPPLE.fallbacks.check:GOODAPPLE.fallbacks.cross; };
+    icon.style.position='absolute';
+    icon.style.left='50%'; icon.style.top='50%'; icon.style.transform='translate(-50%,-50%)';
+    icon.style.width='72px'; icon.style.height='72px';
+    apple.wrap.appendChild(icon);
+    setTimeout(()=>{ try{ icon.remove(); }catch{} }, 420);
+  }
+
+  function showBetween(){
+    // praise voice (non-blocking)
+    const praise = Math.random()<0.5 ? vPraise[rnd(vPraise.length)] : null;
+    if(praise) playVoice(praise);
+
+    if(roundIndex < ROUND_TOTAL-1){
+      betweenText.textContent = (roundIndex===0) ? "Great sorting! Get ready for Round 2!" : "Nice focus! Round 3 — challenge time!";
+    }else{
+      betweenText.textContent = "All done! Let’s see your stars.";
+    }
+    between.classList.remove('hidden');
+
+    // also play round transition voice if present
+    if(roundIndex===0) playVoice(vRound2);
+    else if(roundIndex===1) playVoice(vRound3);
+    else playVoice(vEnd);
+
+    setTimeout(()=>{
+      between.classList.add('hidden');
+      if(roundIndex < ROUND_TOTAL-1){
+        beginRound(roundIndex+1);
+      }else{
+        toEnd();
+      }
+    }, BETWEEN_MS);
+  }
+
+  function toEnd(){
+    game.classList.add('hidden');
+    end.classList.remove('hidden');
+
+    const total = 24;
+    const pct = Math.round((correct/total)*100);
+    endStats.textContent = `You got ${correct} out of ${total} correct.`;
+
+    // stars by thresholds
+    let stars=0;
+    if(correct>=20) stars=3; else if(correct>=15) stars=2; else if(correct>=10) stars=1; else stars=0;
+    starsRow.innerHTML='';
+    for(let i=0;i<3;i++){
+      const img = document.createElement('img');
+      img.src = i<stars ? IMG('ui/star-full.png') : IMG('ui/star-empty.png');
+      img.onerror = ()=>{ img.onerror=null; img.src = i<stars?GOODAPPLE.fallbacks.starFull:GOODAPPLE.fallbacks.starEmpty; };
+      img.alt = i<stars ? 'star' : 'empty star';
+      img.className = 'sparkle';
+      starsRow.appendChild(img);
+    }
+
+    if(stars===3) endHeadline.textContent = 'Brilliant kindness!';
+    else if(stars===2) endHeadline.textContent = 'Great effort!';
+    else if(stars===1) endHeadline.textContent = 'Good try!';
+    else endHeadline.textContent = 'Keep practising!';
+  }
+
+  // =============== INPUTS ===============
+  function onKey(e){
+    if(!activeApple || inputLocked) return;
+    if(e.key==='ArrowLeft'){ resolve('left'); }
+    else if(e.key==='ArrowRight'){ resolve('right'); }
+  }
+  function onClick(e){
+    if(!activeApple || inputLocked) return;
+    const x = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX);
+    if(x==null) return;
+    const mid = window.innerWidth/2;
+    resolve(x<mid ? 'left' : 'right');
+  }
+
+  // Button mirrors
+  btnKind.addEventListener('click', ()=> activeApple && !inputLocked && resolve('left'));
+  btnUnkind.addEventListener('click', ()=> activeApple && !inputLocked && resolve('right'));
+
+  // Tap zones
+  tapLeft.addEventListener('click', onClick);
+  tapRight.addEventListener('click', onClick);
+  tapLeft.addEventListener('touchstart', onClick, {passive:true});
+  tapRight.addEventListener('touchstart', onClick, {passive:true});
+
+  // =============== NAV/UI ===============
+  startBtn.addEventListener('click', startSession);
+  howToBtn.addEventListener('click', ()=> howToPanel.classList.toggle('hidden'));
+  function _goHome(){ goHome(); }
+  homeBtn.addEventListener('click', _goHome);
+  document.getElementById('homeBtn2').addEventListener('click', _goHome);
+  playAgain.addEventListener('click', ()=>{
+    end.classList.add('hidden');
+    game.classList.remove('hidden');
+    startSession();
+  });
+
+  // keyboard
+  window.addEventListener('keydown', onKey, {passive:true});
+
+  // =============== DEBUG SURFACE ===============
+  window.__appleSorter__ = {
+    getMetrics: ()=>({ roundIndex, score, shown, correct, wrong, missed })
+  };
+
+  </script>
+</body>
+</html>

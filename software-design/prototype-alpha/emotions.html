@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MindMaster — Feeling Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- Preload first scene image; update path if your asset differs -->
+  <link rel="preload" as="image" href="assets/emotions/storyboard-scene1-clean.png" />
+
+  <style>
+    :root { --stage-max: 440px; }
+    html { overflow-y: scroll; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      font-family: "Comic Sans MS", Arial, sans-serif;
+      color: #222;
+      background:
+        radial-gradient(1200px 1200px at 0% 0%, #ffe6f2 0%, rgba(255,255,255,0) 60%),
+        linear-gradient(180deg, #fff, #fff);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    button {
+      background: #ffd54f;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+      transition: transform 120ms ease, filter 120ms ease;
+    }
+    button:active { transform: translateY(1px); }
+    button:focus { outline: 3px solid #000; outline-offset: 2px; }
+
+    .container {
+      max-width: 800px;
+      margin: 24px auto 48px;
+      padding: 16px 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 8px 0 16px;
+      font-weight: 700;
+    }
+    /* Square stage reserves space immediately to prevent layout jump */
+    .stage {
+      width: 100%;
+      max-width: min(var(--stage-max), 92vw, calc(100svh - 300px));
+      margin: 8px auto 12px;
+      aspect-ratio: 1 / 1;
+      background: #eee;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    #sceneImage {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      visibility: hidden;     /* revealed only after decode/load */
+      transition: none !important;
+      image-rendering: -webkit-optimize-contrast;
+      backface-visibility: hidden;
+      will-change: transform;
+    }
+
+    .question {
+      font-size: 18px;
+      margin: 10px auto;
+      max-width: 720px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      justify-content: center;
+      align-items: stretch;
+      max-width: 720px;
+      margin: 10px auto 0;
+    }
+
+    .options button {
+      padding: 12px 8px;
+      min-height: 44px;
+      font-size: 16px;
+      border-radius: 10px;
+      background: #ffd54f;
+      color: #111;
+    }
+
+    .feedback {
+      min-height: 24px;
+      margin: 8px auto;
+      font-size: 16px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .nav button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 1px, 1px) !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    /* Launch screen styles (match memory-2 structure) */
+    .hidden{ display:none !important; }
+    #instructions{ position:relative; overflow:hidden; 
+  height: 100svh;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100vw;
+  inset: 0;}
+    #instructions .launch-bg{
+      position:absolute; inset:0;
+      background-image:url('assets/emotions/images/ui/bg-launch.png');
+      background-size:cover; background-position:center; background-repeat:no-repeat;
+      z-index:0;
+    }
+    #instructions > *:not(.launch-bg){ position:relative; z-index:1; }
+    .unit-overline{
+      margin-top:12px;
+      padding:4px 10px; display:inline-block;
+      border-radius:999px; background:#FFD700; color:#111;
+      font-size:0.95rem; font-weight:700; letter-spacing:0.2px;
+    }
+    .controls{ margin:10px 0; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    .controls button{ background:#FFD700; color:#000; padding:10px 18px; border:none; border-radius:12px; font-size:1rem; cursor:pointer; }
+    .controls button:focus{ outline:3px solid #000; outline-offset:2px; }
+
+    /* Game title on game screen */
+    .game-title{ font-size:18px; margin:4px 0 8px; font-weight:800; }
+
+    /* Layout fit: keep everything within viewport without scrolling */
+    html{ overflow-y:auto; }
+    .container{ max-width:800px; margin:12px auto; padding:12px 16px; }
+    .stage{ max-width: min(var(--stage-max), 92vw, calc(100svh - 300px)); }
+    @media (max-width: 480px){
+      :root{ --stage-max: 420px; }
+      .container{ padding:10px 12px; }
+    }
+
+    /* Buttons hover */
+    .options button:hover { filter: brightness(0.98); }
+    .nav button:hover { filter: brightness(0.95); }
+  
+/* --- Launch screen parity with whats-missing.html --- */
+#instructions{
+  position: fixed; inset: 0;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+#instructions::before{
+  content: ""; position: absolute; inset: 0;
+  background: url('assets/emotions/images/ui/bg-launch.png') center/cover no-repeat;
+  z-index: 0;
+}
+#instructions > *{ position: relative; z-index: 1; }
+/* Hide legacy background layer */
+#instructions .launch-bg{ display:none !important; }
+/* Intro card */
+.intro-card{
+  width: min(720px, 92vw);
+  background: rgba(255,253,253,0.85);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+  padding: 20px 18px;
+  text-align: center;
+  margin: 0 auto;
+}
+/* Unit pill colour */
+.unit-overline{
+  margin-top: 12px;
+  padding: 6px 12px;
+  display: inline-block;
+  border-radius: 999px;
+  background: #f5c242;
+  color: #111;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+/* Buttons: ensure anchors look like buttons */
+#instructions .controls a.btnlike,
+#instructions .controls button{
+  background: #FFD700;
+  color: #000;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+}
+#instructions .controls a.btnlike:focus,
+#instructions .controls button:focus{ outline: 3px solid #000; outline-offset:2px; }
+/* Specific button colours to mirror standard */
+#startBtn{ background:#90EE90 !important; }
+#howToBtn{ background:#FFD700 !important; }
+#homeBtn{  background:#87CEFA !important; }
+/* end screen buttons parity if present */
+#playAgainBtn{ background:#FFD700 !important; }
+#homeBtn2{ background:#87CEFA !important; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Launch / Instructions (mirroring memory-2 structure) -->
+  <section id="instructions">
+    <div class="intro-card">
+<div class="unit-overline" role="text">Unit 6: What are Feelings?</div>
+    <h1>Feeling Finder</h1>
+    <p class="sub">Can you spot the mood?</p>
+    <div class="launch-bg" aria-hidden="true"></div>
+
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="howToBtn">How to play</button>
+      <a id="homeBtn" class="btnlike" href="lesson-screen-htmls/lesson-06.01.html">Return to the Park</a>
+    </div>
+    <div id="howToPanel" class="hidden" aria-live="polite" style="background:#fff8;padding:12px;border-radius:12px; max-width:720px; margin:0 auto;">
+      <ul style="margin:8px 0 0 18px; text-align:left;">
+        <li>Look at the picture and the question.</li>
+        <li>Choose the feeling that best matches the scene.</li>
+        <li>Get it right to move to the next scene.</li>
+        <li>Finish all scenes to see the end card.</li>
+      </ul>
+    </div>
+</div>
+  </section>
+
+  <!-- Game View -->
+  <section id="game" class="container hidden">
+    <audio id="bgm" src="assets/emotions/audio/bgm.mp3" preload="auto" loop></audio>
+
+    <div class="game-title">Feeling Finder</div>
+    <h1 class="sr-only">Feeling Finder</h1>
+
+    <div class="stage">
+      <!-- width/height hint matches asset size; keeps layout stable even before CSS -->
+      <img id="sceneImage" src="" alt="Scene Image" width="512" height="512" loading="eager" />
+    </div>
+
+    <div id="question" class="question"></div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <div id="nav" class="nav"></div>
+  </section>
+
+  <script>
+    // --- Scene data (update paths/text as needed) ---
+    const scenes = [
+      {
+        image: "assets/emotions/storyboard-scene1-clean.png",
+        question: "What do you think they are feeling right now?",
+        options: ["Happy", "Sad", "Angry"],
+        correct: "Happy",
+        feedback: "They feel happy because they are enjoying a game together."
+      },
+      {
+        image: "assets/emotions/storyboard-scene2-clean.png",
+        question: "How might the little girl be feeling?",
+        options: ["Sad", "Excited", "Proud"],
+        correct: "Sad",
+        feedback: "They feel sad because they want to play with the blocks too."
+      },
+      {
+        image: "assets/emotions/storyboard-scene3-clean.png",
+        question: "What is the little girl feeling before she gets help?",
+        options: ["Frustrated", "Relaxed", "Surprised"],
+        correct: "Frustrated",
+        feedback: "They feel frustrated because the puzzle is difficult."
+      },
+      {
+        image: "assets/emotions/storyboard-scene4-clean.png",
+        question: "What might the little boy who fell be feeling?",
+        options: ["Calm", "Upset", "Happy"],
+        correct: "Upset",
+        feedback: "They might feel upset because their leg hurts."
+      },
+      {
+        image: "assets/emotions/storyboard-scene5-clean.png",
+        question: "What are they all feeling now?",
+        options: ["Shocked", "Frustrated", "Happy"],
+        correct: "Happy",
+        feedback: "They’re all happy – because it’s nice to have friends."
+      },
+      {
+        image: "assets/emotions/storyboard-scene6.png",
+        question: "",
+        options: [],
+        correct: "",
+        feedback: "Psychology helps us see how our actions affect feelings."
+      }
+    ];
+
+    let currentScene = 0;
+
+    // Robust image show: hide -> set src -> wait for decode/load -> reveal
+    async function showImage(src) {
+      const img = document.getElementById("sceneImage");
+      img.style.visibility = "hidden";
+
+      // If same src, force a reload event by clearing first
+      if (img.src && img.src.endsWith(src)) {
+        img.removeAttribute("src");
+      }
+
+      // Probe decode ahead of time (works in modern browsers)
+      let decoded = false;
+      try {
+        const probe = new Image();
+        probe.src = src;
+        if (probe.decode) {
+          await probe.decode();
+          decoded = true;
+        }
+      } catch (e) {
+        // ignore decode errors; we'll rely on load event
+      }
+
+      // Set the actual image
+      img.src = src;
+
+      if (decoded) {
+        img.style.visibility = "visible";
+        return;
+      }
+
+      // Fallback: show after load (covers cache and older browsers)
+      await new Promise((resolve) => {
+        if (img.complete) {
+          resolve();
+        } else {
+          const onDone = () => {
+            img.removeEventListener("load", onDone);
+            img.removeEventListener("error", onDone);
+            resolve();
+          };
+          img.addEventListener("load", onDone);
+          img.addEventListener("error", onDone);
+        }
+      });
+      img.style.visibility = "visible";
+    }
+
+    function clearChildren(id) {
+      const el = document.getElementById(id);
+      while (el.firstChild) el.removeChild(el.firstChild);
+    }
+
+    function loadScene() {
+      const scene = scenes[currentScene];
+
+      // Scene image
+      showImage(scene.image);
+
+      // Then content
+      document.getElementById("question").textContent = scene.question || "";
+      clearChildren("options");
+      clearChildren("nav");
+
+      const feedbackEl = document.getElementById("feedback");
+      feedbackEl.textContent = "";
+      feedbackEl.style.color = "#333";
+
+      if (scene.options && scene.options.length) {
+        scene.options.forEach((opt) => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+          btn.onclick = () => checkAnswer(opt);
+          document.getElementById("options").appendChild(btn);
+        });
+      } else {
+        // End card
+        feedbackEl.textContent = scene.feedback || "";
+        const playAgain = document.createElement("button");
+        playAgain.textContent = "Play Again";
+        playAgain.onclick = () => { currentScene = 0; loadScene(); };
+        document.getElementById("nav").appendChild(playAgain);
+
+        const homeBtn = document.createElement("button");
+        homeBtn.textContent = "Return to the Park";
+        homeBtn.onclick = () => { goHome(); };
+        document.getElementById("nav").appendChild(homeBtn);
+      }
+    }
+
+    function checkAnswer(answer) {
+      const scene = scenes[currentScene];
+      const feedbackEl = document.getElementById("feedback");
+      if (answer === scene.correct) {
+        feedbackEl.textContent = scene.feedback;
+        feedbackEl.style.color = "green";
+      } else {
+        feedbackEl.textContent = "Not quite – look again.";
+        feedbackEl.style.color = "red";
+      }
+
+      clearChildren("nav");
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next Scene";
+      nextBtn.onclick = () => { currentScene = Math.min(currentScene + 1, scenes.length - 1); loadScene(); };
+      document.getElementById("nav").appendChild(nextBtn);
+    }
+
+    // --- Launch / Navigation controls ---
+    const instructionsEl = document.getElementById('instructions');
+    const gameEl = document.getElementById('game');
+    const startBtnEl = document.getElementById('startBtn');
+    const howToBtnEl = document.getElementById('howToBtn');
+    const homeBtnEl = document.getElementById('homeBtn');
+    const howToPanelEl = document.getElementById('howToPanel');
+
+    startBtnEl.addEventListener('click', () => {
+      instructionsEl.classList.add('hidden');
+      gameEl.classList.remove('hidden');
+      // Start from scene 0
+      currentScene = 0;
+      loadScene();
+    });
+
+    howToBtnEl.addEventListener('click', () => {
+      howToPanelEl.classList.toggle('hidden');
+    });
+// Audio autoplay unlock & resilience
+    (function(){
+      const bgm = document.getElementById('bgm');
+      if (!bgm) return;
+
+      bgm.volume = 0.35;
+
+      function unlock(){
+        bgm.play().catch(()=>{});
+        window.removeEventListener('pointerdown', unlock, { once: true });
+        window.removeEventListener('keydown',   unlock, { once: true });
+        window.removeEventListener('click',     unlock, { once: true });
+      }
+      window.addEventListener('pointerdown', unlock, { once: true });
+      window.addEventListener('keydown',   unlock, { once: true });
+      window.addEventListener('click',     unlock, { once: true });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') bgm.play().catch(()=>{});
+      });
+      window.addEventListener('pageshow', () => bgm.play().catch(()=>{}));
+    })();
+
+    // Kickoff deferred to Start button
+  </script>
+
+</body>
+</html>

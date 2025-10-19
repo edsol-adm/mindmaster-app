@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Domino Choices – Our Actions and Impact</title>
+<meta name="color-scheme" content="light"/>
+
+<style>
+  :root{
+    --brand:#FFD700;               /* MindMaster yellow */
+    --ink:#111;
+    --bg-sky:#eaf4ff;
+    --panel:#fffdfd;
+    --shadow:rgba(0,0,0,.20);
+    --ring:#000;
+    --ok:#2ecc71;
+    --warn:#e67e22;
+    --err:#e74c3c;
+
+    --tile:#fff;                   /* domino face */
+    --tileDots:#FFD700;            /* 3 yellow dots */
+    --tileEdge:#000;               /* border */
+
+    --pathA:#3FA9FF;               /* left branch tint */
+    --pathB:#FF793F;               /* right branch tint */
+
+    --captionMax:72ch;
+
+    /* B) Responsive first-tile sizing */
+    --tile-w: clamp(108px, 9vw, 168px);
+    --tile-h: calc(var(--tile-w) * 1.35);
+    --tile-pad: clamp(8px, 1.4vw, 14px);
+    --label-font: clamp(14px, 1.6vw, 20px);
+    --label-line: 1.15;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; padding:0;
+    font-family:"Nunito","Segoe UI",Roboto,Inter,Helvetica,Arial,"Noto Sans Thai",sans-serif;
+    color:var(--ink);
+    background:var(--bg-sky);
+    overflow:hidden;
+    font-weight:600;
+  }
+  h1,h2,h3, #topBar, button{ font-weight:800; }
+  img{max-width:100%; display:block}
+  button{font-family:inherit}
+
+  .hidden{display:none !important;}
+  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+  /* ---------- INTRO ---------- */
+  #intro{
+    position:fixed; inset:0; z-index:40; display:flex; align-items:center; justify-content:center;
+    background:#0006 center/cover no-repeat;
+  }
+  #intro::before{
+    content:""; position:absolute; inset:0;
+    background:url('assets/domino-choices/images/ui/bg-launch.png') center/cover no-repeat;
+  }
+  .intro-card, .end-card{
+    position:relative; z-index:1; text-align:center;
+    background:#fffdfdd9; border-radius:18px; padding:22px; width:min(820px,92vw);
+    box-shadow:0 12px 30px var(--shadow);
+  }
+  .sub{opacity:.9; margin-top:6px}
+  .controls{ margin:14px 0; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  button{
+    background:var(--brand); color:#000;
+    padding:10px 18px; border:none; border-radius:14px;
+    font-size:1rem; cursor:pointer; box-shadow:0 3px 0 #d1b100;
+    transition:transform .08s ease, filter .12s ease;
+  }
+  button:active{ transform:translateY(1px) }
+  button:focus{ outline:3px solid #000; outline-offset:2px }
+
+  #howToPanel{ background:#fff8; padding:12px; border-radius:12px; text-align:left; line-height:1.3; }
+
+  /* ---------- GAME LAYOUT ---------- */
+  #game{ position:fixed; inset:0; display:grid; grid-template-rows:auto 1fr; z-index:10; }
+
+  /* Top bar */
+  #topBar{
+    display:flex; align-items:center; gap:18px; padding:10px 14px;
+    background:#fffdfd; box-shadow:0 2px 0 rgba(0,0,0,.08); font-weight:800;
+  }
+  #progress{ display:flex; align-items:center; gap:10px; }
+  #scoreBox{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+  #scoreNum{ padding:6px 12px; border-radius:12px; background:#fff; border:2px solid #000; min-width:3ch; text-align:center; }
+
+  /* Stage container fills all space under the top bar */
+  #stage{
+    position:relative; overflow:hidden; width:100%; height:100%;
+    background: linear-gradient(#d9efff,#eef7ff);
+  }
+
+  /* Caption chip (kept for accessibility parity; hidden per Adjustment E) */
+  #captionChip{
+    position:absolute; left:50%; top:8px; transform:translateX(-50%);
+    max-width:var(--captionMax);
+    background:#fff; border:1px solid #000; border-radius:999px;
+    padding:8px 12px; display:flex; align-items:center; gap:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,.08); line-height:1.2; z-index:6;
+  }
+  #captionReplay{
+    background:#fff; border:1px solid #000; border-radius:999px;
+    width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;
+    font-weight:800; cursor:pointer;
+  }
+
+  /* One-time instruction modal */
+  #scrim{ position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:59; opacity:0; transition:opacity 220ms ease; }
+  #scrim.show{ opacity:1; }
+  #instruction{ position:fixed; inset:0; display:grid; place-items:center; z-index:60; opacity:0; transition:opacity 220ms ease; }
+  #instruction.show{ opacity:1; }
+  #instructionPanel{
+    max-width:860px; width:min(92vw,860px);
+    background:#fffdfd; border:1px solid #000; border-radius:18px;
+    padding:22px; box-shadow:0 18px 40px rgba(0,0,0,.2); font-size:1.15rem; line-height:1.4; text-align:center;
+  }
+
+  /* Scene wrapper: fill entire stage (A) */
+  #sceneWrap{
+    position:relative; overflow:hidden; margin:0;
+    width:100%; height:100%;
+    background:#eef7ff; border:2px solid #0004; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,.10) inset;
+  }
+  /* Scene image anchored bottom-center (A) */
+  #scene{
+    position:absolute; inset:0;
+    background-size:contain; background-repeat:no-repeat;
+    background-position:bottom center;
+  }
+
+  /* Outcome panels */
+  .outcomePanel{
+    position:absolute; width:50%; max-width:520px; aspect-ratio:16/9;
+    background:#fff; border:2px solid #000; border-radius:12px; overflow:hidden;
+    box-shadow:0 10px 22px rgba(0,0,0,.20);
+    opacity:0;
+    transform:translate(var(--ox,0), var(--oy,0)) scale(.96);
+    transition:opacity 260ms ease, transform 260ms ease;
+    display:flex; flex-direction:column;
+    pointer-events:none;       /* hidden panels don't block clicks */
+    z-index:5;                 /* below branchGroup when hidden */
+  }
+  .outcomePanel.show{
+    opacity:1; transform:translate(0,0) scale(1);
+    pointer-events:auto;       /* clickable only when shown */
+    z-index:8;                 /* above branch groups when visible */
+  }
+  .outcomePanel img{ width:100%; height:auto; display:block; }
+  .outcomeCaption{ padding:8px 10px; border-top:2px solid #000; background:#fff; font-weight:800; line-height:1.2; }
+
+  /* Branch layers */
+  #branchLayer{ position:absolute; inset:0; pointer-events:none; }
+  .branchGroup{
+    position:absolute; inset:0; pointer-events:auto; /* A) must accept clicks */
+    z-index:6; /* ensure branches (labels) are above hidden outcomes */
+  }
+
+  /* Domino tiles (base) */
+  .domino{
+    position:absolute; width:64px; height:100px; border:2px solid var(--tileEdge); border-radius:10px;
+    background:#fff url('assets/domino-choices/images/ui/domino-block.png') center/contain no-repeat;
+    box-shadow:0 4px 8px rgba(0,0,0,.15);
+    transform-origin:50% 100%; /* pivot at bottom edge */
+    pointer-events:none;       /* all non-front tiles ignore pointer events */
+    display:flex; align-items:center; justify-content:center; padding:4px;
+    z-index:6;
+  }
+  .domino.btn{
+    background:#fff; pointer-events:auto;
+    z-index:100; /* A) bring button tiles above non-modal layers */
+  }
+  /* B) Upsized first tiles */
+  .domino.btn.is-first{
+    width:var(--tile-w);
+    height:var(--tile-h);
+    padding:var(--tile-pad);
+    z-index:110;
+  }
+  .domino .label{
+    font-size:.78rem; font-weight:900; text-align:center; line-height:1.1; color:#000; background:#fff9; padding:4px 6px; border-radius:8px; border:1px solid #000;
+  }
+  .domino.btn.is-first .label{
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+
+    font-size:var(--label-font);
+    line-height:var(--label-line);
+    white-space:normal;
+    text-align:center;
+    text-wrap:balance;
+    word-break:auto-phrase;
+  }
+  .domino.btn.is-first:focus-visible{
+    outline:3px solid #1a73e8;
+    outline-offset:3px;
+    border-radius:10px;
+  }
+
+  /* Reduced-motion: glow instead of rotate */
+  @media (prefers-reduced-motion: reduce){
+    .domino{ transition:none !important; }
+  }
+  .lit{ box-shadow:0 0 0 4px rgba(0,0,0,.05), 0 0 14px 6px rgba(255,215,0,.45); }
+
+  /* Next button + Domino Detective badge */
+  #nextWrap{
+    position:absolute; right:10px; bottom:10px; display:flex; align-items:center; gap:10px; z-index:7;
+  }
+  #detective{
+    display:none; align-items:center; gap:6px; background:#fff; border:2px solid #000; border-radius:999px; padding:6px 10px; font-weight:900;
+  }
+  #detective.show{ display:flex; }
+  #nextBtn{ display:none; }
+  #nextBtn.pulse{ display:inline-block; animation:pulse 1s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1)} 50%{ transform:scale(1.05)} }
+
+  /* BETWEEN (no stars here per E) */
+  #between{
+    position:fixed; inset:0; background:rgba(0,0,0,0.35);
+    display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center;
+    z-index:30;
+  }
+  .coin-burst{ display:flex; gap:10px; }
+  .sparkle{ animation:sparkle 900ms ease infinite; }
+  @keyframes sparkle{ 0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(1.2) rotate(10deg)} }
+
+  /* END */
+  #end{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; z-index:35; }
+  #starsRow img{ width:96px; height:96px; margin:0 6px; }
+
+  /* Toast */
+  #toast{
+    position:absolute; left:50%; top:12px; transform:translateX(-50%);
+    background:#000; color:#fff; padding:8px 12px; border-radius:12px; font-weight:800;
+    opacity:0; transition:opacity 160ms ease; z-index:9;
+  }
+  #toast.show{ opacity:1; }
+
+  /* D) Recap overlay */
+  #recap[hidden]{ display:none; }
+  #recap{ position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.45); z-index:999; }
+  #recap .panel{ background:#fff; padding:20px; width:min(680px,92vw); border-radius:16px; }
+  #recap ul{ margin:12px 0 16px; padding-left:20px; }
+  #recap .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+  /* A) Clickability backstops */
+  [hidden], [aria-hidden="true"]{ pointer-events:none !important; }
+  #scene{ pointer-events:none; }
+  .hitTarget{ position:absolute; background:transparent; border:0; pointer-events:auto; z-index:120; min-width:88px; min-height:88px; }
+</style>
+</head>
+<body>
+<!-- INTRO -->
+<section id="intro" role="dialog" aria-labelledby="introTitle">
+  <div class="intro-card">
+    <h1 id="introTitle">Domino Choices – Our Actions and Impact</h1>
+    <p class="sub">Look at the picture. Choose an action domino and see what happens!</p>
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="howToBtn">How to Play</button>
+      <button id="homeBtn">Return to the Park</button>
+    </div>
+    <div id="howToPanel" class="hidden" aria-live="polite">
+      <ol style="margin:8px 0 0 18px;">
+        <li>Look at the scene.</li>
+        <li>Tap the first domino of a path (action label).</li>
+        <li>Watch the dominoes topple in a chain.</li>
+        <li>See what happens at the end.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="hidden" aria-live="polite">
+  <div id="topBar">
+    <div id="progress"><span id="roundLabel">Round 1/2</span> • <span id="scenarioLabel">Scenario 1/3</span></div>
+    <div id="scoreBox" aria-live="polite" aria-atomic="true">
+      <span>Your score</span>
+      <span id="scoreNum">0</span>
+    </div>
+  </div>
+
+  <div id="stage" role="application" aria-label="Domino Choices playfield">
+    <!-- Caption (kept hidden per E) -->
+    <div id="captionChip" class="hidden" aria-live="polite">
+      <span id="captionText"></span>
+      <button id="captionReplay" aria-label="Replay caption" title="Replay">↻</button>
+    </div>
+
+    <!-- One-time instruction modal -->
+    <div id="scrim" class="hidden" aria-hidden="true"></div>
+    <div id="instruction" class="hidden" role="dialog" aria-modal="true" aria-live="polite">
+      <div id="instructionPanel">
+        Look at the picture. Choose an action domino and see what happens!
+      </div>
+    </div>
+
+    <!-- Scene -->
+    <div id="sceneWrap" aria-live="polite">
+      <div id="scene" aria-label="Scenario scene"></div>
+
+      <!-- Domino branches -->
+      <div id="branchLayer" aria-hidden="true"></div>
+      <div class="branchGroup branchA" aria-hidden="true"></div>
+      <div class="branchGroup branchB" aria-hidden="true"></div>
+
+      <!-- Outcome panels -->
+      <div id="outcomeA" class="outcomePanel" aria-hidden="true" tabindex="-1">
+        <img id="outImgA" alt="Outcome A"/>
+        <div class="outcomeCaption" id="outCapA"></div>
+      </div>
+      <div id="outcomeB" class="outcomePanel" aria-hidden="true" tabindex="-1">
+        <img id="outImgB" alt="Outcome B"/>
+        <div class="outcomeCaption" id="outCapB"></div>
+      </div>
+
+      <!-- Next + badge -->
+      <div id="nextWrap">
+        <div id="detective" aria-hidden="true">🕵️ Domino Detective!</div>
+        <button id="nextBtn" class="pulse" aria-label="Next scenario">Next ▶</button>
+      </div>
+
+      <!-- Toast -->
+      <div id="toast" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BETWEEN (uses coins, not stars) -->
+<div id="between" class="hidden" aria-hidden="true">
+  <div class="coin-burst">
+    <img class="sparkle" src="assets/domino-choices/images/ui/coin.png" alt="" width="56" height="56"/>
+    <img class="sparkle" src="assets/domino-choices/images/ui/coin.png" alt="" width="56" height="56"/>
+    <img class="sparkle" src="assets/domino-choices/images/ui/coin.png" alt="" width="56" height="56"/>
+  </div>
+  <p id="betweenText" style="color:#fff; font-weight:800; font-size:1.4rem; text-shadow:0 2px 8px rgba(0,0,0,.4)"></p>
+</div>
+
+<!-- END -->
+<section id="end" class="hidden">
+  <div class="end-card" role="dialog" aria-labelledby="endHeadline">
+    <h2 id="endHeadline">Fantastic thinking!</h2>
+    <p id="endStats" class="sub">Nice work.</p>
+    <div id="starsRow" aria-label="Star rating"></div>
+    <div class="controls">
+      <button id="playAgainBtn">Play Again</button>
+      <button id="homeBtn2">Return to the Park</button>
+    </div>
+  </div>
+</section>
+
+<!-- D) END-OF-ROUND RECAP -->
+<section id="recap" role="dialog" aria-modal="true" hidden>
+  <div class="panel" role="document">
+    <h2 id="recapTitle" tabindex="-1">Round recap</h2>
+    <ul id="recapList"></ul>
+    <div class="actions">
+      <button id="btnNextRound">Next Round</button>
+      <button id="btnFinish" hidden>Finish Game</button>
+      <button id="btnPlayAgain">Play Again</button>
+      <button id="btnHome">Return to the Park</button>
+    </div>
+    <div id="recapLive" class="sr-only" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ARIA live region -->
+<div id="ariaLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =================== CONFIG =================== */
+const NS = 'domino-choices/';
+const ROOT = 'assets/domino-choices/';
+const IMG = (p)=> ROOT+'images/'+p;
+const VO  = (p)=> ROOT+'voice/'+p;  // (outcome VO not used in Prompt 3 version)
+const SFX = (p)=> ROOT+'sfx/'+p;
+const BGM = ROOT+'audio/bgm.mp3';
+
+const STAR_RULES = [
+  {min:6, stars:3},
+  {min:4, stars:2},
+  {min:2, stars:1},
+  {min:0, stars:0}
+];
+
+/* =================== DATA — Prompt 3 is source of truth (C) =================== */
+const SCENARIOS = [
+  // Round 1 (3 scenarios)
+  {
+    id: 'water_tap',
+    scene: 'assets/domino-choices/images/scenes/water_tap.png',
+    branches: {
+      A: {
+        label: 'Turn off tap after use',
+        outcomeCaption: 'You saved water for others.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/water_tap-save.png',
+        valence: 'helpful',
+        summary: 'You turned off the tap — water was saved for others. 😀'
+      },
+      B: {
+        label: 'Leave water running',
+        outcomeCaption: 'Water is wasted, puddles form.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/water_tap-waste.png',
+        valence: 'hurtful',
+        summary: 'You left the tap running — water was wasted, puddles formed. ☹️'
+      }
+    }
+  },
+  {
+    id: 'helping_grandma',
+    scene: 'assets/domino-choices/images/scenes/helping_grandma.png',
+    branches: {
+      A: {
+        label: 'Help Grandma carry one bag',
+        outcomeCaption: 'She feels supported and smiles.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/helping_grandma-carry.png',
+        valence: 'helpful',
+        summary: 'You helped Grandma — she felt supported and smiled. 😀'
+      },
+      B: {
+        label: 'Don’t care. Walk ahead',
+        outcomeCaption: 'She struggles with the bag.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/helping_grandma-ignore.png',
+        valence: 'hurtful',
+        summary: 'You ran ahead — she struggled with the bag. ☹️'
+      }
+    }
+  },
+  {
+    id: 'lego_robot_accident',
+    scene: 'assets/domino-choices/images/scenes/lego_robot_accident.png',
+    branches: {
+      A: {
+        label: 'Say sorry, help fix robot',
+        outcomeCaption: 'The builder smiles, and the robot is rebuilt together.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/lego_robot-fix.png',
+        valence: 'helpful',
+        summary: 'You said sorry and helped fix it — the robot was rebuilt together. 😀'
+      },
+      B: {
+        label: 'Blame each other, get angry',
+        outcomeCaption: 'The builder felt upset, and play stopped.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/lego_robot-blame.png',
+        valence: 'hurtful',
+        summary: 'You blamed each other — your friend felt upset and play stopped. ☹️'
+      }
+    }
+  },
+
+  // Round 2 (4 scenarios)
+  {
+    id: 'temple_cleanliness',
+    scene: 'assets/domino-choices/images/scenes/temple_cleanliness.png',
+    branches: {
+      A: {
+        label: 'Pick up litter, keep clean',
+        outcomeCaption: 'The temple yard looked clean.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/temple_cleanliness-pickup.png',
+        valence: 'helpful',
+        summary: 'You picked up litter — the temple yard looked clean. 😀'
+      },
+      B: {
+        label: 'Ignore litter, leave for others',
+        outcomeCaption: 'More trash gathers, harder for helpers.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/temple_cleanliness-ignore.png',
+        valence: 'hurtful',
+        summary: 'You ignored the litter — more trash gathered; harder for helpers. ☹️'
+      }
+    }
+  },
+  {
+    id: 'treehouse_painting',
+    scene: 'assets/domino-choices/images/scenes/treehouse_painting.png',
+    branches: {
+      A: {
+        label: 'Just accident. Help clean up',
+        outcomeCaption: 'We finished together. The treehouse looked bright and beautiful.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/treehouse_painting-finish.png',
+        valence: 'helpful',
+        summary: 'You said ‘just an accident’ and helped clean — the treehouse looked bright and beautiful. 😀'
+      },
+      B: {
+        label: 'Yell at friend to stop painting',
+        outcomeCaption: 'A friend sat out. The treehouse stayed messy and the fun stopped.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/treehouse_painting-exclude.png',
+        valence: 'hurtful',
+        summary: 'You yelled at your friend to stop — a friend sat out and the fun stopped. ☹️'
+      }
+    }
+  },
+  {
+    id: 'camping_forgot_matches',
+    scene: 'assets/domino-choices/images/scenes/camping_forgot_matches.png',
+    branches: {
+      A: {
+        label: 'Learn to make fire with sticks',
+        outcomeCaption: 'You learned a new skill. The family made fire together.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/camping-fire_success.png',
+        valence: 'helpful',
+        summary: 'You stayed positive and tried — your family learned together and made a fire. 😀'
+      },
+      B: {
+        label: 'Sulk about no matches',
+        outcomeCaption: 'The family felt unhappy, and the fun stopped.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/camping-fire_failed.png',
+        valence: 'hurtful',
+        summary: 'You complained it was ruined — everyone felt unhappy and the fun stopped. ☹️'
+      }
+    }
+  },
+  {
+    id: 'flowers_care',
+    scene: 'assets/domino-choices/images/scenes/flowers_care.png',
+    branches: {
+      A: {
+        label: 'Water flowers to look nice',
+        outcomeCaption: 'Flowers looked fresh, neighbors smiled.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/flowers_care-water.png',
+        valence: 'helpful',
+        summary: 'You watered the flowers — they looked fresh and neighbors smiled. 😀'
+      },
+      B: {
+        label: 'Jump on flowers, destroy them',
+        outcomeCaption: 'Flowers were ruined, neighbors upset.',
+        outcomeImage: 'assets/domino-choices/images/outcomes/flowers_care-break.png',
+        valence: 'hurtful',
+        summary: 'You jumped on the flowers — they were ruined and neighbors were upset. ☹️'
+      }
+    }
+  }
+];
+
+/* Build rounds from order above: first 3 => Round 1, last 4 => Round 2 */
+const ROUNDS = [
+  {id:'r1', scenarios: SCENARIOS.slice(0,3)},
+  {id:'r2', scenarios: SCENARIOS.slice(3)}
+];
+
+/* =================== ELEMENTS =================== */
+const intro = document.getElementById('intro');
+const startBtn = document.getElementById('startBtn');
+const howToBtn = document.getElementById('howToBtn');
+const howToPanel = document.getElementById('howToPanel');
+const homeBtn = document.getElementById('homeBtn');
+
+const game = document.getElementById('game');
+const roundLabel = document.getElementById('roundLabel');
+const scenarioLabel = document.getElementById('scenarioLabel');
+const scoreNum = document.getElementById('scoreNum');
+
+const scrim = document.getElementById('scrim');
+const instruction = document.getElementById('instruction');
+const instructionPanel = document.getElementById('instructionPanel');
+
+const sceneWrap = document.getElementById('sceneWrap');
+const sceneEl = document.getElementById('scene');
+
+const branchLayer = document.getElementById('branchLayer');
+const branchA = document.querySelector('.branchGroup.branchA');
+const branchB = document.querySelector('.branchGroup.branchB');
+
+const outA = document.getElementById('outcomeA');
+const outB = document.getElementById('outcomeB');
+const outImgA = document.getElementById('outImgA');
+const outImgB = document.getElementById('outImgB');
+const outCapA = document.getElementById('outCapA');
+const outCapB = document.getElementById('outCapB');
+
+const nextBtn = document.getElementById('nextBtn');
+const detective = document.getElementById('detective');
+
+const between = document.getElementById('between');
+const betweenText = document.getElementById('betweenText');
+
+const end = document.getElementById('end');
+const endHeadline = document.getElementById('endHeadline');
+const endStats = document.getElementById('endStats');
+const starsRow = document.getElementById('starsRow');
+const playAgainBtn = document.getElementById('playAgainBtn');
+const homeBtn2 = document.getElementById('homeBtn2');
+
+const captionChip = document.getElementById('captionChip');
+const captionText = document.getElementById('captionText');
+const captionReplay = document.getElementById('captionReplay');
+
+const toast = document.getElementById('toast');
+const ariaLive = document.getElementById('ariaLive');
+
+/* Recap elements (D) */
+const recap = document.getElementById('recap');
+const recapTitle = document.getElementById('recapTitle');
+const recapList = document.getElementById('recapList');
+const recapLive = document.getElementById('recapLive');
+const btnNextRound = document.getElementById('btnNextRound');
+const btnFinish = document.getElementById('btnFinish');
+const btnPlayAgain = document.getElementById('btnPlayAgain');
+const btnHome = document.getElementById('btnHome');
+
+/* =================== AUDIO =================== */
+let bgm;
+const sfxTile = new Audio(SFX('domino_click.mp3'));
+const sfxEnd  = new Audio(SFX('chain_end.mp3'));
+const vInstruction = new Audio(VO('v_instruction.mp3'));
+const vFantastic = new Audio(VO('v_fantastic.mp3'));
+const vGreatEffort = new Audio(VO('v_great_effort.mp3'));
+const vGoodTry = new Audio(VO('v_good_try.mp3'));
+const vEndChime = new Audio(VO('v_end_chime.mp3'));
+
+let currentVoice=null;
+
+function setupAudioOnce(){
+  if(bgm) return;
+  bgm = new Audio(BGM);
+  bgm.loop = true; bgm.volume = 0.28; bgm.preload='auto';
+}
+function tryPlay(a){ if(!a) return; try{ a.currentTime=0; a.play().catch(()=>{});}catch{} }
+function tryPause(a){ if(!a) return; try{ a.pause(); }catch{} }
+function stopVoice(){ tryPause(currentVoice); currentVoice=null; }
+function playVoice(a){
+  stopVoice(); currentVoice=a;
+  if(bgm){ const old=bgm.volume; bgm.volume=Math.max(0, old*0.65); setTimeout(()=>{ try{bgm.volume=old;}catch{} }, 1200); }
+  tryPlay(a);
+}
+
+/* =================== STATE =================== */
+let roundIdx=0, scenarioIdx=0;
+let sessionsPlayed = 0;
+let score=0;               // +1 per scenario completed (>=1 branch viewed)
+let seenBranchA=false, seenBranchB=false;
+let instructionShownThisSession=false;
+let motionReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Randomization seed that alternates across replays */
+let sessionFlip = false;
+
+/* D) Recap state */
+const recapByRound = { 1: [], 2: [] };
+
+/* =================== HELPERS =================== */
+function announce(msg){ ariaLive.textContent=''; setTimeout(()=> ariaLive.textContent=msg, 10); }
+function toastMsg(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 900); }
+function saveLS(k,v){ try{ localStorage.setItem(NS+k, JSON.stringify(v)); }catch{} }
+function loadLS(k, fb){ try{ const v=JSON.parse(localStorage.getItem(NS+k)); return (v==null?fb:v);}catch{return fb} }
+function progressLabels(){
+  const totalRounds = ROUNDS.length;
+  const r = ROUNDS[roundIdx];
+  roundLabel.textContent = `Round ${roundIdx+1}/${totalRounds}`;
+  scenarioLabel.textContent = `Scenario ${scenarioIdx+1}/${r.scenarios.length}`;
+}
+
+/* A) Invisible hit target overlay for each first tile */
+function mountFirstTileHitTarget(tileBtn, branchKey) {
+  const hit = document.createElement('button');
+  hit.className = 'hitTarget';
+  hit.type = 'button';
+  hit.setAttribute('aria-label', tileBtn.textContent.trim());
+  hit.addEventListener('click', () => tipChain(branchKey));
+
+  Object.assign(hit.style, {
+    left: `${tileBtn.offsetLeft}px`,
+    top: `${tileBtn.offsetTop}px`,
+    width: `${tileBtn.offsetWidth}px`,
+    height: `${tileBtn.offsetHeight}px`
+  });
+  tileBtn.parentElement.appendChild(hit);
+}
+
+/* B) tiny auto-fit for edge cases */
+function fitLabel(el, {min=12, step=1}={}) {
+  const maxH = el.clientHeight;
+  let size = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollHeight > maxH && size > min) {
+    size -= step;
+    el.style.fontSize = size + 'px';
+  }
+}
+
+/* (Optional dev aid) */
+document.addEventListener('click', (e) => {
+  const top = document.elementsFromPoint(e.clientX, e.clientY)[0];
+  if (!top.classList.contains('hitTarget') &&
+      !top.classList.contains('domino') &&
+      !top.closest?.('.domino')) {
+    // console.warn('Click intercepted by:', top);
+  }
+});
+
+/* =================== BRANCH RENDERING =================== */
+/* All tiles start upright (0°). Gap floor raised to 200px and 14% width (B). */
+
+function clearBranches(){
+  branchA.innerHTML=''; branchB.innerHTML='';
+  branchA.style.pointerEvents='none'; branchB.style.pointerEvents='none';
+}
+
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+/* Viewport-based tile density: 10–14 tiles total; we’ll still compute positions, but only first is a button */
+function tilesForViewport(){
+  const w = sceneWrap.clientWidth;
+  const raw = Math.round(w / 120);
+  return clamp(raw, 10, 14);
+}
+
+function branchPositions(side, tiles){
+  const w = sceneWrap.clientWidth, h = sceneWrap.clientHeight;
+  const baseY = h * 0.82;                               // fork height
+  const gap = Math.max(w * 0.14, 200);                  // center-to-center gap
+  const baseXLeft  = (w/2) - gap/2;
+  const baseXRight = (w/2) + gap/2;
+
+  // Desired steps (before corrections)
+  let stepX = w * 0.045 * (side==='A' ? -1 : 1);        // ~4.5%
+  let stepY = -h * 0.05;                                // gentle rise
+  const rot = 0;                                        // start upright
+
+  // Side margin check: ensure last tile stays inside margin
+  const margin = w * 0.08;                              // ≥8% of width
+  const x0 = (side==='A' ? baseXLeft : baseXRight);
+  let lastXProjected = x0 + stepX*(tiles-1);
+  if(side==='A' && lastXProjected < margin){
+    stepX = (margin - x0)/(tiles-1);
+  }
+  if(side==='B' && lastXProjected > (w - margin)){
+    stepX = ((w - margin) - x0)/(tiles-1);
+  }
+
+  // Vertical cap: keep last tile ≥20% from top
+  const topMin = h * 0.20;
+  const lastYProjected = baseY + stepY*(tiles-1);
+  if(lastYProjected < topMin){
+    stepY = (topMin - baseY)/(tiles-1);
+  }
+
+  const out = [];
+  for(let i=0;i<tiles;i++){
+    out.push({ x: x0 + stepX*i, y: baseY + stepY*i, rot });
+  }
+  return out;
+}
+
+function placeOutcomePanels(){
+  // A ≈14% left; B ≈62% left; ~9% top
+  const w = sceneWrap.clientWidth, h = sceneWrap.clientHeight;
+  const leftPos  = {x: w*0.14, y: h*0.09};
+  const rightPos = {x: w*0.62, y: h*0.09};
+  outA.style.left = leftPos.x+'px'; outA.style.top = leftPos.y+'px';
+  outB.style.left = rightPos.x+'px'; outB.style.top = rightPos.y+'px';
+}
+
+/* Randomize left/right while preserving branch objects (C) */
+function sidesForScenario(scen){
+  const A = scen.branches.A;
+  const B = scen.branches.B;
+  let left = A, right = B;
+  const r = Math.random() < 0.5;
+  const doSwap = (sessionFlip ? !r : r);
+  if(doSwap){ left=B; right=A; }
+  return {left, right};
+}
+
+function renderBranchesFor(scen){
+  clearBranches();
+  placeOutcomePanels();
+
+  const tileCount = tilesForViewport();
+
+  const {left, right} = sidesForScenario(scen);
+
+  // Preload outcome images and captions into panels matched to left/right
+  outImgA.src = left.outcomeImage;
+  outCapA.textContent = left.outcomeCaption;
+  outImgB.src = right.outcomeImage;
+  outCapB.textContent = right.outcomeCaption;
+
+  outA.classList.remove('show'); outB.classList.remove('show');
+  outA.setAttribute('aria-hidden','true'); outB.setAttribute('aria-hidden','true');
+  outA.style.setProperty('--ox', '0px'); outA.style.setProperty('--oy', '0px');
+  outB.style.setProperty('--ox', '0px'); outB.style.setProperty('--oy', '0px');
+
+  const Apos = branchPositions('A', tileCount);
+  const Bpos = branchPositions('B', tileCount);
+
+  function makeDomino(pos, isButton, labelText, branchKey, isFirst=false){
+    const d = document.createElement(isButton ? 'button' : 'div');
+    d.className = 'domino' + (isButton?' btn':'') + (isFirst?' is-first':'');
+    d.style.left = (pos.x - 32) + 'px';
+    d.style.top  = (pos.y - 100) + 'px';
+    d.style.transform = `rotate(${pos.rot}deg)`;
+
+    if(isButton){
+      const span = document.createElement('span');
+      span.className='label';
+      span.textContent = labelText;
+      d.appendChild(span);
+    }
+    d.setAttribute('tabindex', isButton ? '0' : '-1');
+    d.setAttribute('aria-hidden', isButton ? 'false' : 'true');
+    d.dataset.branch = branchKey;
+    return d;
+  }
+
+  /* LEFT (could be A or B depending on swap) */
+  const firstLeft = makeDomino(Apos[0], true, left.label, 'AorB', true);
+  firstLeft.setAttribute('aria-label', left.label);
+  firstLeft.addEventListener('click', ()=> tipChain(left===scen.branches.A ? 'A' : 'B'));
+  firstLeft.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tipChain(left===scen.branches.A ? 'A' : 'B'); }});
+  branchA.appendChild(firstLeft);
+  for(let i=1;i<Apos.length;i++){ branchA.appendChild( makeDomino(Apos[i], false, '', 'AorB') ); }
+
+  /* RIGHT */
+  const firstRight = makeDomino(Bpos[0], true, right.label, 'AorB', true);
+  firstRight.setAttribute('aria-label', right.label);
+  firstRight.addEventListener('click', ()=> tipChain(right===scen.branches.A ? 'A' : 'B'));
+  firstRight.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tipChain(right===scen.branches.A ? 'A' : 'B'); }});
+  branchB.appendChild(firstRight);
+  for(let i=1;i<Bpos.length;i++){ branchB.appendChild( makeDomino(Bpos[i], false, '', 'AorB') ); }
+
+  /* A) Mount invisible hit targets after buttons exist */
+  mountFirstTileHitTarget(firstLeft,  left===scen.branches.A ? 'A' : 'B');
+  mountFirstTileHitTarget(firstRight, right===scen.branches.A ? 'A' : 'B');
+
+  /* B) safety fit for labels */
+  document.querySelectorAll('.domino.btn.is-first .label').forEach(el => fitLabel(el));
+
+  /* Allow clicks */
+  branchA.style.pointerEvents='auto'; branchB.style.pointerEvents='auto';
+}
+
+/* =================== GAME FLOW =================== */
+/* (E) No visible scenario captions */
+function showCaptionFor(s){ /* no-op */ }
+function playCaptionFor(s){ /* no-op */ }
+captionReplay.addEventListener('click', ()=>{ /* no-op */ });
+
+function currentRoundObj(){ return ROUNDS[roundIdx]; }
+function currentScenario(){ return currentRoundObj().scenarios[scenarioIdx]; }
+
+/* D) recap helpers */
+function currentRoundNumber(){ return roundIdx + 1; } // 1 or 2
+function onOutcomeRevealed(sc, chosenKey) {
+  const line = sc.branches[chosenKey].summary;
+  const r = currentRoundNumber();
+  if (!recapByRound[r].includes(line)) recapByRound[r].push(line);
+}
+function maybeShowRoundRecap(){
+  const lastIdx = currentRoundNumber() === 1 ? 2 : 3; // 0-based last index
+  if (scenarioIdx === lastIdx) openRecap();
+}
+function openRecap(){
+  recapList.innerHTML = '';
+  const r = currentRoundNumber();
+  recapByRound[r].forEach(line => {
+    const li = document.createElement('li'); li.textContent = line; recapList.appendChild(li);
+  });
+  document.getElementById('btnNextRound').hidden = (r !== 1);
+  document.getElementById('btnFinish').hidden   = (r !== 2);
+  recap.hidden = false;
+  recapTitle.focus();
+  recapLive.textContent = `Round ${r} recap. ${recapByRound[r].length} item(s).`;
+}
+
+/* E) Stars only at final results */
+function enforceStarUsage(){
+  const starsUsed = [...document.querySelectorAll('img[src*="star-"]')];
+  const atEnd = !end.classList.contains('hidden');
+  if (starsUsed.length && !atEnd){
+    console.warn('Stars must appear only on the final results screen.');
+  }
+}
+
+function startSession(){
+  // Alternate assignment across replays
+  const lastFlip = loadLS('flipSides', false);
+  sessionFlip = !lastFlip;
+  saveLS('flipSides', sessionFlip);
+
+  sessionsPlayed = loadLS('roundsPlayed', 0) + 1; saveLS('roundsPlayed', sessionsPlayed);
+  score = 0; scoreNum.textContent = score;
+  roundIdx = 0; scenarioIdx = 0;
+  recapByRound[1] = []; recapByRound[2] = [];
+
+  intro.classList.add('hidden');
+  game.classList.remove('hidden');
+
+  setupAudioOnce(); tryPlay(bgm);
+
+  instructionShownThisSession = false;
+  beginRound(0);
+  showOneTimeInstruction();
+}
+
+function showOneTimeInstruction(){
+  if(instructionShownThisSession) return;
+  instructionShownThisSession = true;
+
+  scrim.classList.remove('hidden'); instruction.classList.remove('hidden');
+  requestAnimationFrame(()=>{ scrim.classList.add('show'); instruction.classList.add('show'); });
+
+  instruction.setAttribute('role','dialog'); instruction.setAttribute('aria-modal','true');
+  instructionPanel.setAttribute('tabindex','0'); instructionPanel.focus();
+
+  vInstruction.onended = ()=> {
+    scrim.classList.remove('show'); instruction.classList.remove('show');
+    setTimeout(()=>{ scrim.classList.add('hidden'); instruction.classList.add('hidden'); }, 240);
+  };
+  tryPlay(vInstruction);
+}
+
+function beginRound(idx){
+  roundIdx = idx; scenarioIdx = 0; updateScene();
+}
+
+function updateScene(){
+  progressLabels();
+
+  const s = currentScenario();
+  // Scene image
+  sceneEl.style.backgroundImage = `url("${s.scene}")`;
+
+  // Reset outcomes & UI
+  seenBranchA = false; seenBranchB = false;
+  outA.classList.remove('show'); outB.classList.remove('show');
+  outA.setAttribute('aria-hidden','true'); outB.setAttribute('aria-hidden','true');
+  outA.style.setProperty('--ox', '0px'); outA.style.setProperty('--oy', '0px');
+  outB.style.setProperty('--ox', '0px'); outB.style.setProperty('--oy', '0px');
+  detective.classList.remove('show'); detective.setAttribute('aria-hidden','true');
+  nextBtn.classList.remove('pulse'); nextBtn.style.display='none';
+  nextBtn.dataset.scored='';
+
+  // Branches
+  renderBranchesFor(s);
+
+  enforceStarUsage();
+}
+
+/* Topple animation per-branch */
+function tipChain(branchKey){
+  const s = currentScenario();
+
+  // Determine chosen group's side (left/right) for direction
+  const leftLabel = branchA.firstElementChild?.textContent?.trim() || '';
+  const rightLabel = branchB.firstElementChild?.textContent?.trim() || '';
+  const labelA = s.branches.A.label;
+  const labelB = s.branches.B.label;
+
+  const chosenIsLeft = (branchKey === 'A')
+    ? (leftLabel === labelA)
+    : (leftLabel === labelB);
+
+  const group = chosenIsLeft ? branchA : branchB;
+  const tiles = [...group.children];
+
+  // Disable both first tiles during animation to prevent double trigger
+  if(branchA.firstElementChild) branchA.firstElementChild.disabled = true;
+  if(branchB.firstElementChild) branchB.firstElementChild.disabled = true;
+
+  let i=0;
+  const ease = 'cubic-bezier(.2,.8,.25,1)';
+  const dir = chosenIsLeft ? -1 : 1; // LEFT = CCW, RIGHT = CW
+
+  const tick = ()=>{
+    if(i>=tiles.length){
+      onChainComplete(branchKey);
+      return;
+    }
+    const t = tiles[i];
+    if(motionReduce){
+      t.classList.add('lit');
+    }else{
+      // Angle: base 92° ±1°, clamped to 90.5°–93.5°, then signed per side
+      const jitter = (Math.random()*2) - 1; // [-1, +1]
+      const unsigned = clamp(92 + jitter, 90.5, 93.5);
+      const endDeg = unsigned * dir;
+
+      t.style.transition = `transform .28s ${ease}`;
+      t.getBoundingClientRect(); // reflow
+      t.style.transform = `rotate(${endDeg}deg)`;
+    }
+    tryPlay(sfxTile);
+    i++;
+    setTimeout(tick, 110);
+  };
+  tick();
+}
+
+function lastTileCenterAndPanel(branchKey){
+  const group = (function(){
+    const s = currentScenario();
+    const leftLabel = branchA.firstElementChild?.textContent?.trim() || '';
+    const rightLabel = branchB.firstElementChild?.textContent?.trim() || '';
+    const labelA = s.branches.A.label;
+    const labelB = s.branches.B.label;
+    if(branchKey==='A'){
+      return (leftLabel===labelA) ? branchA : branchB;
+    }else{
+      return (leftLabel===labelB) ? branchA : branchB;
+    }
+  })();
+  const tiles = [...group.children];
+  const last = tiles[tiles.length-1];
+  const lastCenter = {
+    x: parseFloat(last.style.left) + 32,
+    y: parseFloat(last.style.top) + 100
+  };
+  const panel = (function(){
+    const s = currentScenario();
+    const leftLabel = branchA.firstElementChild?.textContent?.trim() || '';
+    const labelA = s.branches.A.label;
+    // If left label matches chosen branch => panel A, else panel B
+    if(branchKey==='A'){
+      return (leftLabel===labelA) ? outA : outB;
+    }else{
+      return (leftLabel!==labelA) ? outA : outB;
+    }
+  })();
+  const outcome = currentScenario().branches[branchKey];
+  return { lastCenter, panel, outcome };
+}
+
+function onChainComplete(branchKey){
+  tryPlay(sfxEnd);
+
+  const { lastCenter, panel, outcome } = lastTileCenterAndPanel(branchKey);
+
+  // Push-out from behind last tile
+  const panelRect = panel.getBoundingClientRect();
+  const panelCenterX = (parseFloat(panel.style.left)||0) + panelRect.width/2;
+  const dx = panelCenterX - lastCenter.x;
+  const norm = Math.max(1, Math.abs(dx));
+  const pushX = (dx/norm) * 16;
+  const pushY = -12;
+  panel.style.setProperty('--ox', `${-pushX}px`);
+  panel.style.setProperty('--oy', `${-pushY}px`);
+
+  setTimeout(()=>{
+    // Ensure image/caption set for selected panel (already preloaded per side)
+    panel.classList.add('show');
+    panel.setAttribute('aria-hidden','false');
+    panel.focus();
+    announce(outcome.outcomeCaption);
+
+    // (Prompt 3 has no outcome VO files; skip voice playback)
+
+    if(branchKey==='A') seenBranchA = true; else seenBranchB = true;
+
+    // D) record recap line
+    onOutcomeRevealed(currentScenario(), branchKey);
+
+    maybeUnlockNext();
+  }, 140);
+}
+
+function maybeUnlockNext(){
+  const sawAny = (seenBranchA || seenBranchB);
+  const sawBoth= (seenBranchA && seenBranchB);
+
+  if(sawBoth){ detective.classList.add('show'); detective.setAttribute('aria-hidden','false'); }
+
+  if(sawAny){
+    nextBtn.style.display='inline-block';
+    nextBtn.classList.toggle('pulse', !sawBoth);
+  }
+
+  if(sawAny && nextBtn.dataset.scored!=='1'){
+    score += 1; scoreNum.textContent = score;
+    nextBtn.dataset.scored='1';
+  }
+}
+
+/* Between rounds and End */
+nextBtn.addEventListener('click', ()=>{
+  const r = currentRoundObj();
+  if(scenarioIdx < r.scenarios.length-1){
+    scenarioIdx++; updateScene();
+  }else{
+    // At end of round => open recap instead of between
+    openRecap();
+  }
+});
+
+/* Recap buttons */
+btnNextRound.addEventListener('click', ()=>{
+  recap.hidden = true;
+  roundIdx = 1; scenarioIdx = 0;
+  beginRound(1);
+});
+btnFinish.addEventListener('click', ()=>{
+  recap.hidden = true;
+  toEnd();
+});
+btnPlayAgain.addEventListener('click', ()=>{ restartGame(); });
+btnHome.addEventListener('click', ()=>{ goHome(); });
+
+function showBetween(){
+  betweenText.textContent = (roundIdx===0) ? "Great job! Get ready for Round 2!" : "All done!";
+  between.classList.remove('hidden');
+  setTimeout(()=>{ between.classList.add('hidden'); }, 1000);
+}
+
+function toEnd(){
+  game.classList.add('hidden');
+  end.classList.remove('hidden');
+
+  let stars=0;
+  if(score>=STAR_RULES[0].min) stars=3;
+  else if(score>=STAR_RULES[1].min) stars=2;
+  else if(score>=STAR_RULES[2].min) stars=1;
+  else stars=0;
+
+  let headline = 'Fantastic thinking!';
+  if(stars===3) headline = 'You watched every chain carefully!';
+  else if(stars===2) headline = 'Great effort!';
+  else if(stars===1) headline = 'Good try!';
+  endHeadline.textContent = headline;
+
+  endStats.textContent = `Scenarios completed: ${score} / 7`;
+
+  starsRow.innerHTML='';
+  for(let i=0;i<3;i++){
+    const img = document.createElement('img');
+    img.src = i<stars ? IMG('ui/star-full.png') : IMG('ui/star-empty.png');
+    img.alt = i<stars ? 'star' : 'empty star';
+    img.className = 'sparkle';
+    starsRow.appendChild(img);
+  }
+
+  enforceStarUsage();
+
+  const best = loadLS('bestScore', 0);
+  if(score > best) saveLS('bestScore', score);
+  saveLS('lastUsedScenarios', SCENARIOS.map(s=>s.id));
+}
+
+function restartGame(){
+  end.classList.add('hidden'); game.classList.remove('hidden'); startSession();
+}
+
+function goHome(){ tryPause(bgm); window.location.href='lesson-screen-htmls/lesson-09.01.html'; }
+
+/* =================== NAV & INPUT =================== */
+startBtn.addEventListener('click', startSession);
+howToBtn.addEventListener('click', ()=> howToPanel.classList.toggle('hidden'));
+homeBtn.addEventListener('click', goHome);
+homeBtn2.addEventListener('click', goHome);
+playAgainBtn.addEventListener('click', restartGame);
+
+window.addEventListener('keydown', (e)=>{
+  if(!game.classList.contains('hidden') && instruction.classList.contains('hidden')){
+    if(e.key==='1'){ branchA.firstElementChild?.click(); }
+    if(e.key==='2'){ branchB.firstElementChild?.click(); }
+  }
+  if(game.classList.contains('hidden') && !intro.classList.contains('hidden')){
+    if(e.key==='Enter') startSession();
+  }
+});
+
+/* =================== BOOT =================== */
+function updateForResize(){
+  placeOutcomePanels();
+}
+window.addEventListener('resize', updateForResize);
+
+// initial placement
+(function init(){
+  placeOutcomePanels();
+  captionChip.classList.add('hidden');
+})();
+</script>
+</body>
+</html>

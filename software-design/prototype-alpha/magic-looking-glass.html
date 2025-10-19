@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindMaster – The Magic Looking Glass</title>
+  <meta name="color-scheme" content="light"/>
+  <style>
+    :root{
+      --brand:#FFD700; /* MindMaster button yellow */
+      --ink:#111;
+      --bg-sky:#eaf4ff;
+      --panel:#fffdfd;
+      --success:#2ecc71;
+      --error:#e74c3c;
+      --shadow:rgba(0,0,0,.20);
+      --card:#ffffff;
+      --cardText:#000;
+      --glowWarm: rgba(255, 121, 63, 0.28);   /* Feeling */
+      --glowCool: rgba(63, 169, 255, 0.28);   /* Thinking */
+      --glowBold: rgba(255, 171, 64, 0.28);   /* Action */
+      --star:#FFD700;
+      --ring:#000;
+
+      --lens-feeling:#FF793F;
+      --lens-thinking:#3FA9FF;
+      --lens-action:#FFAB40;
+      /* removed legacy --mask-left/mid/right */
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; padding:0;
+      font-family:"Nunito","Segoe UI",Roboto,Inter,Helvetica,Arial,"Noto Sans Thai",sans-serif;
+      color:var(--ink);
+      background: var(--bg-sky);
+      overflow:hidden; /* zero-scroll during GAME */
+      font-weight:500;
+    }
+    h1,h2,h3,.sub, #topBar, .lensBtn span, button{ font-weight:800; }
+    .card, #howToPanel, #captionChip{ font-weight:700; }
+    img{max-width:100%; display:block}
+    button{font-family:inherit}
+
+    .hidden{display:none !important;}
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* ---- Intro backdrop ---- */
+    #introWrap{
+      position:fixed; inset:0; z-index:40;
+      display:flex; align-items:center; justify-content:center;
+      background:#0006 center/cover no-repeat;
+    }
+    #introWrap::before{
+      content:""; position:absolute; inset:0;
+      background: url('assets/magic-looking-glass/images/ui/bg-launch.png') center/cover no-repeat;
+      filter:none;
+    }
+    .intro-card, #endCard{
+      position:relative; z-index:1; text-align:center;
+      background:#fffdfdd9; border-radius:18px; padding:20px; width:min(820px, 92vw);
+      box-shadow:0 12px 30px var(--shadow);
+    }
+    h1, h2 { margin: 0 0 8px 0; line-height:1.2; }
+    .sub{ margin:0 0 12px 0; opacity:.9 }
+    .controls{ margin:14px 0; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+    button{
+      background:var(--brand); color:#000;
+      padding:10px 18px; border:none; border-radius:14px;
+      font-size:1rem; cursor:pointer; box-shadow:0 3px 0 #d1b100;
+      transition:transform .08s ease;
+    }
+    button:active{ transform:translateY(1px) }
+    button:focus{ outline:3px solid #000; outline-offset:2px }
+
+    #howToPanel{ background:#fff8; padding:12px; border-radius:12px; text-align:left; line-height:1.3; }
+
+    /* ---- GAME LAYOUT ---- */
+    #game{ position:fixed; inset:0; display:grid; grid-template-rows: auto 1fr auto; z-index:10; }
+
+    /* Top bar */
+    #topBar{
+      display:flex; align-items:center; gap:18px;
+      padding:10px 14px;
+      background:#fffdfd;
+      box-shadow:0 2px 0 rgba(0,0,0,.08);
+      font-weight:800;
+      line-height:1.2;
+    }
+    #progress{ display:flex; align-items:center; gap:10px; }
+    #scoreBox{ margin-left:auto; display:flex; align-items:center; gap:10px; }
+    #scoreNum{
+      padding:6px 12px; border-radius:12px; background:#fff; border:2px solid #000;
+      min-width:3ch; text-align:center;
+    }
+
+    /* Stage */
+    #stage{
+      position:relative; overflow:hidden;
+      width:100%; height:100%;
+      display:grid; grid-template-rows: 1fr auto;
+      background: linear-gradient(#d9efff,#eef7ff);
+    }
+
+    /* Caption chip */
+    #captionChip{
+      position:absolute; left:50%; top:8px; transform:translateX(-50%);
+      max-width:72ch;
+      background:#fff; border:1px solid #000; border-radius:999px;
+      padding:8px 12px; display:flex; align-items:center; gap:8px;
+      box-shadow:0 2px 6px rgba(0,0,0,.08);
+      line-height:1.2;
+      z-index:6;
+    }
+    #captionText{ display:block; }
+    #captionReplay{
+      background:#fff; border:1px solid #000; border-radius:999px;
+      width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;
+      font-weight:800; cursor:pointer;
+    }
+
+    /* ===== Instruction modal + scrim ===== */
+    #instructionScrim{
+      position:fixed; inset:0; background:rgba(0,0,0,0.35);
+      z-index:59; opacity:0; transition:opacity 220ms ease;
+    }
+    #instructionScrim.show{ opacity:1; }
+
+    #instructionBanner{
+      position:fixed; inset:0; display:grid; place-items:center; z-index:60;
+      opacity:0; transition: opacity 220ms ease;
+    }
+    #instructionBanner.show{ opacity:1; }
+
+    #instructionPanel{
+      max-width:860px; width:min(92vw, 860px);
+      background:#fffdfd; border:1px solid #000; border-radius:18px;
+      padding:22px; box-shadow:0 18px 40px rgba(0,0,0,.2);
+      font-size:1.15rem; line-height:1.4; text-align:center;
+    }
+
+    /* Scene wrap sizing (desktop/laptop rules) */
+    #sceneWrap{
+      position:relative; overflow:hidden;
+      margin:64px auto 0; /* leave room for caption/banner */
+      width: min(60vw, 960px);
+      height: min(56vh, calc(min(60vw, 960px) * 9 / 16));
+      background:#eef7ff;
+      border: 2px solid #0004;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.10) inset;
+    }
+
+    /* Problem scene (base) */
+    #problemScene{ position:absolute; inset:0; background-size:contain; background-repeat:no-repeat; background-position:center; }
+
+    /* Solution overlays (now puzzle-masked via clip-paths) */
+    .solutionLayer{ position:absolute; inset:0; background-size:contain; background-repeat:no-repeat; background-position:center; opacity:0; transform:scale(.985); transition:opacity 260ms ease, transform 260ms ease; }
+    .piece-reveal{ opacity:1; transform:scale(1); }
+
+    /* New clip-path classes (inline SVG defs live at end of body) */
+    .puzzle-left  { clip-path: url(#clipPieceLeft); }
+    .puzzle-mid   { clip-path: url(#clipPieceMiddle); }
+    .puzzle-right { clip-path: url(#clipPieceRight); }
+    .puzzle-full  { clip-path: url(#clipPieceFull); }
+
+    /* Lens tint overlay */
+    #lensOverlay{ position:absolute; inset:0; pointer-events:none; }
+    .lens-feeling  { box-shadow: inset 0 0 0 9999px var(--glowWarm); }
+    .lens-thinking { box-shadow: inset 0 0 0 9999px var(--glowCool); }
+    .lens-action   { box-shadow: inset 0 0 0 9999px var(--glowBold); }
+    .spark-field::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,.7) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 60%, rgba(255,255,255,.7) 0 2px, transparent 3px),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,.7) 0 2px, transparent 3px);
+      animation: twinkle 1.6s linear infinite;
+    }
+    @keyframes twinkle{ 50%{opacity:.35} }
+
+    /* Lens row (icon-only) */
+    #lenses{
+      display:flex; align-items:flex-start; justify-content:center;
+      gap:48px;
+      padding:0 0 14px;
+      margin-top:12px;
+      min-height:120px;
+    }
+    .lensBtn{
+      background:transparent; border:none; cursor:pointer; padding:0;
+      width:96px; min-width:96px; height:96px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      filter: none;
+    }
+    .lensBtn img{ width:96px; height:96px; }
+    .lensBtn span{
+      display:block; font-size:.8rem; margin-top:6px; text-align:center;
+    }
+    .lensBtn[disabled]{ opacity:.45; cursor:not-allowed; }
+
+    /* Option card tray */
+    #cardTray{
+      position:absolute; left:0; right:0; bottom:10px;
+      display:flex; align-items:stretch; justify-content:center; gap:12px; padding:0 12px; z-index:5;
+    }
+    .card{
+      flex:0 0 260px; height:130px;
+      background:var(--card); color:var(--cardText);
+      border-radius:18px; border:2px solid #000;
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      padding:12px; line-height:1.2; font-weight:700;
+      box-shadow: 0 6px 0 #0002;
+      transition: transform .08s ease, filter 120ms ease, box-shadow 120ms ease, outline-color 120ms ease, border-color 120ms ease;
+      user-select:none;
+    }
+    .card:hover{ transform: translateY(-2px); }
+    .card:active{ transform: translateY(0); }
+    .card:focus{ outline:3px solid #000; outline-offset:2px; }
+    .card.disabled{ opacity:.55; filter:grayscale(0.25); pointer-events:none; }
+
+    .card.lens-feeling{  border-color: var(--lens-feeling);  border-width:4px; }
+    .card.lens-thinking{ border-color: var(--lens-thinking); border-width:4px; }
+    .card.lens-action{   border-color: var(--lens-action);   border-width:4px; }
+
+    .card.correct{ outline:4px solid var(--success); }
+    .card.wrong{ outline:4px solid var(--error); }
+    .wobble{ animation:wobble 200ms ease; }
+    @keyframes wobble{ 0%{transform:rotate(0)} 25%{transform:rotate(-2deg)} 75%{transform:rotate(2deg)} 100%{transform:rotate(0)} }
+
+    /* Between overlay */
+    #between{
+      position:fixed; inset:0; background:rgba(0,0,0,0.35);
+      display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center;
+      z-index:30;
+    }
+    .star-burst{ display:flex; gap:10px; }
+    .sparkle{ animation:sparkle 900ms ease infinite; }
+    @keyframes sparkle{ 0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(1.2) rotate(10deg)} }
+
+    /* End screen */
+    #end{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; z-index:35; }
+    #starsRow img{ width:96px; height:96px; margin:0 6px; }
+
+    /* Feedback toast */
+    #toast{
+      position:absolute; left:50%; top:12px; transform:translateX(-50%);
+      background:#000; color:#fff; padding:8px 12px; border-radius:12px; font-weight:800;
+      opacity:0; transition:opacity 160ms ease;
+    }
+    #toast.show{ opacity:1; }
+
+    /* Utility */
+    .fade-in{ animation:fadein 180ms ease forwards; }
+    @keyframes fadein{ from{opacity:0} to{opacity:1} }
+  </style>
+</head>
+<body>
+  <!-- INTRO -->
+  <section id="introWrap" role="dialog" aria-labelledby="introTitle">
+    <div class="intro-card">
+      <h1 id="introTitle">The Magic Looking Glass – Problem-Solving Basics</h1>
+      <p class="sub">Use the Magic Glasses to see problems in three ways: Feeling, Thinking, and Action.</p>
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="howToBtn">How to Play</button>
+        <button id="homeBtn">Return to the Park</button>
+      </div>
+      <div id="howToPanel" class="hidden" aria-live="polite">
+        <ol style="margin:8px 0 0 18px;">
+          <li>Look at the problem scene.</li>
+          <li>Click the Magic Glasses to view three options.</li>
+          <li>Choose the option that really solves the problem (ignore the ones that don’t).</li>
+          <li>Each correct choice reveals part of the hidden solution picture.</li>
+          <li>Complete Feeling, Thinking, and Action to see the full solution.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="hidden" aria-live="polite">
+    <div id="topBar">
+      <div id="progress"><span id="roundLabel">Round 1/2</span> • <span id="scenarioLabel">Scenario 1/3</span></div>
+      <div id="scoreBox" aria-live="polite" aria-atomic="true">
+        <span>Score</span>
+        <span id="scoreNum">0</span>
+      </div>
+    </div>
+
+    <div id="stage" role="application" aria-label="Magic Looking Glass playfield">
+      <!-- Caption & instruction -->
+      <div id="captionChip" class="hidden" aria-live="polite">
+        <span id="captionText"></span>
+        <button id="captionReplay" aria-label="Replay caption" title="Replay">↻</button>
+      </div>
+
+      <!-- MODAL SCRIM + PANEL (reusing existing #instructionBanner) -->
+      <div id="instructionScrim" class="hidden" aria-hidden="true"></div>
+      <div id="instructionBanner" class="hidden" role="dialog" aria-modal="true" aria-live="polite">
+        <div id="instructionPanel">
+          “Look through the magic glasses! In each glass, choose the best card to reveal the picture. Find all three to solve the problem!”
+        </div>
+      </div>
+
+      <div id="sceneWrap" aria-live="polite">
+        <div id="problemScene" aria-label="Problem scene"></div>
+
+        <!-- Solution overlays: base + middle -->
+        <div id="solutionScene" class="solutionLayer" aria-hidden="true"></div>
+        <div id="solutionMid"   class="solutionLayer" aria-hidden="true"></div>
+
+        <!-- Lens tint -->
+        <div id="lensOverlay" aria-hidden="true"></div>
+
+        <!-- Option cards -->
+        <div id="cardTray" class="hidden" aria-label="Options list"></div>
+
+        <!-- Feedback toast -->
+        <div id="toast" role="status" aria-live="polite"></div>
+      </div>
+
+      <!-- Lenses row -->
+      <div id="lenses">
+        <button class="lensBtn" data-lens="feeling" id="btnFeeling" aria-label="Feeling glass">
+          <img alt="" src="assets/magic-looking-glass/images/ui/glass-feeling.png" onerror="this.style.display='none'"/>
+          <span>Feeling</span>
+        </button>
+        <button class="lensBtn" data-lens="thinking" id="btnThinking" aria-label="Thinking glass">
+          <img alt="" src="assets/magic-looking-glass/images/ui/glass-thinking.png" onerror="this.style.display='none'"/>
+          <span>Thinking</span>
+        </button>
+        <button class="lensBtn" data-lens="action" id="btnAction" aria-label="Action glass">
+          <img alt="" src="assets/magic-looking-glass/images/ui/glass-action.png" onerror="this.style.display='none'"/>
+          <span>Action</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BETWEEN -->
+  <div id="between" class="hidden" aria-hidden="true">
+    <div class="star-burst">
+      <img class="sparkle" src="assets/magic-looking-glass/images/ui/star-full.png" alt="" onerror="this.style.filter='grayscale(1)'" width="56" height="56"/>
+      <img class="sparkle" src="assets/magic-looking-glass/images/ui/star-full.png" alt="" onerror="this.style.filter='grayscale(1)'" width="56" height="56"/>
+      <img class="sparkle" src="assets/magic-looking-glass/images/ui/star-full.png" alt="" onerror="this.style.filter='grayscale(1)'" width="56" height="56"/>
+    </div>
+    <p id="betweenText" style="color:#fff; font-weight:800; font-size:1.4rem; text-shadow:0 2px 8px rgba(0,0,0,.4)"></p>
+  </div>
+
+  <!-- END -->
+  <section id="end" class="hidden">
+    <div id="endCard" role="dialog" aria-labelledby="endHeadline">
+      <h2 id="endHeadline">Fantastic thinking!</h2>
+      <p id="endStats" class="sub">Nice work.</p>
+      <div id="starsRow" aria-label="Star rating"></div>
+      <div class="controls">
+        <button id="playAgainBtn">Play Again</button>
+        <button id="homeBtn2">Return to the Park</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARIA live region -->
+  <div id="ariaLive" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+  // =================== CONFIG & DATA ===================
+  const NS = 'magic-looking-glass/';
+  const ASSET_ROOT = 'assets/magic-looking-glass/';
+  const IMG = (p)=> ASSET_ROOT+'images/'+p;
+  const SFX = (p)=> ASSET_ROOT+'sfx/'+p;
+  const BGM = ASSET_ROOT+'audio/bgm.mp3';
+  const VO  = (p)=> ASSET_ROOT+'voice/'+p;
+
+  // Star thresholds out of 24
+  const STAR_RULES = [
+    {min:20, stars:3},
+    {min:14, stars:2},
+    {min:8,  stars:1},
+    {min:0,  stars:0}
+  ];
+
+  // Text bank + UPDATED problemText for caption (exact strings)
+  const SCENARIOS = [
+    // Round 1
+    {
+      id:'swing', round:1,
+      scene: IMG('scenes/swing.png'),
+      solution: IMG('solutions/swing-solution.png'),
+      problemText: "There’s only one swing and we both want it.",
+      lenses:{
+        feeling:[
+          {text:"Feel sad but want to be fair", correct:true},
+          {text:"Angry at the other child", correct:false},
+          {text:"Feel like taking what I want", correct:false}
+        ],
+        thinking:[
+          {text:"We both want to play, we should share", correct:true},
+          {text:"I was here first, so it’s mine", correct:false},
+          {text:"Mum said I should get what I want", correct:false}
+        ],
+        action:[
+          {text:"Ask if we can take turns", correct:true},
+          {text:"Push the other away and hop on the swing", correct:false},
+          {text:"Tell the other to go away!", correct:false}
+        ]
+      }
+    },
+    {
+      id:'forgotten_homework', round:1,
+      scene: IMG('scenes/forgotten_homework.png'),
+      solution: IMG('solutions/forgotten_homework-solution.png'),
+      problemText: "I forgot to do my homework and my teacher collects it today.",
+      lenses:{
+        feeling:[
+          {text:"Worried about being in trouble", correct:true},
+          {text:"Excited about no homework", correct:false},
+          {text:"Happy to forget", correct:false}
+        ],
+        thinking:[
+          {text:"I should tell my teacher what happened", correct:true},
+          {text:"Maybe no one will notice", correct:false},
+          {text:"Homework doesn’t matter", correct:false}
+        ],
+        action:[
+          {text:"Tell teacher the truth", correct:true},
+          {text:"Run away from class", correct:false},
+          {text:"Copy a friend", correct:false}
+        ]
+      }
+    },
+    {
+      id:'new_student', round:1,
+      scene: IMG('scenes/new_student.png'),
+      solution: IMG('solutions/new_student-solution.png'),
+      problemText: "There’s a new student in class.",
+      lenses:{
+        feeling:[
+          {text:"Feel sorry for him, want to help", correct:true},
+          {text:"Annoyed by having a new classmate", correct:false},
+          {text:"Scared he’ll take my friends", correct:false}
+        ],
+        thinking:[
+          {text:"He must feel lonely. I should be kind", correct:true},
+          {text:"Don’t want to share my friends", correct:false},
+          {text:"Hope he doesn’t sit near me", correct:false}
+        ],
+        action:[
+          {text:"Invite him to play with us", correct:true},
+          {text:"Ignore the new student", correct:false},
+          {text:"Wait for someone else to help", correct:false}
+        ]
+      }
+    },
+    // Round 2
+    {
+      id:'rainy_day', round:2,
+      scene: IMG('scenes/rainy_day.png'),
+      solution: IMG('solutions/rainy_day-solution.png'),
+      problemText: "It’s raining and we can’t go outside to play.",
+      lenses:{
+        feeling:[
+          {text:"Feel disappointed but okay with it", correct:true},
+          {text:"Really angry about the rain", correct:false},
+          {text:"I don’t feel like doing anything", correct:false}
+        ],
+        thinking:[
+          {text:"Can find fun things to do inside", correct:true},
+          {text:"It’s not fair we can’t play outside", correct:false},
+          {text:"This day will be so boring", correct:false}
+        ],
+        action:[
+          {text:"Look for indoor games to play", correct:true},
+          {text:"Complain to my friends all day", correct:false},
+          {text:"Sit and feel sorry for myself", correct:false}
+        ]
+      }
+    },
+    {
+      id:'group_project', round:2,
+      scene: IMG('scenes/group_project.png'),
+      solution: IMG('solutions/group_project-solution.png'),
+      problemText: "In our group project, some kids’ ideas aren’t being heard.",
+      lenses:{
+        feeling:[
+          {text:"Feel bad for them, want everyone included", correct:true},
+          {text:"Glad it’s not happening to me", correct:false},
+          {text:"Annoyed that they’re too shy", correct:false}
+        ],
+        thinking:[
+          {text:"Everyone should get to share their ideas", correct:true},
+          {text:"My idea is the best one anyway", correct:false},
+          {text:"I’m smarter than others", correct:false}
+        ],
+        action:[
+          {text:"Ask the quiet kids what they think", correct:true},
+          {text:"Just go with the loudest person’s idea", correct:false},
+          {text:"Only work with my close friends", correct:false}
+        ]
+      }
+    },
+    {
+      id:'bullying', round:2,
+      scene: IMG('scenes/bullying.png'),
+      solution: IMG('solutions/bullying-solution.png'),
+      problemText: "Some of my classmates are making fun of me.",
+      lenses:{
+        feeling:[
+          {text:"Feel hurt and confused", correct:true},
+          {text:"Feel like there’s something wrong with me", correct:false},
+          {text:"Feel so angry I want to hit them", correct:false}
+        ],
+        thinking:[
+          {text:"They’re being mean, should ignore them", correct:true},
+          {text:"Maybe they’re right about me", correct:false},
+          {text:"I need to hurt them back somehow", correct:false}
+        ],
+        action:[
+          {text:"Run to tell my teacher", correct:true},
+          {text:"Try to make them like me", correct:false},
+          {text:"Say mean things back to them", correct:false}
+        ]
+      }
+    },
+    {
+      id:'found_money', round:2,
+      scene: IMG('scenes/found_money.png'),
+      solution: IMG('solutions/found_money-solution.png'),
+      problemText: "I found some money on the playground.",
+      lenses:{
+        feeling:[
+          {text:"Feel excited but know it’s not mine", correct:true},
+          {text:"Happy I get to keep it", correct:false},
+          {text:"Feel like I deserve it for finding it", correct:false}
+        ],
+        thinking:[
+          {text:"Someone is probably looking for this", correct:true},
+          {text:"Finders keepers, it’s mine now", correct:false},
+          {text:"No one will ever know I took it", correct:false}
+        ],
+        action:[
+          {text:"Give it to the teacher", correct:true},
+          {text:"Put it in my pocket", correct:false},
+          {text:"Buy some snacks with it", correct:false}
+        ]
+      }
+    },
+    {
+      id:'friend_exercise', round:2,
+      scene: IMG('scenes/friend_exercise.png'),
+      solution: IMG('solutions/friend_exercise-solution.png'),
+      problemText: "My friend is having trouble with a math exercise.",
+      lenses:{
+        feeling:[
+          {text:"Feel sorry for them, want to help", correct:true},
+          {text:"Feel glad I’m smarter than them", correct:false},
+          {text:"Frustrated they’re slowing us down", correct:false}
+        ],
+        thinking:[
+          {text:"Everyone needs help sometimes", correct:true},
+          {text:"They should figure it out themselves", correct:false},
+          {text:"I don’t want to share my answers", correct:false}
+        ],
+        action:[
+          {text:"Show them how to do it step by step", correct:true},
+          {text:"Just give them my answer", correct:false},
+          {text:"Tell them they’re being too slow", correct:false}
+        ]
+      }
+    }
+  ];
+
+  const ROUNDS = [
+    { id:'round1', scenarios: SCENARIOS.filter(s=>s.round===1) },
+    { id:'round2', scenarios: SCENARIOS.filter(s=>s.round===2) }
+  ];
+
+  const FEEDBACK_POS = ["Yes, that solves it!", "Great choice!", "Fantastic thinking!"];
+  const FEEDBACK_NEG = ["Hmm, not quite…", "Try again."];
+
+  // =================== ELEMENTS ===================
+  const introWrap   = document.getElementById('introWrap');
+  const howToBtn    = document.getElementById('howToBtn');
+  const howToPanel  = document.getElementById('howToPanel');
+  const startBtn    = document.getElementById('startBtn');
+  const homeBtn     = document.getElementById('homeBtn');
+
+  const game        = document.getElementById('game');
+  const roundLabel  = document.getElementById('roundLabel');
+  const scenarioLabel= document.getElementById('scenarioLabel');
+  const scoreNum    = document.getElementById('scoreNum');
+  const stage       = document.getElementById('stage');
+  const sceneWrap   = document.getElementById('sceneWrap');
+  const problemScene= document.getElementById('problemScene');
+  const solutionScene= document.getElementById('solutionScene');
+  const solutionMid = document.getElementById('solutionMid');
+  const lensOverlay = document.getElementById('lensOverlay');
+  const cardTray    = document.getElementById('cardTray');
+  const toast       = document.getElementById('toast');
+
+  const between     = document.getElementById('between');
+  const betweenText = document.getElementById('betweenText');
+
+  const end         = document.getElementById('end');
+  const endHeadline = document.getElementById('endHeadline');
+  const endStats    = document.getElementById('endStats');
+  const starsRow    = document.getElementById('starsRow');
+  const playAgain   = document.getElementById('playAgainBtn');
+  const homeBtn2    = document.getElementById('homeBtn2');
+
+  const ariaLive    = document.getElementById('ariaLive');
+
+  // New elements
+  const captionChip = document.getElementById('captionChip');
+  const captionText = document.getElementById('captionText');
+  const captionReplay = document.getElementById('captionReplay');
+  const instructionBanner = document.getElementById('instructionBanner');
+  const instructionScrim  = document.getElementById('instructionScrim');
+
+  // =================== AUDIO ===================
+  let bgm, sfxCorrect, sfxWrong, sfxReveal;
+  let vYes, vFantastic, vGreatEffort, vGoodTry, vTryAgain, vInstruction;
+  let currentVoice = null;
+  let currentCaptionAudio = null;
+
+  function makeAudio(src, {loop=false, vol=1}={}){
+    const a = new Audio(); a.src = src; a.loop = loop; a.preload = 'auto'; a.volume = vol; return a;
+  }
+  function tryPlay(a){ if(!a) return; try{ a.currentTime=0; a.play().catch(()=>{});}catch{} }
+  function tryPause(a){ if(!a) return; try{ a.pause(); }catch{} }
+  function stopVoice(){ tryPause(currentVoice); currentVoice=null; }
+  function playVoice(a){
+    stopVoice();
+    currentVoice = a;
+    if(bgm){ const old = bgm.volume; bgm.volume = Math.max(0, old*0.65); setTimeout(()=>{ try{bgm.volume=old;}catch{} }, 1200); }
+    tryPlay(a);
+  }
+  function setupAudioOnce(){
+    if(bgm) return;
+    bgm        = makeAudio(BGM, {loop:true, vol:0.28});
+    sfxCorrect = makeAudio(SFX('correct.mp3'), {vol:0.9});
+    sfxWrong   = makeAudio(SFX('wrong.mp3'), {vol:0.9});
+    sfxReveal  = makeAudio(SFX('reveal_piece.mp3'), {vol:0.9});
+
+    vYes        = makeAudio(VO('v_yes_solution.mp3'));
+    vFantastic  = makeAudio(VO('v_fantastic.mp3'));
+    vGreatEffort= makeAudio(VO('v_great_effort.mp3'));
+    vGoodTry    = makeAudio(VO('v_good_try.mp3'));
+    vTryAgain   = makeAudio(VO('v_try_again.mp3'));
+    vInstruction= makeAudio(VO('v_instruction.mp3'));
+  }
+
+  function captionAudioFor(s){
+    return makeAudio(VO('caption_'+s.id+'.mp3'));
+  }
+
+  // =================== STATE ===================
+  let roundIndex = 0;
+  let scenarioIndex = 0;
+  let score = 0;
+  let solvedThirds = {feeling:false, thinking:false, action:false};
+  let inputLocked = false;
+  let currentLens = null;
+  let startTimeMs = 0;
+  let totalChoices = 0;
+  let emaMsPerChoice = null;
+  let instructionPlaying = false;
+
+  // =================== HELPERS ===================
+  const shuffle = (a)=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+  function announce(msg){ ariaLive.textContent=''; setTimeout(()=>{ ariaLive.textContent = msg; }, 10); }
+  function toastMsg(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 900); }
+
+  function saveMetric(key, val){ try{ localStorage.setItem(NS+key, JSON.stringify(val)); }catch{} }
+  function loadMetric(key, fallback){ try{ const v = JSON.parse(localStorage.getItem(NS+key)); return (v==null?fallback:v);}catch{return fallback} }
+
+  // =================== FLOW ===================
+  function goHome(){ tryPause(bgm); window.location.href='lesson-screen-htmls/lesson-08.02.html'; }
+
+  function startSession(){
+    const roundsPlayed = loadMetric('roundsPlayed', 0) + 1; saveMetric('roundsPlayed', roundsPlayed);
+    emaMsPerChoice = loadMetric('avgMsPerChoice', null);
+
+    score = 0; roundIndex = 0; scenarioIndex = 0;
+    scoreNum.textContent = score;
+
+    introWrap.classList.add('hidden');
+    game.classList.remove('hidden');
+
+    setupAudioOnce();
+    tryPlay(bgm);
+
+    beginRound(0);
+
+    instructionPlaying = true;
+    enableAllLenses(false);
+    inputLocked = true;
+    cardTray.classList.add('hidden');
+
+    instructionScrim.classList.remove('hidden');
+    instructionBanner.classList.remove('hidden');
+    requestAnimationFrame(()=>{
+      instructionScrim.classList.add('show');
+      instructionBanner.classList.add('show');
+    });
+
+    vInstruction.onended = ()=>{
+      instructionPlaying = false;
+      instructionScrim.classList.remove('show');
+      instructionBanner.classList.remove('show');
+      setTimeout(()=>{
+        instructionScrim.classList.add('hidden');
+        instructionBanner.classList.add('hidden');
+      }, 250);
+
+      enableAllLenses(true);
+      inputLocked = false;
+
+      showCaptionForCurrentScenario();
+      playCaptionForCurrentScenario();
+    };
+    try{ vInstruction.currentTime = 0; }catch{}
+    playVoice(vInstruction);
+  }
+
+  function beginRound(idx){
+    roundIndex = idx;
+    scenarioIndex = 0;
+    updateProgressLabels();
+    nextScenario();
+  }
+
+  function updateProgressLabels(){
+    const totalRounds = ROUNDS.length;
+    const round = ROUNDS[roundIndex];
+    roundLabel.textContent = `Round ${roundIndex+1}/${totalRounds}`;
+    scenarioLabel.textContent = `Scenario ${scenarioIndex+1}/${round.scenarios.length}`;
+  }
+
+  function currentScenario(){
+    const round = ROUNDS[roundIndex];
+    return round.scenarios[scenarioIndex];
+  }
+
+  function showCaptionForCurrentScenario(){
+    const s = currentScenario();
+    captionText.textContent = s.problemText || "";
+    captionChip.classList.remove('hidden');
+  }
+  function hideCaption(){
+    captionChip.classList.add('hidden');
+  }
+  function playCaptionForCurrentScenario(){
+    const s = currentScenario();
+    currentCaptionAudio = captionAudioFor(s);
+    playVoice(currentCaptionAudio);
+  }
+
+  function nextScenario(){
+    const s = currentScenario();
+    // set scene images
+    problemScene.style.backgroundImage = `url("${s.scene}")`;
+    [solutionScene,solutionMid].forEach(el=>{
+      el.style.backgroundImage = `url("${s.solution}")`;
+      el.className = 'solutionLayer'; // reset classes (no puzzle classes)
+      el.style.clipPath = '';         // clear clip-path inline if any
+    });
+
+    // reset reveals & tint
+    lensOverlay.className = '';
+    solvedThirds = {feeling:false, thinking:false, action:false};
+    enableAllLenses(true);
+    cardTray.classList.add('hidden');
+    cardTray.innerHTML = '';
+    currentLens = null;
+    inputLocked = instructionPlaying;
+    startTimeMs = performance.now();
+    updateProgressLabels();
+
+    // update caption holder immediately
+    showCaptionForCurrentScenario();
+  }
+
+  function enableAllLenses(enable){
+    document.querySelectorAll('.lensBtn').forEach(b=> b.disabled = !enable);
+  }
+
+  // ----- Lens selection -----
+  function onLensClick(lens){
+    if(inputLocked) return;
+    currentLens = lens;
+    lensOverlay.className = '';
+    if(lens==='feeling') lensOverlay.classList.add('lens-feeling');
+    else if(lens==='thinking') lensOverlay.classList.add('lens-thinking');
+    else { lensOverlay.classList.add('lens-action','spark-field'); }
+
+    const isSolved = solvedThirds[lens];
+    loadCardsForLens(lens, isSolved);
+  }
+
+  function loadCardsForLens(lens, solved){
+    const s = currentScenario();
+    const options = shuffle(s.lenses[lens].map((opt,i)=> ({...opt, idx:i})));
+    cardTray.innerHTML='';
+    options.forEach((opt,i)=>{
+      const div = document.createElement('button');
+      div.className = 'card lens-'+lens;
+      div.setAttribute('aria-label', lens+' option');
+      div.innerText = opt.text;
+      if(solved){ div.classList.add('disabled'); }
+      div.addEventListener('click', ()=> onCardPick(lens, opt, div));
+      cardTray.appendChild(div);
+    });
+    cardTray.classList.remove('hidden');
+  }
+
+  // ===== Puzzle-piece reveal using clip-path classes =====
+  function revealThird(lens){
+    tryPlay(sfxReveal);
+    if(lens==='feeling'){
+      solutionScene.classList.add('puzzle-left','piece-reveal');
+    } else if(lens==='thinking'){
+      solutionMid.classList.add('puzzle-mid','piece-reveal');
+    } else { // action
+      solutionScene.classList.add('puzzle-right','piece-reveal');
+    }
+  }
+
+  function onCardPick(lens, opt, el){
+    if(inputLocked || solvedThirds[lens]) return;
+    inputLocked = true;
+    totalChoices++;
+    const elapsed = performance.now() - startTimeMs;
+    emaMsPerChoice = emaMsPerChoice==null ? elapsed : (emaMsPerChoice*0.8 + elapsed*0.2);
+    try{ localStorage.setItem(NS+'avgMsPerChoice', Math.round(emaMsPerChoice)); }catch{}
+
+    if(opt.correct){
+      score += 1; scoreNum.textContent = score;
+      el.classList.add('correct');
+      tryPlay(sfxCorrect);
+      playVoice(vYes);
+      toastMsg(FEEDBACK_POS[Math.floor(Math.random()*FEEDBACK_POS.length)]);
+      solvedThirds[lens] = true;
+      [...cardTray.children].forEach(c => { if(c!==el) c.classList.add('disabled'); });
+
+      revealThird(lens);
+
+      document.querySelector(`.lensBtn[data-lens="${lens}"]`).disabled = true;
+
+      if(solvedThirds.feeling && solvedThirds.thinking && solvedThirds.action){
+        setTimeout(()=>{
+          playVoice(vFantastic);
+          // Swap to full reveal on base layer; clear middle's piece class
+          solutionScene.classList.remove('puzzle-left','puzzle-right');
+          solutionScene.classList.add('puzzle-full','piece-reveal');
+          solutionMid.classList.remove('puzzle-mid');
+          setTimeout(()=> advanceAfterScenario(), 1500);
+        }, 250);
+      }else{
+        inputLocked = false;
+      }
+    }else{
+      el.classList.add('wrong','wobble'); setTimeout(()=> el.classList.remove('wobble'), 210);
+      tryPlay(sfxWrong);
+      playVoice(vTryAgain);
+      toastMsg(FEEDBACK_NEG[Math.floor(Math.random()*FEEDBACK_NEG.length)]);
+      setTimeout(()=> inputLocked=false, 200);
+    }
+  }
+
+  function advanceAfterScenario(){
+    const round = ROUNDS[roundIndex];
+    if(scenarioIndex < round.scenarios.length-1){
+      scenarioIndex++;
+      updateProgressLabels();
+      nextScenario();
+      playCaptionForCurrentScenario();
+    }else{
+      showBetween();
+    }
+  }
+
+  function showBetween(){
+    betweenText.textContent = (roundIndex===0) ? "Great job! Get ready for Round 2!" : "All done! Let’s see your stars.";
+    between.classList.remove('hidden');
+    setTimeout(()=>{
+      between.classList.add('hidden');
+      if(roundIndex < ROUNDS.length-1){
+        beginRound(roundIndex+1);
+        playCaptionForCurrentScenario();
+      }else{
+        toEnd();
+      }
+    }, 1500);
+  }
+
+  function toEnd(){
+    game.classList.add('hidden');
+    end.classList.remove('hidden');
+
+    const correct = score;
+    const total = 24;
+    let stars=0;
+    if(correct>=20) stars=3; else if(correct>=14) stars=2; else if(correct>=8) stars=1; else stars=0;
+
+    let headline = 'Fantastic thinking!';
+    if(stars===3) headline = 'You solved every problem from every side!';
+    else if(stars===2) headline = 'Great effort!';
+    else if(stars===1) headline = 'Good try!';
+    endHeadline.textContent = headline;
+
+    endStats.textContent = `Score: ${correct} / ${total}`;
+
+    starsRow.innerHTML='';
+    for(let i=0;i<3;i++){
+      const img = document.createElement('img');
+      img.src = i<stars ? IMG('ui/star-full.png') : IMG('ui/star-empty.png');
+      img.alt = i<stars ? 'star' : 'empty star';
+      img.className = 'sparkle';
+      starsRow.appendChild(img);
+    }
+
+    const best = (JSON.parse(localStorage.getItem(NS+'bestScore'))||0);
+    if(correct > best) try{ localStorage.setItem(NS+'bestScore', correct); }catch{}
+  }
+
+  // =================== INPUTS & NAV ===================
+  startBtn.addEventListener('click', startSession);
+  howToBtn.addEventListener('click', ()=> howToPanel.classList.toggle('hidden'));
+  function _goHome(){ goHome(); }
+  homeBtn.addEventListener('click', _goHome);
+  homeBtn2.addEventListener('click', _goHome);
+  playAgain.addEventListener('click', ()=>{ end.classList.add('hidden'); game.classList.remove('hidden'); startSession(); });
+
+  // Caption replay
+  captionReplay.addEventListener('click', ()=>{
+    const s = currentScenario();
+    currentCaptionAudio = captionAudioFor(s);
+    playVoice(currentCaptionAudio);
+  });
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e)=>{
+    if(end.classList.contains('hidden') && !introWrap.classList.contains('hidden')){
+      if(e.key==='Enter') startSession();
+    }
+    if(!game.classList.contains('hidden')){
+      if(e.key==='1') onLensClick('feeling');
+      else if(e.key==='2') onLensClick('thinking');
+      else if(e.key==='3') onLensClick('action');
+    }
+  });
+
+  // Lens buttons
+  document.getElementById('btnFeeling').addEventListener('click', ()=> onLensClick('feeling'));
+  document.getElementById('btnThinking').addEventListener('click', ()=> onLensClick('thinking'));
+  document.getElementById('btnAction').addEventListener('click', ()=> onLensClick('action'));
+
+  // =================== BOOT ===================
+  window.__magicLookingGlass__ = {
+    getState: ()=>({ roundIndex, scenarioIndex, score, solvedThirds })
+  };
+  </script>
+
+  <!-- ===== Inline SVG clip-path defs (objectBoundingBox units for auto-scaling) ===== -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute; left:-9999px; top:-9999px;">
+    <defs>
+      <!-- Full image -->
+      <clipPath id="clipPieceFull" clipPathUnits="objectBoundingBox">
+        <rect x="0" y="0" width="1" height="1" />
+      </clipPath>
+
+      <!-- Left piece (0 → ~0.34) with jigsaw tab on right edge -->
+      <clipPath id="clipPieceLeft" clipPathUnits="objectBoundingBox">
+        <path d="
+          M 0,0
+          H 0.34
+          C 0.34,0.18 0.30,0.22 0.30,0.30
+          C 0.30,0.36 0.34,0.40 0.34,0.46
+          V 0.54
+          C 0.34,0.60 0.30,0.64 0.30,0.70
+          C 0.30,0.78 0.34,0.82 0.34,1
+          H 0
+          Z" />
+      </clipPath>
+
+      <!-- Middle piece (~0.33 → ~0.67) with sockets both sides -->
+      <clipPath id="clipPieceMiddle" clipPathUnits="objectBoundingBox">
+        <path d="
+          M 0.33,0
+          H 0.67
+          C 0.67,0.18 0.71,0.22 0.71,0.30
+          C 0.71,0.36 0.67,0.40 0.67,0.46
+          V 0.54
+          C 0.67,0.60 0.71,0.64 0.71,0.70
+          C 0.71,0.78 0.67,0.82 0.67,1
+          H 0.33
+          C 0.33,0.82 0.29,0.78 0.29,0.70
+          C 0.29,0.64 0.33,0.60 0.33,0.54
+          V 0.46
+          C 0.33,0.40 0.29,0.36 0.29,0.30
+          C 0.29,0.22 0.33,0.18 0.33,0
+          Z" />
+      </clipPath>
+
+      <!-- Right piece (~0.66 → 1) with jigsaw tab on left edge -->
+      <clipPath id="clipPieceRight" clipPathUnits="objectBoundingBox">
+        <path d="
+          M 0.66,0
+          H 1
+          V 1
+          H 0.66
+          C 0.66,0.82 0.62,0.78 0.62,0.70
+          C 0.62,0.64 0.66,0.60 0.66,0.54
+          V 0.46
+          C 0.66,0.40 0.62,0.36 0.62,0.30
+          C 0.62,0.22 0.66,0.18 0.66,0
+          Z" />
+      </clipPath>
+    </defs>
+  </svg>
+</body>
+</html>
