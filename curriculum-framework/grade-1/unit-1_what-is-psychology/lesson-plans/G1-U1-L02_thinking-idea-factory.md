@@ -8,7 +8,7 @@ audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "10 October 2025"
+updated: "16 September 2025"
 ---
 
 ## Lesson Objective
@@ -166,3 +166,4 @@ This experiment shows that **thinking strategies** affect how well our Idea Fact
 This lesson builds on Lesson 1’s introduction of **Thinking** as one part of the mind by revealing its internal complexity and varied functions.  
 Students now view thinking as a **toolbox** with different tools for different jobs.  
 Lesson 3 will explore **Feeling (the Messenger)** next, followed by Lesson 4 where Thinking and Feeling guide **Doing**, completing the three-part system.
+
