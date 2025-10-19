@@ -16,9 +16,9 @@ This repository brings together the **curriculum framework**, **Alpha-stage prot
 
 | Folder | Purpose |
 |---------|----------|
-| **prototype-alpha/** | Working **Alpha Prototype** of the student platform — includes student-home screen, gamified lessons, and reflection roadmap. <br>→ See detailed documentation and live links in [`prototype-alpha/README.md`](prototype-alpha/README.md). |
-| **curriculum-framework/** | Psychology literacy curriculum design and documentation — full Grade 1 unit descriptions, spiral sequence for Grades 1–6, and theoretical comparison with SEL. |
-| **unicef-venture-fund-2025-submission/** | Materials from Stage 1 (Expression of Interest), retained for transparency and context. |
+| **content-design/** | Full **psychology literacy curriculum** and documentation — Grade 1–6 spiral sequence, unit descriptions, learning outcomes, and theoretical comparison with SEL. |
+| **software-design/** | Core **technical design files** — including Alpha prototype (`prototype-alpha/`), navigation standards, technical diagrams, and interface documentation. <br>→ See detailed instructions and live links in [`software-design/prototype-alpha/README.md`](software-design/prototype-alpha/README.md). |
+| **unicef-venture-fund-2025-submission/** | All documentation submitted under the **UNICEF Venture Fund Stage 1 (EOI)** and **Stage 2 (RFP)** for transparency and reference. |
 
 ---
 
@@ -59,7 +59,7 @@ MindMaster’s learning design is grounded in three principles:
 - Complete **Grade 1 curriculum framework** (10 units, 40 lessons).  
 - Fully playable HTML prototype demonstrating the Explore → Practise → Reflect arc.  
 - AI component designs specified and ready for Beta integration.  
-- **Pilot testing** conducted with Grade 3 students and teachers at an international school to validate pedagogy and usability using the English-language prototype.  
+- **Field testing** conducted with Grade 3 students and teachers at an international school to validate pedagogy and usability using the English-language prototype.  
 - With upcoming funding, MindMaster will be developed with **English as the internal base** and **full Thai localisation for learners and teachers**.
 
 ---
@@ -76,11 +76,9 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### Quick Access
 - **Code Repository:** [https://github.com/edsol-adm/mindmaster-app](https://github.com/edsol-adm/mindmaster-app)  
-- **Live Demo (GitHub Pages):** [https://edsol-adm.github.io/mindmaster-app/prototype-alpha/student-home.html](https://edsol-adm.github.io/mindmaster-app/prototype-alpha/student-home.html)
+- **Live Demo (GitHub Pages):** [https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/student-home.html](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/student-home.html)
 
 ---
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
-
-
