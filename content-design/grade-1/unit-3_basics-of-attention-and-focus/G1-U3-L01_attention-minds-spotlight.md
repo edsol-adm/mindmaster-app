@@ -2,133 +2,184 @@
 grade: 1
 unit: 3
 lesson: 1
-title: "Attention – the Mind’s Spotlight"
+title: "Attention — The Mind’s Spotlight"
 duration_mins: 45
 audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "30 September 2025"
+updated: "15 August 2025"
 ---
+
+# Lesson 1: Attention – the Mind’s Spotlight
 
 ## Lesson Objective
-Students will understand **attention as the mind’s spotlight** — the skill that selects what to notice and think about from all the sights, sounds, and feelings around them.  
-They will explore how attention affects learning and memory, and recognise that attention can be strong or wandering depending on focus.
+
+Children will understand attention as the mind's spotlight—a skill that selects what to notice and think about from all the sights, sounds, and feelings around them. They will explore how attention affects learning and memory, and recognize that attention can be strong or wandering depending on focus.
 
 ---
 
-## Warm-Up (5 min) – “Spotlight Hunt”
-**Activity Steps**
-1. Display a large image of a busy classroom scene (children reading, playing, eating, a bird outside, a clock, toys on a shelf, etc.).
-2. Give each child a small card with a 4 × 4 cm “window” cut-out.
-3. Ask children to move their frame around the image to view small parts: “Who found the bird?” “Who can see the clock?”
-4. Discuss: “Could you see everything at once, or just one part?”
+## Warm-Up (5 minutes)
 
-**Teacher language**  
-> “Your eyes just did what your brain’s attention does all the time — it picks one small spot to look at carefully.  
-> Today we’re going to learn how your mind uses its own spotlight.”
+**Activity: "Spotlight Hunt" (hard copy materials)**
 
-**Materials:** large image, small paper “window” frames.
+Display a large image on a whiteboard or projector showing a busy classroom scene with many objects, people, and activities happening at once (e.g., children reading, playing, eating, a bird outside a window, a clock, toys on a shelf, etc.). Give each child a small piece of card or paper with a "window" frame cut out (roughly 4x4 cm). Ask children to hold their frame up to their eye and move it around the image, looking at different "spotlight" views. Call out: "Who found the bird?" "Who can see the clock?" After 2–3 quick rounds, gather the group and ask: "What did you notice? When you looked through your spotlight frame, could you see everything at once, or just one small part?"
+
+**Teacher language:** "Your eyes just did what your brain's attention does all the time—it picks one small spot to look at carefully, even though there's lots of stuff around it. Today we're going to learn about how your mind uses its own spotlight."
 
 ---
 
-## Explore + Practice (30 min total)
+## Explore + Practice (30 minutes)
 
-### Part A – Understanding Attention as Selection (10 min)
-**Psychology Video (Sample Placeholder)**  
-**Title:** *How Do We Pay Attention? | Crash Course Kids*  
-**Link:** [https://www.youtube.com/watch?v=RbtmMJA_dYE](https://www.youtube.com/watch?v=RbtmMJA_dYE)  
-**Length:** 3 min 42 s  
-**Purpose:** Visual explanation of attention as a process using the spotlight metaphor.  
-**Usage Note:** *Referenced for concept illustration only. Final version will use original or licensed content.*
+### Explore A: Understanding Attention as Selection (10 minutes)
 
-**Guided Discussion**
-- What did the video say attention does? → Helps us notice and focus on important things.  
-- Can our brain pay attention to everything at once? → No—it must choose.  
-- Why is that useful? → So we can learn, remember, and not get confused.
+**Video + Guided Discussion (media)**
 
----
+Show video: "How Do We Pay Attention? | Crash Course Kids" (3:42)  
+Link: https://www.youtube.com/watch?v=RbtmMJA_dYE  
 
-### Part B – Psychology Test (10 min) · “Attention Strength Test”
-**Format:** MindMaster app · Clicker-based selective-attention game.
+**Note:** This video is indicative only. In the full MindMaster version, a modified or copyright-free video will be produced or featured to illustrate the same concept.
 
-**Game Flow**
-1. Students receive clickers.  
-2. Instructions: “Look carefully! When you see a **different-colour shape**, press Button 5.”  
-3. 15 rounds × 2 s each (5–7 blue shapes; 1–2 red targets).  
-4. Immediate visual feedback (✓ for correct / gentle buzz for missed).  
-5. Scores = accuracy + speed; leaderboard (optional class display).
+**Rationale:** Provides age-appropriate, visual explanation of attention as a process, using relatable examples of spotlight and filtering information. 
 
-**Teacher note:**  
-> “Your attention had to work hard to find the different colour. That’s your spotlight looking carefully.”
+After video, facilitate a short teacher-led discussion:
+- "What did the video say attention does?" (Helps us notice and focus on important things)  
+- "Can our brain pay attention to everything at once?" (No—it has to pick what's important)  
+- "Why is that useful?" (So we can learn, remember, and not get confused by everything)  
 
 ---
 
-### Part C – Self-Observation Task (10 min) · “Spotlight Focused vs Wandering”
-**Format:** Hard-copy worksheet.
+### Practice A: Psychology Experiment — Selective Attention in Action
 
-**Steps**
-1. Provide a 5-min maze or dot-to-dot activity.  
-2. While students work, occasionally say mild distractions (“Did you see the bird outside?”).  
-3. Afterwards, students mark when they felt focused vs distracted on their worksheet (two columns – bright vs scattered spotlight).
+This test uses MindMaster to measure how quickly and accurately children can identify a target while other distracting information is present (adapted Stroop-style task).
 
-**Teacher prompt**  
-> “When I mentioned lunch, did your spotlight move? That’s called attention wandering. It happens to everyone.”
+**Game Flow:**
+- **Setup:** Each child receives a clicker. Explain: "Your job is to look at the screen carefully. I'm going to show you simple shapes. Most of them will be one color, but some will be a different color. When you see the DIFFERENT color shape, press Button 5 on your clicker as fast as you can."  
+- **Play:** Screen displays a series of 15 quick rounds. In each round, 5–7 shapes appear for 2 seconds (circles, squares, triangles). Most are blue; 1–2 are red. Students press Button 5 when they spot the red shape(s). Immediate visual feedback (green checkmark for correct, gentle buzzer for missed).  
+- **Scoring:** Score based on accuracy (correct identifications) and speed (reaction time recorded). Display leaderboard at end showing top 3 students by accuracy.  
+- **Win Condition:** Highest accuracy wins; tied scores broken by fastest reaction time.  
 
----
-
-## Reflection (5 min) – “Noticing Our Spotlight”
-**Discussion Circle**
-- What is attention? (Describe it like a spotlight.)  
-- Did you notice your attention today — when it was strong or when it wandered?  
-- Why does attention help us learn better?
-
-**Teacher affirmation**  
-> “Good noticing! That’s what scientists do — they watch their own brains working.”
+**Teacher note:** This introduces the scientific measurement of attention. Debrief: "Did you notice how your attention had to work hard to find the different color? That's your spotlight looking carefully. Some of you were really fast—that means your attention muscles are already strong!"
 
 ---
 
-## Home Prep (5 min) – “Spotlight Observation at Home”
-Explain:  
-> “Next time, we’ll learn that attention has **different kinds** — like spotlight modes.  
-> Watch someone at home (a parent, sibling, or pet). Notice: Are they focusing on one thing or many things?  
-> Bring one example tomorrow — you’ll be doing what scientists do: observing!”
+### Practice B: Spotlight Focused vs. Wandering (Hard Copy Activity)
 
-**Take-home Card:** picture of a spotlight + prompt “What was the spotlight looking at?”  
+**Worksheet: Self-Observation During a Task (10 minutes)**
+
+Distribute a worksheet with two columns: "Spotlight Focused" and "Spotlight Drifting." Column headers have simple drawings of a bright spotlight beam vs. a wavering, scattered light.
+
+Provide children with a 5-minute task: complete a simple maze or dot-to-dot drawing. While they work, teacher circulates and whispers occasional distracting prompts ("Did you see the bird outside?" or "I wonder what's for lunch"). After the task, children reflect on their experience and mark the worksheet to show when they felt focused and when they felt distracted.
+
+**Teacher language prompt:** "Think about while you were doing the maze—could you feel your attention working? When you were drawing the line, your spotlight was on the maze. What happened when I said something about lunch? Did your spotlight move? That's called attention wandering. It happens to everyone."
+
+---
+
+## Reflection (5 minutes)
+
+**Guided Reflection Circle (Discussion)**
+
+Gather children in a circle. Ask:
+- "What is attention? (Can you describe it like a spotlight?)"  
+- "Did you notice your attention today—when it was strong and when it wandered?"  
+- "Why do you think attention helps us learn better?"  
+
+Affirm all responses with scientific language: "Good noticing! That's what scientists do—they watch their own brains working and notice what happens."
+
+---
+
+## Home Prep (5 minutes)
+
+**Preparation for Next Lesson**
+
+Explain: "Next time we meet, we're going to learn that attention comes in different kinds—like different spotlight modes your brain can use. Before we do that, I'd like you to try something at home and bring back one example. Watch someone (a parent, sibling, or pet) doing something. Notice: Are they focusing on just ONE thing, or are they noticing lots of things at once? Tomorrow, tell us one thing you noticed. You'll be doing what scientists do—observing!"
+
+Provide a simple take-home card with a picture of a spotlight and the prompt: "What was the spotlight looking at?" (to support memory of the task).
 
 ---
 
 ## Connection to Unit Arc
-- **Lesson 1 → Lesson 2:** Introduces attention as a single skill (the spotlight metaphor).  
-- **Lesson 2:** Reveals that this spotlight has different modes (sustained, selective, shifting).  
-- Understanding the spotlight is foundational to recognising its versatility and trainability.
+
+Lesson 1 → Lesson 2: Lesson 1 establishes attention as a single unified skill (the spotlight metaphor). Lesson 2 reveals that this spotlight has different modes—sustained, selective, and shifting—each used for different purposes. Understanding the spotlight is foundational to recognizing its versatility.
 
 ---
 
-## Materials Summary
-- Busy-classroom image  
-- Paper window frames (4 × 4 cm)  
-- Maze / dot-to-dot worksheet  
-- Clickers + MindMaster app  
-- Take-home card
+## Digital/MindMaster Outputs
+
+### Psychology Video
+
+**Title:** "How Do We Pay Attention? | Crash Course Kids"  
+**Link:** https://www.youtube.com/watch?v=RbtmMJA_dYE  
+**Length:** 3:42  
+**Note:** This video is indicative only. In the full MindMaster version, a modified or copyright-free video will be produced or featured to illustrate the same concept.  
+**Rationale:** Clear, animated explanation of attention as a filtering and focusing process, using accessible language and relatable examples.
 
 ---
 
-## Video Reference (Sample Placeholder)
-- [How Do We Pay Attention? | Crash Course Kids](https://www.youtube.com/watch?v=RbtmMJA_dYE)  
-*Used for concept illustration only; final version will use original or licensed content.*
+### Psychology Experiment: Selective Attention Test (MindMaster)
+
+**Test Name:** Color Target Detection Task (Stroop-adapted)
+
+**Game Flow:**
+- **Setup:** Each student has a clicker. Instructions: "Find the different color shape and press Button 5."  
+- **Play:** 15 rounds, 2 seconds per round. 5–7 shapes displayed; 1–2 are a different color (target). Immediate visual feedback.  
+- **Scoring:** Points for accuracy (correct detections). Bonus points for speed. Total score out of 15 possible correct.  
+- **Win Condition:** Highest accuracy score wins. Leaderboard displayed showing top 3.  
+
+**Relationship to Lesson:** This introduces the scientific measurement of attention. Debrief connects the activity to self-awareness of focus strength.
 
 ---
 
-## MindMaster Integration
-- **Psychology Test:** Attention Strength Test (Colour Target Detection Task)  
-- **Game:** Spotlight Challenge (Odd-One-Out)  
-- **Quiz:** Attention Spotlight Quiz (4 questions)  
-- **Home:** Spotlight Observation card  
-All activities provide immediate visual / audio feedback via clickers.
+### In-Class Game (MindMaster)
+
+**Game Format:** Spot the Difference / Odd One Out  
+**Game Name:** "Spotlight Challenge"
+
+**Game Flow:**
+- **Setup:** Explain: "Your spotlight can move quickly. I'm going to show you groups of things. Most things in the group are the same. One is different. Press the button number where you see the different one."  
+- **Play:** 10 rounds. Each round shows 4 options (labeled 1–4 via clicker buttons). 3 are the same (e.g., three happy faces), 1 is different (e.g., one sad face). 3 seconds to respond. Visual feedback after each answer.  
+- **Scoring:** 1 point per correct identification. Running total displayed. Cumulative score out of 10.  
+- **Win Condition:** Highest score wins. Optional: celebrate all students who score 7 or above (showing "strong spotlight control").  
+
+**Relationship to Lesson:** This game follows the Selective Attention Experiment. It reinforces the practice of using attention to find differences—a real-world application of the spotlight concept. Positioned at end of Explore + Practice section to solidify understanding before reflection.
 
 ---
 
-## Media Disclaimer
-The media referenced in this lesson plan is used solely for concept illustration and internal review.  
-Final versions of MindMaster will use original or appropriately licensed content in compliance with copyright law and UNICEF partnership standards.
+### In-Class Quiz (MindMaster)
+
+**Quiz Format:** Multiple Choice (Visual/Audio)  
+**Quiz Name:** "Attention Spotlight Quiz"
+
+**Game Flow:**
+- **Setup:** Explain: "I'm going to describe situations. You choose what attention is doing in each one. There are 4 choices for each question."  
+
+**Questions & Presentation:**
+1. "You're listening to your teacher read a story. A friend taps your shoulder, but you keep listening to the story. What is your attention doing?"  
+   - (A) Spotlight is strong  
+   - (B) Spotlight is wandering  
+   - (C) Spotlight is sleeping  
+   - (D) Spotlight moved  
+2. "You're playing with blocks, but you keep looking out the window. What is your attention doing?"  
+   - (A) Strong  
+   - (B) Wandering  
+   - (C) Perfect  
+   - (D) Broken  
+3. "Your spotlight helps you..."  
+   - (A) See everything at once  
+   - (B) Remember what you notice  
+   - (C) Fall asleep  
+   - (D) Hide  
+4. "Attention is like a..."  
+   - (A) Bed  
+   - (B) Spotlight  
+   - (C) Toy  
+   - (D) Snack  
+
+**Scoring:** 1 point per correct answer. Total score out of 4.  
+**Feedback:** After each answer, display brief affirmation (e.g., "Right! Your spotlight was strong!") or gentle prompt (e.g., "Think about the story—where was the spotlight?").  
+**Win Condition:** Score of 3+ marked as "Spotlight Star."
+
+---
+
+**License:** CC-BY-SA 4.0  
+© EdSol Technology (Thailand) Co., Ltd. – *MindMaster Psychology Literacy Programme, Draft Version*
