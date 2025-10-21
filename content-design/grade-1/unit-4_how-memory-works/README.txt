@@ -72,5 +72,6 @@ This foundation prepares students for the next cognitive domains in Grade 1: **I
 
 ---
 
-**Version:** v0.1-draft **Updated:** 21 October 2025  
+**Version:** v0.1-draft **Updated:** 15 August 2025  
 **License:** CC BY-SA 4.0 © EdSol Technology (Thailand) Co., Ltd.
+
