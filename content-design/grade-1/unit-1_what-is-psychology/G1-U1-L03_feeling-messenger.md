@@ -3,12 +3,12 @@ grade: 1
 unit: 1
 lesson: 3
 title: "Feeling – Our Mind’s Messenger"
-duration_mins: 50
+duration_mins: 45
 audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "10 October 2025"
+updated: "05 August 2025"
 ---
 
 ## Lesson Objective
@@ -164,3 +164,4 @@ Demonstrates that feelings create **real, physical sensations** that can be obse
 This lesson deepens the scientific study of **Feeling (the Messenger)** introduced in Lesson 1.  
 Students now understand two mind parts — **Thinking** and **Feeling** — as observable systems that exchange information.  
 Lesson 4 will complete the framework with **Doing (the Action Player)**, showing how thinking and feeling guide actions to make the mind visible.
+
