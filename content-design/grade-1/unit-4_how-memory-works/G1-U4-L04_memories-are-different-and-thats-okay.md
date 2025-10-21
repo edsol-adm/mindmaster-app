@@ -8,7 +8,7 @@ audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "29 August 2025"
+updated: "21 August 2025"
 ---
 
 # Lesson 4: Memories Are Different – And That’s Okay
@@ -221,3 +221,4 @@ Send home a reflection card:
 
 **License:** CC-BY-SA 4.0  
 © EdSol Technology (Thailand) Co., Ltd. – *MindMaster Psychology Literacy Programme, Draft Version*
+
