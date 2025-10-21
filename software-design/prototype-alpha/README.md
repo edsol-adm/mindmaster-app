@@ -63,7 +63,7 @@ Each Grade 1 unit introduces a **core psychology literacy concept**, structured 
 | 9 | **Our Actions and Impact** | Our choices have effects on others and the environment — awareness builds responsibility. |
 | 10 | **Teamwork and Cooperation** | Working together requires turn-taking, fairness, shared goals, and respect. |
 
-👉 For the full Grade 1 curriculum outline with detailed unit descriptions and learning outcomes, see [Grade 1 Curriculum Framework](https://github.com/edsol-adm/mindmaster-app/blob/main/curriculum-framework/grade-1/02_unit-description-and-learning-outcomes-grade1.md).
+👉 For the full Grade 1 curriculum outline with detailed unit descriptions and learning outcomes, see [Grade 1 Curriculum Outline](https://github.com/edsol-adm/mindmaster-app/blob/main/content-design/grade-1/unit-description-and-learning-outcomes-grade1.md).
 
 ---
 
@@ -94,9 +94,3 @@ All images and audio are stored in the `assets/` subfolders:
 - **User testing**: This Alpha has already been piloted with children and teachers. A feedback summary will be uploaded here.
 
 ---
-
-## 📅 Changelog – October 2025
-- ✅ Curriculum sequence updated to align with official Grade 1 structure.  
-- ✨ Integrated game titles (e.g. *Sound Safari*, *Memory Flip*, *Maze Mates*) for clearer communication with education partners and funders.  
-- 🧠 Refined curriculum section to focus on core concepts, with detailed unit descriptions linked externally.  
-- 🔗 Updated link to [Grade 1 Curriculum Framework](https://github.com/edsol-adm/mindmaster-app/blob/main/curriculum-framework/grade-1/02_unit-description-and-learning-outcomes-grade1.md).
