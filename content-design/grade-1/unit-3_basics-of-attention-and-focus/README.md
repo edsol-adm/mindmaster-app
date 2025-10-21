@@ -12,9 +12,9 @@ Through exploration, guided practice, and simple psychological experiments, stud
 By the end of the unit, children will see attention as both a personal strength and a shared classroom skill — something that can be improved through curiosity, observation, and kindness.
 
 **Theory of Change**  
-> **Knowledge** — Students learn how attention functions as the mind’s selection system that filters and directs focus.  
-> **→ Self-efficacy** — They gain confidence that attention can be understood, trained, and improved with strategies.  
-> **→ Mental resilience** — They learn to manage distraction, adapt to challenges, and appreciate diverse focus styles in themselves and others.  
+> **Knowledge** — Students learn that attention is the mind’s “spotlight” that selects what to notice and focus on. They become aware that attention has modes (sustained, selective, shifting) and that it can be directed and trained.  
+> **→ Self-efficacy** — Through guided experiments and visible progress in focus tasks, students gain mastery experiences showing that attention improves with effort and strategy. They begin to believe “I can control where my mind goes”, the foundation of executive self-efficacy. 
+> **→ Mental resilience** — By practising how to shift focus after distraction and sustain it through challenge, students learn to self-regulate their emotions and persistence. They experience small setbacks as opportunities to refocus rather than failures, building early cognitive-emotional resilience.  
 
 This reinforces MindMaster’s progression from knowledge-for-empowerment to self-efficacy and resilience — helping students see their own minds as capable, trainable, and worthy of respect.
 
