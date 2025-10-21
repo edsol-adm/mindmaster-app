@@ -8,7 +8,7 @@ audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
 version: "v0.1-draft"
-updated: "2025-10-17"
+updated: "11 August 2025"
 ---
 
 ## Lesson Objective
@@ -172,3 +172,4 @@ This builds **self-efficacy** (“I understand how my mind works”) and **menta
 - Clicker-based interactivity and immediate feedback for all activities.
 
 ---
+
