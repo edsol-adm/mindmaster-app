@@ -11,7 +11,10 @@ It is not the final technical design. Advanced features will be built in the Bet
   👉 https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/student-home.html
 
 - From the Student Home page, learners can access their roadmap and gamified practice.  
-- You can also open individual games directly:
+- You can also open individual games directly (see table below).
+
+> 🧩 **Note:** Each game corresponds to the *Practice* activity in **Lesson 1** of its unit.  
+> The Student Home screen shows four lessons per unit, but only Lesson 1 includes 1-2 gamified activities in this Alpha release.
 
 | Unit & Topic | Gamified Practice (Game Title) | Direct Link |
 |--------------|-------------------------------|-------------|
