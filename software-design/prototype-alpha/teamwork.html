@@ -173,6 +173,107 @@ a.btn.nav:focus{outline:4px solid #000;outline-offset:2px}
   .btn{ width:64px; height:64px; }
   canvas#board{ width:min(68vmin, 640px); }
 }
+/* ===== Launch Overlay (Teamwork) ===== */
+.hidden { display: none; }
+
+/* ===== Launch Overlay (Teamwork) — exact match to senses ===== */
+
+/* Layering so card stays clickable */
+#introWrap { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden; isolation: isolate; }
+#introWrap::before { content:""; position:absolute; inset:0; background:url("assets/teamwork/images/ui/bg-launch.png") center/cover no-repeat; filter:saturate(1.05); z-index:0; }
+#introWrap::after  { content:""; position:absolute; inset:0; background:rgba(0,0,0,.45); z-index:1; }
+
+/* Solid white card, centered, with senses typography */
+#introWrap .intro-card{
+  position:relative; z-index:2;
+  width:min(820px, 90vw);
+  padding:36px 32px 28px;
+  border-radius:24px;
+  background:#fff;                     /* white like senses */
+  box-shadow:0 12px 48px rgba(0,0,0,.25);
+  text-align:center;
+  font-family:'Fredoka','Comic Neue','Comic Sans MS',system-ui,sans-serif;
+}
+
+/* Dark yellow unit pill (senses amber) */
+#introWrap .unit-pill{
+  display:inline-block;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:.3px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#FFC107;                  /* dark yellow/amber */
+  color:#000;
+  margin-bottom:12px;
+}
+
+/* Title sizing like senses */
+#introWrap .intro-title{
+  font-size:clamp(28px, 4.5vw, 44px);
+  line-height:1.1;
+  margin:0 0 18px;
+  color:#222;
+}
+#introWrap .intro-tagline {
+  font-size: 18px;
+  font-weight: 500;
+  color: #444;
+  margin: 0 0 20px;
+  font-family: 'Fredoka', 'Comic Neue', 'Comic Sans MS', system-ui, sans-serif;
+}
+
+/* Button row spacing (scoped so it won't affect in-game controls) */
+#introWrap .controls{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:10px;
+  margin-bottom:14px;
+}
+
+/* FLAT RECTANGULAR BUTTONS (not circular) — hard reset + exact sizing */
+#introWrap .btn{
+  /* reset anything from global .btn (88x88 grid, etc.) */
+  all: unset;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 22px;
+  min-width: 168px;                    /* prevents vertical letter stacking */
+  height:auto;                          /* not fixed height */
+  border-radius:14px;
+  font-weight:700;
+  font-size:18px;                       /* senses size */
+  font-family:'Fredoka','Comic Neue','Comic Sans MS',system-ui,sans-serif;
+  line-height:1;
+  white-space:nowrap;                   /* keep text horizontal */
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 4px 0 rgba(0,0,0,.25);
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+#introWrap .btn:focus-visible{ outline:4px solid #000; outline-offset:2px; }
+
+/* Colorways to mirror senses */
+#introWrap .btn.start{ background:#4CAF50; color:#fff; box-shadow:0 4px 0 #2e7d32; }
+#introWrap .btn.start:hover{ background:#43A047; }
+
+#introWrap .btn.howto{ background:#FFEB3B; color:#000; box-shadow:0 4px 0 #d1c300; }
+#introWrap .btn.howto:hover{ background:#FDD835; }
+
+#introWrap .btn.nav{ background:#2196F3; color:#fff; box-shadow:0 4px 0 #0b79d0; }
+#introWrap .btn.nav:hover{ background:#42a5f5; }
+
+/* How-to panel keeps senses look */
+#introWrap .howto-panel{
+  margin-top:8px; padding:12px 14px;
+  border-radius:12px; background:#fff; border:2px solid #eee;
+  max-height:42vh; overflow:auto; text-align:left;
+}
+#introWrap .howto-panel ol{ margin:0 0 0 20px; }
+#introWrap .howto-panel li{ margin:6px 0; }
 </style>
 
 <!-- SFX -->
@@ -192,7 +293,32 @@ window.addEventListener('error', function(e){
 </script>
 </head>
 <body>
-  <div class="wrap">
+<!-- ===== Launch / Intro Overlay (Teamwork) ===== -->
+<section id="introWrap" aria-labelledby="introTitle">
+  <div class="intro-card" role="dialog" aria-modal="true">
+    <div class="unit-pill">Unit 10: Teamwork and Cooperation</div>
+    <h1 id="introTitle" class="intro-title">Maze Mates</h1>
+<p class="intro-tagline">
+  A game about helping each other through tricky mazes — because teamwork opens every gate!
+</p>
+
+    <div class="controls">
+      <button id="startBtn" class="btn start">Start</button>
+      <button id="howToBtn" class="btn howto" aria-expanded="false" aria-controls="howToPanel">How to Play</button>
+      <a id="homeLink" class="btn nav" href="lesson-screen-htmls/lesson-10.01.html">Return to the Park</a>
+    </div>
+
+    <div id="howToPanel" class="howto-panel hidden" role="region" aria-live="polite" aria-label="How to Play">
+      <ol>
+        <li><strong>Take turns:</strong> Red and Blue move one at a time with the arrow keys or buttons.</li>
+        <li><strong>Open gates together:</strong> Bumping your <em>own</em> closed gate helps open your partner’s touched gate.</li>
+        <li><strong>Reach your pads:</strong> Red → red pad, Blue → blue pad to complete the bridge.</li>
+        <li><strong>Finish together:</strong> Meet in the middle for a high-five to win the level.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+<div id="gameWrap" class="wrap hidden">
     <div class="topbar">
       <div class="title">Maze Mates — Level <span id="levelNum">1</span></div>
       <div class="turn"><span class="dot" id="turnDot"></span><span id="turnText">Your turn: Red</span></div>
@@ -750,15 +876,20 @@ function sizeCanvasToViewport() {
 }
 
 // initial sizing + resize listener
-generate(); 
-draw(); 
-sizeCanvasToViewport(); 
-
-window.addEventListener('resize', function () {
+function initGame() {
+  // Order matters: size first so clientWidth > 0, then generate/draw
   sizeCanvasToViewport();
+  generate();
   draw();
-});
-})();</script>
+
+  window.addEventListener('resize', function () {
+    sizeCanvasToViewport();
+    draw();
+  });
+}
+window.initGame = initGame;
+})();
+</script>
 
 <script>
 // Optional enhancement hook for nav anchors (do not block navigation)
@@ -776,6 +907,57 @@ document.querySelectorAll('a.btn.nav').forEach(a=>{
     if(/^https?:\/\//.test(h) || h.startsWith('/')){
       a.style.boxShadow='0 0 0 4px red inset';
       console.warn('Non-relative href:', h, a);
+    }
+  });
+})();
+</script>
+<script>
+/* ===== Launch Overlay Logic (Teamwork) ===== */
+(function () {
+  var intro = document.getElementById('introWrap');
+  var startBtn = document.getElementById('startBtn');
+  var howToBtn = document.getElementById('howToBtn');
+  var howToPanel = document.getElementById('howToPanel');
+  var gameWrap = document.getElementById('gameWrap');
+
+  // Safety: ensure game is hidden on load
+  if (gameWrap && !gameWrap.classList.contains('hidden')) {
+    gameWrap.classList.add('hidden');
+  }
+
+  function showGame() {
+    // Unhide game and remove overlay
+    if (gameWrap) gameWrap.classList.remove('hidden');
+    if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
+
+    // Initialize the game only after layout is visible
+    requestAnimationFrame(function () {
+      try { if (typeof initGame === 'function') initGame(); } catch (e) {}
+      try { if (typeof startBgm === 'function') startBgm(); } catch (e) {}
+    });
+
+    // Move focus to a sensible in-game control
+    var firstControl = document.querySelector('.controls .btn, button, a');
+    if (firstControl && firstControl.focus) firstControl.focus();
+  }
+
+  function toggleHowTo() {
+    if (!howToPanel || !howToBtn) return;
+    var isHidden = howToPanel.classList.contains('hidden');
+    howToPanel.classList.toggle('hidden');
+    howToBtn.setAttribute('aria-expanded', String(isHidden));
+    if (!isHidden) { // just collapsed
+      howToBtn.focus();
+    }
+  }
+
+  if (startBtn) startBtn.addEventListener('click', showGame);
+  if (howToBtn) howToBtn.addEventListener('click', toggleHowTo);
+
+  // Also close How-to with Escape when panel is open
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && howToPanel && !howToPanel.classList.contains('hidden')) {
+      toggleHowTo();
     }
   });
 })();
