@@ -676,7 +676,7 @@
   function loadMetric(key, fallback){ try{ const v = JSON.parse(localStorage.getItem(NS+key)); return (v==null?fallback:v);}catch{return fallback} }
 
   // =================== FLOW ===================
-  function goHome(){ tryPause(bgm); window.location.href='lesson-screen-htmls/lesson-08.02.html'; }
+  function goHome(){ tryPause(bgm); window.location.href='lesson-screen-htmls/lesson-08.01.html'; }
 
   function startSession(){
     const roundsPlayed = loadMetric('roundsPlayed', 0) + 1; saveMetric('roundsPlayed', roundsPlayed);
