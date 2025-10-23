@@ -1,91 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Senses Game</title>
-<style>
-  :root {
-    --bg: #fff8fb;
-    --ink: #1f2937;
-    --accent: #a855f7;
-    --accent-2: #7c3aed;
-    --good: #10b981;
-    --card: #ffffff;
-  }
-  html, body { height: 100%; }
-  body {
-    margin: 0; font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-    background: var(--bg); color: var(--ink);
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  }
-  header {
-    width: 100%; max-width: 1024px; padding: 16px;
-    display: flex; gap: 12px; align-items: center; justify-content: flex-end;
-  }
-  .brand { font-weight: 800; font-size: 18px; margin-right: auto; }
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 16px 20px;
-    font-size: 18px;
-    font-weight: 800;
-    color: #fff;
-    text-align: center;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    margin: 6px 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    transition: transform 0.06s ease, filter 0.08s ease;
-  }
-  .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
-  .btn:active { transform: translateY(0); filter: brightness(.95); }
-  .big { font-size: 20px; padding: 18px; }
-  .animals { background: #22c55e; }   /* green */
-  .transport { background: #3b82f6; } /* blue */
-  .chaos { background: #f59e0b; }     /* orange */
-  .sound { background: var(--accent); }
-  main { width: 100%; max-width: 1024px; padding: 8px 16px 32px; display: grid; gap: 16px; }
-  .panel {
-    background: var(--card); border-radius: 16px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  }
-  .grid-wrap { position: relative; }
-  .grid { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; z-index: 2; }
-  .jigsaw { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; z-index: 1; }
-  .piece {
-    border-radius: 16px;
-    background-repeat: no-repeat;
-    background-size: 300% 300%;
-    opacity: 0;
-    transition: opacity 280ms ease;
-  }
-  .piece.show { opacity: 1; }
-  .tile {
-    background: #fff; border: 2px solid #e5e7eb; border-radius: 16px; overflow: hidden;
-    display: grid; place-items: center; padding: 8px; cursor: pointer; transition: box-shadow 0.1s ease, transform 0.06s ease;
-    min-height: 120px;
-  }
-  .tile:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.10); transform: translateY(-1px); }
-  .tile.matched { border-color: var(--good); box-shadow: inset 0 0 0 3px rgba(16,185,129,0.35); opacity: 0.9; }
-  .tile img { width: 100%; max-height: 160px; object-fit: contain; }
-  .status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .meter { height: 12px; background: #e5e7eb; border-radius: 999px; overflow: hidden; width: 220px; }
-  .meter > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0%; }
-  .spacer { flex: 1; }
-  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 50; }
-  .overlay.show { display: flex; }
-  .reveal-card { background: #fff; border-radius: 20px; padding: 16px; max-width: 720px; width: 92%; display: grid; gap: 12px; place-items: center; text-align: center; }
-  .reveal-card img { width: 100%; max-height: 80vh; object-fit: contain; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Senses Game</title>
+
+  <style>
+/* ===== Launch Screen Parity with attention2 ===== */
+
+/* Center the intro overlay */
+#introWrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent; /* background image + veil handled by ::before/::after */
+  z-index: 10;
+}
+
+/* Background image already handled by ::before — keep as is */
+
+/* Intro card container */
+.intro-card {
+  position: relative;
+  z-index: 2;
+  background: #fffdfdd9; /* warm white with slight transparency */
+  border-radius: 18px;
+  padding: 24px 28px;
+  width: min(720px, 92vw);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+}
+
+/* Unit pill */
+.unit-pill {
+  display: inline-block;
+  background: #f5c242;
+  color: #000;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin-bottom: 10px;
+}
+
+/* Headings and subtext */
+#introWrap h1 {
+  margin: 6px 0 6px;
+  font-size: 2.1rem;
+}
+#introWrap .sub {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+}
+
+/* Horizontal controls row */
+#introWrap .controls {
+  margin: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Buttons: compact horizontal layout */
+#introWrap .controls .btn,
+#introWrap .controls button,
+#introWrap .controls a.btn {
+  width: auto;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+
+/* Focus outline per navigation standard */
+#introWrap .controls button:focus,
+#introWrap .controls a.btn:focus {
+  outline: 4px solid #000;
+  outline-offset: 2px;
+}
+/* ===== Launch background image + veil (Senses) ===== */
+#introWrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('assets/senses/images/ui/bg-launch.png') center/cover no-repeat;
+  z-index: 0; /* sits behind the veil and card */
+}
+
+#introWrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* semi-transparent dark veil for readability */
+  z-index: 1; /* sits above image, below intro card */
+}
+
+/* Make sure the card stays above both layers */
+.intro-card {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== Launch button consistency & Return-to-Park colour ===== */
+#introWrap .controls .btn,
+#introWrap .controls button,
+#introWrap .controls a.btn {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Start and How-to-Play button colours (parity with attention2) */
+#startBtn {
+  background: #4CAF50;           /* vibrant green */
+  box-shadow: 0 3px 0 #3e9c44;   /* darker green shadow */
+  color: #fff;
+}
+#howToBtn {
+  background: #FF9800;        /* friendly orange */
+  box-shadow: 0 3px 0 #d17a00;
+  color: #fff;
+}
+
+/* Return to the Park button (blue) */
+#homeLink {
+  background: #2196f3;           /* vibrant blue */
+  box-shadow: 0 4px 0 #0b79d0;   /* darker blue shadow */
+  color: #fff;
+}
+#homeLink:hover {
+  background: #42a5f5;           /* lighter blue on hover */
+}
+
+/* Hide How-to-Play panel until toggled */
+#howToPanel.hidden {
+  display: none;
+}
+
+/* How-to-Play panel styling */
+#howToPanel {
+  background: #fff8;             /* translucent white box */
+  border: none;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  text-align: left;
+}
+#howToPanel ol { margin: 6px 0 0 20px; }
+#howToPanel li { margin: 6px 0; }
+}
+
+    :root {
+      --bg: #fff8fb; --ink: #1f2937; --accent: #a855f7; --accent-2: #7c3aed; --good: #10b981; --card: #ffffff;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: var(--bg); color: var(--ink);
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    }
+
+    /* ===== Page styles that were previously outside <style> ===== */
+    header {
+      width: 100%; max-width: 1024px; padding: 16px;
+      display: flex; gap: 12px; align-items: center; justify-content: flex-end;
+    }
+    .brand { font-weight: 800; font-size: 18px; margin-right: auto; }
+
+    .btn {
+      display: block; width: 100%; padding: 16px 20px; font-size: 18px; font-weight: 800;
+      color: #fff; text-align: center; border: none; border-radius: 16px; cursor: pointer;
+      margin: 6px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      transition: transform 0.06s ease, filter 0.08s ease;
+    }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn:active { transform: translateY(0); filter: brightness(.95); }
+    .big { font-size: 20px; padding: 18px; }
+    .animals { background: #22c55e; }   /* green */
+    .transport { background: #3b82f6; } /* blue */
+    .chaos { background: #f59e0b; }     /* orange */
+    .sound { background: var(--accent); }
+
+    main { width: 100%; max-width: 1024px; padding: 8px 16px 32px; display: grid; gap: 16px; }
+    .panel { background: var(--card); border-radius: 16px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+    .grid-wrap { position: relative; }
+    .grid { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; z-index: 2; }
+    .jigsaw { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; z-index: 1; }
+
+    .piece { border-radius: 16px; background-repeat: no-repeat; background-size: 300% 300%; opacity: 0; transition: opacity 280ms ease; }
+    .piece.show { opacity: 1; }
+
+    .tile {
+      background: #fff; border: 2px solid #e5e7eb; border-radius: 16px; overflow: hidden;
+      display: grid; place-items: center; padding: 8px; cursor: pointer; transition: box-shadow 0.1s ease, transform 0.06s ease; min-height: 120px;
+    }
+    .tile:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.10); transform: translateY(-1px); }
+    .tile.matched { border-color: var(--good); box-shadow: inset 0 0 0 3px rgba(16,185,129,0.35); opacity: 0.9; }
+    .tile img { width: 100%; max-height: 160px; object-fit: contain; }
+
+    .status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .meter { height: 12px; background: #e5e7eb; border-radius: 999px; overflow: hidden; width: 220px; }
+    .meter > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0%; }
+    .spacer { flex: 1; }
+
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 50; }
+    .overlay.show { display: flex; }
+    .reveal-card { background: #fff; border-radius: 20px; padding: 16px; max-width: 720px; width: 92%; display: grid; gap: 12px; place-items: center; text-align: center; }
+    .reveal-card img { width: 100%; max-height: 80vh; object-fit: contain; }
+/* ===== In-game "Hear the Sound" button (purple) ===== */
+#play-sound,
+.btn.sound {
+  background: #9C27B0;        /* vibrant purple */
+  box-shadow: 0 3px 0 #6A1B9A; /* darker base */
+  color: #fff;
+}
+
+#play-sound:hover,
+.btn.sound:hover {
+  background: #AB47BC;        /* lighter purple on hover */
+}
+  </style>
 </head>
 <body>
-  <header>
-    <div class="brand">Senses Game</div>
-    <input id="volume" type="range" min="0" max="1" step="0.05" value="0.8" />
-  </header>
+  <!-- ===== Launch / Intro Overlay (Sound Safari) ===== -->
+<section id="introWrap">
+  <div class="intro-card" role="dialog" aria-labelledby="gameTitle">
+    <!-- Unit pill -->
+    <div class="unit-pill" aria-label="Unit title">Unit 2: Exploring Our Senses</div>
 
-  <main>
+    <!-- Game title -->
+    <h1 id="gameTitle">Sound Safari</h1>
+    <p class="sub">Can you match each sound to the picture that makes it?</p>
+
+    <!-- Buttons -->
+<div class="controls">
+  <button id="startBtn" class="btn">Start</button>
+  <button id="howToBtn" class="btn" aria-expanded="false">How&nbsp;to&nbsp;Play</button>
+  <a href="../park.html" id="homeLink" class="btn">Return&nbsp;to&nbsp;the&nbsp;Park</a>
+</div>
+
+<!-- How-to panel (starts hidden) -->
+<div id="howToPanel" class="hidden" aria-live="polite">
+  <ol style="margin:8px 0 0 18px;">
+    <li>Listen carefully to each sound.</li>
+    <li>Click the picture that matches it.</li>
+    <li>Use your ears and eyes together!</li>
+    <li>Try to find them all before time runs out.</li>
+  </ol>
+</div>
+</section>
+
+<header>
+  <div class="brand">Sound Safari</div>
+  <input id="volume" type="range" min="0" max="1" step="0.05" value="0.8" />
+</header>
+
+  <main class="hidden">
     <section class="panel">
       <h3 style="margin: 0 0 8px 0;">Choose a Set</h3>
       <button class="btn animals big" id="btn-animals">🐾 Animals</button>
@@ -240,6 +427,58 @@ document.getElementById('next-level').onclick=()=>{
 };
 
 document.getElementById('volume').oninput=e=>audio.volume=parseFloat(e.target.value);
+</script>
+<!-- ===== Launch Screen Logic (Sound Safari) ===== -->
+<script>
+  (function () {
+    const introWrap  = document.getElementById('introWrap');
+    const startBtn   = document.getElementById('startBtn');
+    const howToBtn   = document.getElementById('howToBtn');
+    const howToPanel = document.getElementById('howToPanel');
+    const mainEl     = document.querySelector('main'); // game area
+
+    // --- Reveal game when Start is pressed ---
+    function showGame() {
+      if (mainEl && mainEl.classList.contains('hidden')) {
+        mainEl.classList.remove('hidden');
+      }
+
+      // Remove overlay node entirely (prevents focus/tab issues)
+      if (introWrap && introWrap.parentNode) {
+        introWrap.parentNode.removeChild(introWrap);
+      }
+
+      // Start background music if available
+      try {
+        // Works whether audio/DATA are globals or locals (window.* or not)
+        const A = window.audio || (typeof audio !== 'undefined' ? audio : null);
+        const D = window.DATA  || (typeof DATA  !== 'undefined'  ? DATA  : null);
+        if (A && D && D.bgm && typeof A.loopBGM === 'function') {
+          A.loopBGM(D.bgm);
+        }
+      } catch (_) {
+        /* no-op */
+      }
+
+      // Move focus to a sensible control inside the game
+      const firstInteractive = document.querySelector(
+        'main #play-sound, main button, main .btn, main a[href]'
+      );
+      if (firstInteractive) firstInteractive.focus();
+    }
+
+    // --- Toggle How-to-Play panel ---
+    function toggleHowTo() {
+      if (!howToPanel || !howToBtn) return;
+      const willShow = howToPanel.classList.contains('hidden');
+      howToPanel.classList.toggle('hidden');
+      howToBtn.setAttribute('aria-expanded', String(willShow));
+      if (!willShow) howToBtn.focus(); // return focus when collapsing
+    }
+
+    if (startBtn) startBtn.addEventListener('click', showGame);
+    if (howToBtn) howToBtn.addEventListener('click', toggleHowTo);
+  })();
 </script>
 </body>
 </html>
