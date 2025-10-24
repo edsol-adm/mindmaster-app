@@ -558,21 +558,16 @@ further: thinking can also help manage or understand feelings.
 
 ##  
 
-## HOME GAME 3A
-
-**hg-01.03-01.html**
-
-### Lesson Link & Learning Objective
-
-**Unit 1, Lesson 3: Feeling -- Our Mind\'s Messenger**
+<h2 id="lesson-3">Lesson 3 – Feeling – Our Mind’s Messenger</h2>
 
 Students will identify at least four different feelings by name and
 describe what information each one communicates (e.g., \"Fear warns me
 about danger\").
 
-### Game Title
+<h3 id="game-3a">HOME GAME 3A – Messenger Messages: What’s the Signal?</h3>
 
-**Messenger Messages: What\'s the Signal?**
+<p><strong>File:</strong> <code>hg-01.03-01.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 3 – <em>Feeling – Our Mind’s Messenger</em></p>
 
 ### Game Format
 
@@ -683,13 +678,10 @@ feelings will be shown influencing actions.
 
 ##  
 
-## HOME GAME 3B
+<h3 id="game-3b">HOME GAME 3B – Body Map: Feel It and Share It</h3>
 
-**hg-01.03-02.html**
-
-### Lesson Link & Learning Objective
-
-**Unit 1, Lesson 3: Feeling -- Our Mind\'s Messenger**
+<p><strong>File:</strong> <code>hg-01.03-02.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 3 – <em>Feeling – Our Mind’s Messenger</em></p>
 
 Students will locate where specific feelings appear in their body and
 recognize that the same situation can create different feelings in
