@@ -414,13 +414,11 @@ not a simple on/off.
 
 ##  
 
-## HOME GAME 2B
+<h3 id="game-2b">HOME GAME 2B – Pause & Think: The Problem Solver</h3>
 
-**hg-01.02-02.html**
+<p><strong>File:</strong> <code>hg-01.02-02.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 2 – <em>Thinking – Our Mind’s Idea Factory</em></p>
 
-### Lesson Link & Learning Objective
-
-**Unit 1, Lesson 2: Thinking -- Our Mind\'s Idea Factory**
 
 Students will demonstrate the practice of \"thinking before acting\" by
 pausing to use their Idea Factory in a scenario and explaining what they
