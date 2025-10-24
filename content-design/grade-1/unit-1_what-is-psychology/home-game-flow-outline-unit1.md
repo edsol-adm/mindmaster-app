@@ -19,14 +19,13 @@
 
 ---
 
-**File Reference:** `hg-01.01-01.html`  
 <h2 id="lesson-1">Lesson 1 – How Our Minds Work</h2>
 
 Students will identify the three parts of the mind (Thinking, Feeling, Doing) in everyday scenarios and recognize which part is active in different situations.
 
-### Game Title
-
-**Mind Detective: Spot the Three Parts**
+<h3 id="game-1a">HOME GAME 1A – Mind Detective: Spot the Three Parts</h3>
+**File:** `hg-01.01-01.html`  
+**Lesson Link:** Unit 1, Lesson 1 – *How Our Minds Work*
 
 ### Game Format
 
