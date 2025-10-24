@@ -1,26 +1,36 @@
-# MindMaster Grade 1 – Unit Descriptions & Learning Outcomes
-*(Part of the MindMaster Curriculum Framework)*  
-Version 1.0 | October 2025
+<a name="top"></a>
+# MindMaster Grade 1 — Unit Descriptions & Learning Outcomes
 
----
-
-## Table of Contents
-Use the links below to jump directly to each unit:
+Use the links below to jump directly to each unit section in this document:
 
 | Unit | Title | Jump Link |
 |------|-------|-----------|
-| **Unit 1** | What is Psychology? | [Go to Unit 1 ↓](#unit-1-what-is-psychology) |
-| **Unit 2** | Exploring Our Senses (Sight, Sound, Touch) | [Go to Unit 2 ↓](#unit-2-exploring-our-senses-sight-sound-touch) |
-| **Unit 3** | Basics of Attention and Focus | [Go to Unit 3 ↓](#unit-3-basics-of-attention-and-focus) |
-| **Unit 4** | How Memory Works | [Go to Unit 4 ↓](#unit-4-how-memory-works) |
-| **Unit 5** | Imagination and Storytelling | [Go to Unit 5 ↓](#unit-5-imagination-and-storytelling) |
-| **Unit 6** | What are Feelings? | [Go to Unit 6 ↓](#unit-6-what-are-feelings) |
-| **Unit 7** | Family and Friendship Dynamics | [Go to Unit 7 ↓](#unit-7-family-and-friendship-dynamics) |
-| **Unit 8** | Problem-Solving Basics | [Go to Unit 8 ↓](#unit-8-problem-solving-basics) |
-| **Unit 9** | Our Actions and Impact | [Go to Unit 9 ↓](#unit-9-our-actions-and-impact) |
-| **Unit 10** | Teamwork and Cooperation | [Go to Unit 10 ↓](#unit-10-teamwork-and-cooperation) |
+| **Unit 1** | What is Psychology? | [Go to Unit 1 ↓](#unit1) |
+| **Unit 2** | Exploring Our Senses (Sight, Sound, Touch) | [Go to Unit 2 ↓](#unit2) |
+| **Unit 3** | Basics of Attention and Focus | [Go to Unit 3 ↓](#unit3) |
+| **Unit 4** | How Memory Works | [Go to Unit 4 ↓](#unit4) |
+| **Unit 5** | Imagination and Storytelling | [Go to Unit 5 ↓](#unit5) |
+| **Unit 6** | What are Feelings? | [Go to Unit 6 ↓](#unit6) |
+| **Unit 7** | Family and Friendship Dynamics | [Go to Unit 7 ↓](#unit7) |
+| **Unit 8** | Problem-Solving Basics | [Go to Unit 8 ↓](#unit8) |
+| **Unit 9** | Our Actions and Impact | [Go to Unit 9 ↓](#unit9) |
+| **Unit 10** | Teamwork and Cooperation | [Go to Unit 10 ↓](#unit10) |
+
+---
 
 *(Scroll down for full unit descriptions and learning outcomes.)*
+
+
+---
+
+MindMaster Grade 1 Curriculum: Unit Specifications
+
+10 Units. 40 Lessons
+
+<a name="unit1"></a>
+## Unit 1 – What is Psychology?
+
+[⬆️ Back to top](#top)
 
 
 ---
