@@ -27,19 +27,16 @@ MindMaster Grade 1 Curriculum: Unit Specifications
 
 10 Units. 40 Lessons
 
-<a name="unit1"></a>
-## Unit 1 – What is Psychology?
-
-[⬆️ Back to top](#top)
-
-
 ---
 
 MindMaster Grade 1 Curriculum: Unit Specifications
 
 10 Units. 40 Lessons
 
+<a name="unit1"></a>
 ## Unit 1 – What is Psychology?
+
+[⬆️ Back to top](#top)
 <table>
 <colgroup>
 <col style="width: 19%" />
