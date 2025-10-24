@@ -16,8 +16,6 @@ Use the links below to jump directly to each unit section in this document:
 | **Unit 9** | Our Actions and Impact | [Go to Unit 9 ↓](#unit9) |
 | **Unit 10** | Teamwork and Cooperation | [Go to Unit 10 ↓](#unit10) |
 
----
-
 *(Scroll down for full unit descriptions and learning outcomes.)*
 
 
