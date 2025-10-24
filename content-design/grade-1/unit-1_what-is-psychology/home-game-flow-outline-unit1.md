@@ -279,6 +279,7 @@ different sequences depending on the situation.
 -   **Background:** Same bright, science-themed aesthetic as Home Game
     > 1A.
 
+##
 
 <h2 id="lesson-2">Lesson 2 – Thinking – Our Mind’s Idea Factory</h2>
 
@@ -838,22 +839,21 @@ three parts.
 
 -   **Background:** Warm, inclusive, diverse-friendly aesthetic.
 
-## HOME GAME 4A
+## 
 
-**hg-01.04-01.html**
+HOME GAME 4A
 
-### Lesson Link & Learning Objective
-
-**Unit 1, Lesson 4: Doing -- Our Mind\'s Action Player**
+<h2 id="lesson-4">Lesson 4 – Doing – Our Mind’s Action Player</h2>
 
 Students will identify at least four types of observable actions their
 Action Player produces (speaking, facial expressions, body movements,
 gestures, or choosing to wait) and distinguish between actions they can
 control and thoughts/feelings they cannot control.
 
-### Game Title
+<h3 id="game-4a">HOME GAME 4A – Action Player: What Can You See?</h3>
 
-**Action Player: What Can You See?**
+<p><strong>File:</strong> <code>hg-01.04-01.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 4 – <em>Doing – Our Mind’s Action Player</em></p>
 
 ### Game Format
 
@@ -981,13 +981,10 @@ agency in the next game.
 
 ##  
 
-## HOME GAME 4B
+<h3 id="game-4b">HOME GAME 4B – Pause & Choose: The Three Parts in Action</h3>
 
-**hg-01.04-02.html**
-
-### Lesson Link & Learning Objective
-
-**Unit 1, Lesson 4: Doing -- Our Mind\'s Action Player**
+<p><strong>File:</strong> <code>hg-01.04-02.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 4 – <em>Doing – Our Mind’s Action Player</em></p>
 
 Students will explain how thinking and feeling each guide actions in
 different ways and demonstrate the pause between thinking/feeling and
