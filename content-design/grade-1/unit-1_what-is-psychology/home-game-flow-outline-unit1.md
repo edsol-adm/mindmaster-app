@@ -151,8 +151,10 @@ happening internally based on external clues.
 ##  
 
 <h3 id="game-1b">HOME GAME 1B – Mind Connection: Build the Story</h3>
-**File:** `hg-01.01-02.html`  
-**Lesson Link:** Unit 1, Lesson 1 – *How Our Minds Work*
+
+<p><strong>File:</strong> <code>hg-01.01-02.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 1 – <em>How Our Minds Work</em></p>
+
 
 Students will explain how the three parts of the mind work together and
 influence each other using simple cause-and-effect language (\"I thought
