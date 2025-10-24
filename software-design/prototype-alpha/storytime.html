@@ -116,6 +116,40 @@
   background: #42a5f5;
 }
 
+/* ===== End Card: hide tag & unify button styles with Intro ===== */
+
+/* 1) Hide the Good/Bad/Difficult tag on the end card */
+#screen-end #endTag { display: none !important; }
+
+/* 2) End-card buttons: same look & feel as intro */
+#screen-end .btn {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  min-width: 160px;
+  text-transform: none;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.25);
+}
+
+/* Colors to mirror Intro */
+#btn-next  { background:#4CAF50; box-shadow:0 3px 0 #3e9c44; color:#fff; }   /* green */
+#btn-again { background:#FF9800; box-shadow:0 3px 0 #d17a00; color:#fff; }   /* orange */
+
+/* Return to the Park (anchor) — blue */
+#screen-end a#btn-home.btn {
+  background:#2196f3; box-shadow:0 4px 0 #0b79d0; color:#fff;
+}
+#screen-end a#btn-home.btn:hover { background:#42a5f5; }
+
+/* 3) Remove black focus outline on the End-card buttons (like you did on Intro) */
+#screen-end .btn:focus,
+#screen-end .btn:focus-visible { outline:none !important; }
+#screen-end .btn::-moz-focus-inner { border:0 !important; }
+#screen-end .btn:-moz-focusring { outline:none !important; }
+
 /* How-to list box */
 #howto {
   background: #fff8;
@@ -219,7 +253,7 @@
         <button class="btn" id="btn-next">Next Story</button>
         <button class="btn" id="btn-again">Play Again</button>
         <!-- Primary navigation via anchor per Navigation Standard -->
-        <a id="btn-home" class="btn button-secondary nav" href="lesson-screen-htmls/lesson-06.02.html">Return to the Park</a>
+        <a id="btn-home" class="btn button-secondary nav" href="lesson-screen-htmls/lesson-05.01.html">Return to the Park</a>
       </div>
     </div>
   </section>
@@ -388,7 +422,7 @@ btnNext.addEventListener('click', () => startGame(nextScenarioKey(scenarioKey)))
    Keep an optional enhancement function (not used for primary nav). */
 function goHome(){
   try{ sounds.bgm && sounds.bgm.pause(); }catch(e){}
-  window.location.href = 'lesson-screen-htmls/lesson-06.02.html';
+  window.location.href = 'lesson-screen-htmls/lesson-05.01.html';
 }
 
 function showScreen(which){
