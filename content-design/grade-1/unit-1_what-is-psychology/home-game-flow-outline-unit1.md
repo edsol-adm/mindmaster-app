@@ -841,8 +841,6 @@ three parts.
 
 ## 
 
-HOME GAME 4A
-
 <h2 id="lesson-4">Lesson 4 – Doing – Our Mind’s Action Player</h2>
 
 Students will identify at least four types of observable actions their
