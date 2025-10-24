@@ -279,24 +279,15 @@ different sequences depending on the situation.
 -   **Background:** Same bright, science-themed aesthetic as Home Game
     > 1A.
 
-##  
 
-<h3 id="game-1b">HOME GAME 1B – Mind Connection: Build the Story</h3>
+<h2 id="lesson-2">Lesson 2 – Thinking – Our Mind’s Idea Factory</h2>
 
-<p><strong>File:</strong> <code>hg-01.01-02.html</code><br>
-<strong>Lesson Link:</strong> Unit 1, Lesson 1 – <em>How Our Minds Work</em></p>
+Students will identify at least three different types of thinking their Idea Factory does (remembering, imagining, planning, problem-solving, deciding) and give examples from their own experience.
 
-### Lesson Link & Learning Objective
+<h3 id="game-2a">HOME GAME 2A – Idea Factory: What’s the Job?</h3>
 
-**Unit 1, Lesson 2: Thinking -- Our Mind\'s Idea Factory**
-
-Students will identify at least three different types of thinking their
-Idea Factory does (remembering, imagining, planning, problem-solving,
-deciding) and give examples from their own experience.
-
-### Game Title
-
-**Idea Factory: What\'s the Job?**
+<p><strong>File:</strong> <code>hg-01.02-01.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 2 – <em>Thinking – Our Mind’s Idea Factory</em></p>
 
 ### Game Format
 
