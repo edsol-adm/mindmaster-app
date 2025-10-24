@@ -279,9 +279,10 @@ different sequences depending on the situation.
 
 ##  
 
-## HOME GAME 2A
+<h3 id="game-1b">HOME GAME 1B – Mind Connection: Build the Story</h3>
 
-**hg-01.02-01.html**
+<p><strong>File:</strong> <code>hg-01.01-02.html</code><br>
+<strong>Lesson Link:</strong> Unit 1, Lesson 1 – <em>How Our Minds Work</em></p>
 
 ### Lesson Link & Learning Objective
 
