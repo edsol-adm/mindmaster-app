@@ -901,7 +901,7 @@ MindMaster Grade 1 Curriculum: Unit Specifications
 ## Unit 10 – Teamwork and Cooperation
 
 [⬆️ Back to top](#top)
-table>
+<table>
 <colgroup>
 <col style="width: 19%" />
 <col style="width: 44%" />
