@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MindMaster – Storytime (Sequence Builder)</title>
+<title>MindMaster – Story Tangle</title>
 <style>
   :root{
     --bg: #FFB6C1; /* light pink */
@@ -28,15 +28,104 @@
 
   /* Intro */
   #screen-intro{ min-height:100dvh; padding:32px; background:var(--bg); background-image:url('assets/storytime/images/ui/bg-launch.png'); background-size:cover; background-position:center; }
-  .intro-card{ max-width:780px; padding:24px 28px; text-align:center; background:#fffdfdd9; }
-  h1{ margin:8px 0 2px; font-size:28px; line-height:1.2; }
-  p.lead{ margin:6px 0 14px; font-size:18px; color:var(--muted); }
-  .btn{ appearance:none; border:none; padding:12px 18px; border-radius:999px; font-weight:700; font-size:16px; cursor:pointer; box-shadow:var(--shadow); transition:transform .12s ease, filter .2s ease; background:var(--accent-2); color:#222; text-decoration:none; display:inline-block; }
-  .button-secondary{ background:#fff; color:#222; border:2px solid #222; }
-  .btn:hover{ transform:translateY(-1px) scale(1.02); filter:brightness(1.03); }
-  .btn:active{ transform:translateY(1px) scale(.98); }
-  /* Navigation-standard focus outline for anchors styled as buttons */
-  .btn.nav:focus{ outline:4px solid #000; outline-offset:2px; }
+
+/* Intro card width + font */
+.intro-card {
+  width: min(720px, 92vw);
+  background: #fffdfdd9;
+  border-radius: 18px;
+  padding: 24px 28px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+}
+
+/* Unit pill */
+.unit-pill {
+  background: #f5c242;
+  color: #000;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin-bottom: 10px;
+}
+
+/* Title and subtitle */
+.intro-card h1 {
+  margin: 6px 0 6px;
+  font-size: 2.1rem;
+}
+.intro-card .lead {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+}
+
+/* Horizontal button row */
+.row.center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+/* Button base */
+#screen-intro .btn {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-transform: none;
+  min-width: 160px;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.25);
+}
+
+#screen-intro .btn:focus,
+#screen-intro .btn:focus-visible {
+  outline: none !important;
+}
+
+/* Firefox-specific inner border/outline fixes */
+#screen-intro .btn::-moz-focus-inner {
+  border: 0 !important;
+}
+#screen-intro .btn:-moz-focusring {
+  outline: none !important;
+}
+
+/* Specific button colours */
+#btn-start {
+  background: #4CAF50;      /* vibrant green */
+  box-shadow: 0 3px 0 #3e9c44;
+  color: #fff;
+}
+#btn-how {
+  background: #FF9800;      /* friendly orange */
+  box-shadow: 0 3px 0 #d17a00;
+  color: #fff;
+}
+#screen-intro a.btn.nav {
+  background: #2196f3;      /* blue Return to the Park */
+  box-shadow: 0 4px 0 #0b79d0;
+  color: #fff;
+}
+#screen-intro a.btn.nav:hover {
+  background: #42a5f5;
+}
+
+/* How-to list box */
+#howto {
+  background: #fff8;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 10px;
+  text-align: left;
+}
+#howto.hidden { display: none; }
+#howto li { margin: 6px 0; }
 
   /* Unit pill */
   .unit-pill{
@@ -91,8 +180,8 @@
   <section id="screen-intro" class="center">
     <div class="card intro-card">
       <div class="unit-pill" aria-label="Unit title">Unit 5: Imagination and Storytelling</div>
-      <h1>Story Sequence — Put the story cards in the right order</h1>
-      <p class="lead">When you place a card, the caption appears — and under that card we show the matching prompt.</p>
+      <h1>Story Tangle</h1>
+      <p class="lead">The story's all jumbled! Let's put the story back in order, one card at a time!</p>
       <div class="row center" style="gap:8px;">
         <button class="btn" id="btn-start">Start</button>
         <button class="btn button-secondary" id="btn-how">How to play</button>
