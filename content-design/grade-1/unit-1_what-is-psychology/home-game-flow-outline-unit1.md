@@ -148,13 +148,9 @@ happening internally based on external clues.
 
 ##  
 
-## HOME GAME 1B
-
-**hg-01.01-02.html**
-
-### Lesson Link & Learning Objective
-
-**Unit 1, Lesson 1: How Our Minds Work**
+<h3 id="game-1b">HOME GAME 1B – Mind Connection: Build the Story</h3>
+**File:** `hg-01.01-02.html`  
+**Lesson Link:** Unit 1, Lesson 1 – *How Our Minds Work*
 
 Students will explain how the three parts of the mind work together and
 influence each other using simple cause-and-effect language (\"I thought
