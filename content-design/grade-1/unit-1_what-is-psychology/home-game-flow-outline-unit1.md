@@ -3,6 +3,22 @@
 
 ---
 
+## Table of Contents
+1. [Lesson 1 – How Our Minds Work](#lesson-1--how-our-minds-work)
+   - [Home Game 1A – Mind Detective: Spot the Three Parts](#home-game-1a--mind-detective-spot-the-three-parts)
+   - [Home Game 1B – Mind Connection: Build the Story](#home-game-1b--mind-connection-build-the-story)
+2. [Lesson 2 – Thinking – Our Mind’s Idea Factory](#lesson-2--thinking--our-minds-idea-factory)
+   - [Home Game 2A – Idea Factory: What’s the Job?](#home-game-2a--idea-factory-whats-the-job)
+   - [Home Game 2B – Pause & Think: The Problem Solver](#home-game-2b--pause--think-the-problem-solver)
+3. [Lesson 3 – Feeling – Our Mind’s Messenger](#lesson-3--feeling--our-minds-messenger)
+   - [Home Game 3A – Messenger Messages: What’s the Signal?](#home-game-3a--messenger-messages-whats-the-signal)
+   - [Home Game 3B – Body Map: Feel It and Share It](#home-game-3b--body-map-feel-it-and-share-it)
+4. [Lesson 4 – Doing – Our Mind’s Action Player](#lesson-4--doing--our-minds-action-player)
+   - [Home Game 4A – Action Player: What Can You See?](#home-game-4a--action-player-what-can-you-see)
+   - [Home Game 4B – Pause & Choose: The Three Parts in Action](#home-game-4b--pause--choose-the-three-parts-in-action)
+
+---
+
 **File Reference:** `hg-01.01-01.html`  
 **Lesson Link:** Unit 1, Lesson 1 – *How Our Minds Work*
 
