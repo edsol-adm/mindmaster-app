@@ -201,6 +201,66 @@
     outline:4px solid #000;
     outline-offset:2px;
   }
+.student-home-title {
+  background: linear-gradient(90deg, #ffd6d6, #fff0c2);
+  border: none;
+  color: #111;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  font-weight: 800;
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.student-home-title:hover {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.student-home-title:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 3px;
+}
+/* === TIGHTEN SPACING BETWEEN THE TWO UNIT ROWS === */
+/* Try common grid class names (any that exist will match) */
+.units-grid,
+.unit-grid,
+.unit-list,
+.curriculum-grid,
+.units,
+[class*="unit"][class*="grid"] {
+  display: grid;                 
+  gap: 14px 16px !important;      
+  row-gap: 14px !important;      
+  justify-items: stretch;
+  align-items: start;
+}
+
+/* Compact card padding (whichever class you use for a unit card) */
+.unit-card,
+.card-unit,
+.curriculum-item,
+.unit {
+  padding: 10px 12px !important;
+  margin: 0 !important;
+}
+
+/* Trim inner text margins so cards don’t get taller than needed */
+.unit-card h2, .unit-card h3, .unit-card h4, .unit-card p,
+.card-unit h2, .card-unit h3, .card-unit h4, .card-unit p,
+.curriculum-item h2, .curriculum-item h3, .curriculum-item h4, .curriculum-item p,
+.unit h2, .unit h3, .unit h4, .unit p {
+  margin: 4px 0 !important;
+  line-height: 1.2;
+}
+
+/* Optional: equalize internal layout so titles don’t inflate height */
+.unit-card,
+.card-unit,
+.curriculum-item,
+.unit {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* header / content / footer/progress */
+}
 </style>
 </head>
 <body>
@@ -214,8 +274,8 @@
       </div>
 
       <nav class="topbar">
-        <a class="btn nav" href="student-home.html">Student Home</a>
-        </nav>
+  <a class="btn nav student-home-title" href="student-home.html">Student Home</a>
+</nav>
 
       <img class="logo" alt="MindMaster" src="assets/images/mindmaster-logo.png" style="height:56px"/>
     </header>
@@ -236,7 +296,7 @@
 
           <!-- Unit 2 -->
           <div class="unit-card">
-            <h2 class="unit-title">Unit 2: Exploring Our Senses (sight, sound, touch)</h2>
+            <h2 class="unit-title">Unit 2: Exploring Our Senses (Sight, Sound, Touch)</h2>
             <div class="lessons-grid">
               <a id="btn-2-1" class="btn btn-yellow btn-lg" href="lesson-screen-htmls/lesson-02.01.html">Lesson 1</a>
               <a id="btn-2-2" class="btn btn-yellow btn-lg" href="lesson-screen-htmls/lesson-02.02.html">Lesson 2</a>
