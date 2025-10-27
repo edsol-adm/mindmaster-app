@@ -3,7 +3,7 @@ grade: 1
 unit: 1
 lesson: 1
 title: "How Our Minds Work"
-duration_mins: 50
+duration: 45 minutes
 audience: "Teacher-facing (Ages 6–7)"
 arc: "Explore → Practice → Reflect"
 theory_of_change: "knowledge → self-efficacy → mental resilience"
@@ -143,3 +143,4 @@ Emphasize:
 This foundational lesson introduces the **three-part framework** that will structure all subsequent learning.  
 Lesson 2 will zoom in on **THINKING (the Idea Factory)**, exploring its many jobs.  
 Understanding these three parts as separate but connected gives students the vocabulary and conceptual structure for analysing mental experiences throughout the unit:contentReference[oaicite:3]{index=3}.
+
