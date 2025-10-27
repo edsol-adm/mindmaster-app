@@ -51,19 +51,26 @@
     color: #fff;
     text-decoration: none;
     border-radius: var(--radius);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform .06s ease, filter .08s ease;
   }
   .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .btn:active { transform: translateY(0); filter: brightness(.95); }
 
   /* Distinct colors for the three buttons */
-  .emo1 { background: #36B0A1; }     /* Teal */
-  .emo2 { background: #42A5F5; }     /* Sky blue */
-  .emo3 { background: #EF5350; }     /* Red */
+  .emo1 { background: #9C27B0; }   
+  .emo2 { background: #8BC34A; }     
 
   /* Return button variant (neutral) */
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+    .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -72,9 +79,8 @@
   <div class="wrap">
     <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
 
-    <a class="btn emo1" href="../../senses.html">Play Senses Game</a>
+    <a class="btn emo1" href="../../senses.html">Play Sound Safari</a>
 <a class="btn emo2" href="../../senses-2.html">Play Senses-2 Game</a>
-<a class="btn emo3" href="../../senses-3.html">Play Senses-3 Game</a>
 <a class="btn return" href="../lesson-02.01.html">Return to Unit 2 Lesson 1</a>
 
   </div>

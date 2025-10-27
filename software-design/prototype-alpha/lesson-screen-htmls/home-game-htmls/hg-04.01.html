@@ -58,12 +58,19 @@
   .btn:active { transform: translateY(0); filter: brightness(.95); }
 
   /* Distinct colors for the three buttons */
-  .sen1 { background: #36B0A1; }      /* Teal */
-  .sen2 { background: #42A5F5; }      /* Sky blue */
-  .sen3 { background: #EF5350; }      /* Red */
+  .sen1 { background: #EC407A; }      
+  .sen2 { background: #26A69A; }      
 
-  /* Return button variant (from hg-01.01.html) */
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+   /* Return button variant (neutral) */
+    .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -72,9 +79,8 @@
   <div class="wrap">
     <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
 
-    <a class="btn sen1" href="../../memory.html">Play Memory Game</a>
-<a class="btn sen2" href="../../memory2.html">Play Memory-2 Game</a>
-<a class="btn sen3" href="../../memory-3.html">Play Memory-3 Game</a>
+    <a class="btn sen1" href="../../memory.html">Play Memory Flip</a>
+<a class="btn sen2" href="../../memory2.html">Play What's Missing?</a>
 <a class="btn return" href="../lesson-04.01.html">Return to Unit 4 Lesson 1</a>
 
   </div>

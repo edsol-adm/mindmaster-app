@@ -51,18 +51,25 @@
     color: #fff;
     text-decoration: none;
     border-radius: var(--radius);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform .06s ease, filter .08s ease;
   }
   .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .btn:active { transform: translateY(0); filter: brightness(.95); }
   .btn:focus { outline: 4px solid #000; outline-offset: 2px; }
 
-  .carpool { background: #36B0A1; }
-  .psy2    { background: #42A5F5; }
-  .psy3    { background: #EF5350; }
+  .carpool { background: #a8168b; }
+  .psy2    { background: #b54d1d; }
 
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+  .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -71,9 +78,8 @@
   <div class="wrap">
     <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
 
-    <a class="btn carpool" href="../../magic-looking-glass.html">Magic Looking Glass Game</a>
+    <a class="btn carpool" href="../../magic-looking-glass.html">Play Magic Looking Glass</a>
     <a class="btn psy2" href="../../problem-solving2.html">Play Problem Solving2 Game</a>
-    <a class="btn psy3" href="../../problem-solving3.html">Play Problem Solving3 Game</a>
     <a class="btn return" href="../lesson-08.01.html">Return to Unit 8 Lesson 1</a>
   </div>
 </body>

@@ -52,18 +52,26 @@
     color: #fff;
     text-decoration: none;
     border-radius: var(--radius);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform .06s ease, filter .08s ease;
   }
   .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .btn:active { transform: translateY(0); filter: brightness(.95); }
 
   /* Distinct colors for the three buttons */
-  .sto1 { background: #36B0A1; }     /* Teal */
-  .sto2 { background: #42A5F5; }     /* Sky blue */
-  .sto3 { background: #EF5350; }     /* Red */
+  .sto1 { background: #a81655; }     
+  .sto2 { background: #165aa8; }     
 
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+   /* Return button variant (neutral) */
+    .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -71,9 +79,8 @@
 <body>
 <div class="wrap">
 <img alt="MindMaster logo" class="logo" src="../../assets/images/mindmaster-logo.png"/>
-<a class="btn sto1" href="../../emotions.html">Play Emotions Game</a>
+<a class="btn sto1" href="../../emotions.html">Play Feeling Finder</a>
 <a class="btn sto2" href="../../emotions-2.html">Play Emotions-2 Game</a>
-<a class="btn sto3" href="../../emotions-3.html">Play Emotions-3 Game</a>
 <a class="btn return" href="../lesson-06.01.html">Return to Unit 6 Lesson 1</a>
 </div>
 </body>

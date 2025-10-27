@@ -51,19 +51,26 @@
     color: #fff;
     text-decoration: none;
     border-radius: var(--radius);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform .06s ease, filter .08s ease;
   }
   .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .btn:active { transform: translateY(0); filter: brightness(.95); }
 
   /* Distinct colors for the three buttons */
-  .att1 { background: #36B0A1; }     /* Teal */
-  .att2 { background: #42A5F5; }     /* Sky blue */
-  .att3 { background: #EF5350; }     /* Red */
+  .att1 { background: #fc6344; }     
+  .att2 { background: #a8167a; }     
 
-  /* Return button variant (neutral white pill) */
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+  /* Return button variant (neutral) */
+    .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -72,9 +79,8 @@
   <div class="wrap">
     <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
 
-    <a class="btn att1" href="../../storytime.html">Play Storytime Game</a>
+    <a class="btn att1" href="../../storytime.html">Play Story Tangle</a>
 <a class="btn att2" href="../../storytime-2.html">Play Storytime-2 Game</a>
-<a class="btn att3" href="../../storytime-3.html">Play Storytime-3 Game</a>
 <a class="btn return" href="../lesson-05.01.html">Return to Unit 5 Lesson 1</a>
   </div>
 </body>

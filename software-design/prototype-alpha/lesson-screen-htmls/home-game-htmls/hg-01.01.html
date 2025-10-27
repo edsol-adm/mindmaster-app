@@ -51,18 +51,25 @@
     color: #fff;
     text-decoration: none;
     border-radius: var(--radius);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform .06s ease, filter .08s ease;
   }
   .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .btn:active { transform: translateY(0); filter: brightness(.95); }
-  .btn:focus { outline: 4px solid #000; outline-offset: 2px; }
+  .btn:focus:not(:focus-visible) { outline: none; }
 
-  .carpool { background: #36B0A1; }
-  .psy2    { background: #42A5F5; }
-  .psy3    { background: #EF5350; }
+  .carpool { background: #4CAF50; }
+  .psy2    { background: #FFB300; }
 
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+  .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -71,10 +78,9 @@
   <div class="wrap">
     <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
 
-    <a class="btn carpool" href="../../carpool.html">Play Carpool Game</a>
-    <a class="btn psy2" href="../../balloon-race.html">Play Balloon Race Game</a>
-    <a class="btn psy3" href="../../psychology-3.html">Play Psychology-3 Game</a>
-    <a class="btn return" href="../lesson-01.01.html">Return to Unit 1 Lesson 1</a>
+    <a class="btn carpool" href="../../carpool.html">Play Carpool Choices</a>
+<a class="btn psy2" href="../../balloon-race.html">Play Balloon Race</a>
+<a class="btn return" href="../lesson-01.01.html">Return to Unit 1 Lesson 1</a>
   </div>
 </body>
 </html>

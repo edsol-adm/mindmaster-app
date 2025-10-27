@@ -58,11 +58,19 @@
   .btn:active { transform: translateY(0); filter: brightness(.95); }
 
   /* Distinct colors for the three buttons */
-  .mem1 { background: #36B0A1; }     /* Teal */
-  .mem2 { background: #42A5F5; }     /* Sky blue */
-  .mem3 { background: #EF5350; }     /* Red */
+  .mem1 { background: #FF7043; }    
+  .mem2 { background: #5E35B1; }     
 
-  .btn.return { background:#fff; color:#111827; border:2px solid #111827; }
+    /* Return button variant (neutral) */
+    .btn.return {
+  background: #87CEFA; /* sky blue */
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.btn.return:hover {
+  background: #6ec3f0;
+}
   .btn.return:hover { transform: translateY(-1px); filter:none; }
   .btn.return:active { transform: translateY(0); }
 </style>
@@ -71,9 +79,8 @@
   <div class="wrap">
     <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
 
-    <a class="btn mem1" href="../../attention.html">Play Attention Game</a>
-<a class="btn mem2" href="../../attention2.html">Play Attention-2 Game</a>
-<a class="btn mem3" href="../../attention-3.html">Play Attention-3 Game</a>
+    <a class="btn mem1" href="../../attention.html">Play Brain Spotlight</a>
+<a class="btn mem2" href="../../attention2.html">Play Shadow Match</a>
 <a class="btn return" href="../lesson-03.01.html">Return to Unit 3 Lesson 1</a>
   </div>
 </body>
