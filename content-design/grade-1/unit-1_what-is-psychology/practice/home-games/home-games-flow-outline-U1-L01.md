@@ -1,5 +1,5 @@
 # MindMaster Grade 1 – Unit 1: How Our Minds Work
-**Home Game Flow Outline – Lesson 1**
+**Home Game Flow Outline – Lesson 1: How Our Minds Work**
 
 ---
 
