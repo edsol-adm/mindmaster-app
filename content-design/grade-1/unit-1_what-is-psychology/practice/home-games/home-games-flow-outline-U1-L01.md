@@ -11,7 +11,7 @@
 ---
 
 ## Home Game 1A – Mind Parts Detective
-> Jump to: [Lesson Objective](#lesson-objective) · [Purpose](#purpose) · [Time](#estimated-play-time) · [Setup](#setup) · [Play](#play) · [Scoring](#scoring) · [Win Condition](#win-condition) · [Continuity Note](#continuity-note)
+> Jump to: [Setup](#setup) · [Play](#play) · [Scoring](#scoring) · [Win Condition](#win-condition) · [Continuity Note](#continuity-note)
 
 ### Lesson Objective
 Identify the three parts of the mind—Thinking, Feeling, and Doing—and give one example of each from daily life. Recognize which part of the mind is active in common scenarios.
@@ -83,19 +83,21 @@ This game reinforces Lesson 1's core framework. It prepares for Lesson 2–4 by 
 ---
 
 ## Home Game 1B – Mind Chain Reaction
-> Jump to: [Lesson Objective](#lesson-objective-1) · [Purpose](#purpose-1b) · [Setup](#setup-1b) · [Play](#play-1b) · [Scoring](#scoring-1b) · [Win Condition](#win-condition-1b) · [Continuity Note](#continuity-note-1b) · [Time](#estimated-play-time-1b)
+> Jump to: [Setup](#setup-1) · [Play](#play-1) · [Scoring](#scoring-1) · [Win Condition](#win-condition-1) · [Continuity Note](#continuity-note-1)
 
 ### Learning Objective
-**Unit 1, Lesson 1: How Our Minds Work**  
-Learning Objective: Explain how the three parts work together in a specific situation. Describe the three parts of the mind at work in another person during an observed activity.
+Explain how the three parts work together in a specific situation. Describe the three parts of the mind at work in another person during an observed activity.
 
-### Purpose {#purpose-1b}
+### Purpose
 Demonstrate how the three mind parts work together as a connected system by building cause-and-effect chains and observing the sequential flow from internal processes to observable actions.
 
 ### Game File Name & Format
 `hg-01.01-02.html` — Cause & Effect Chains (Sequence Builder with Animation)
 
-### Setup {#setup-1b}
+### Estimated Play Time 
+8–10 minutes
+
+### Setup 
 Opening screen shows title *"Mind Chain Reaction"* with animated gears representing the three mind parts connecting.  
 Avatar guide (friendly robot character named "Linky") says: *"Let's build mind chains! Put the parts in the right order to see what happens."*  
 Playing field shows three empty slots in a horizontal chain: [Empty] → [Empty] → [Empty].  
@@ -144,9 +146,6 @@ Complete all 10 scenarios with at least 25 stars total. Unlock “Chain Master�
 
 ### Continuity Note {#continuity-note-1b}
 Builds directly on Lesson 1’s concept of three interconnected parts. Prepares for Lessons 2–4 by showing how each part influences the others, which will be explored individually in later lessons.
-
-### Estimated Play Time {#estimated-play-time-1b}
-8–10 minutes
 
 [⬆ Back to TOC](#table-of-contents)
 
