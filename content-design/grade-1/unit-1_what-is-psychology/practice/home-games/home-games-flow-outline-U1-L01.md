@@ -1,4 +1,5 @@
-# MindMaster Grade 1 – Unit 1: Home Game Flow Outline (Lesson 1 Only)
+# MindMaster Grade 1 – Unit 1: How Our Minds Work
+**Home Game Flow Outline – Lesson 1**
 
 ---
 
@@ -10,25 +11,27 @@
 ---
 
 ## Home Game 1A – Mind Parts Detective
-> Jump to: [Lesson Objective](#lesson-link--learning-objective-1a) · [Purpose](#purpose-1a) · [Setup](#setup-1a) · [Play](#play-1a) · [Scoring](#scoring-1a) · [Win Condition](#win-condition-1a) · [Continuity Note](#continuity-note-1a) · [Time](#estimated-play-time-1a)
+> Jump to: [Lesson Objective](#lesson-objective) · [Purpose](#purpose) · [Time](#estimated-play-time) · [Setup](#setup) · [Play](#play) · [Scoring](#scoring) · [Win Condition](#win-condition) · [Continuity Note](#continuity-note)
 
-### Lesson Link & Learning Objective {#lesson-link--learning-objective-1a}
-**Unit 1, Lesson 1: How Our Minds Work**  
-Learning Objective: Identify the three parts of the mind—Thinking, Feeling, and Doing—and give one example of each from daily life. Recognize which part of the mind is active in common scenarios.
+### Lesson Objective
+Identify the three parts of the mind—Thinking, Feeling, and Doing—and give one example of each from daily life. Recognize which part of the mind is active in common scenarios.
 
-### Purpose {#purpose-1a}
+### Game Purpose
 Reinforce recognition of the three mind parts (Thinking, Feeling, Doing) by observing animated characters in everyday scenarios and identifying which part is actively working in each moment.
 
 ### Game File Name & Format
 `hg-01.01-01.html` — Scene Explorer (Hidden Object)
 
-### Setup {#setup-1a}
+### Estimated Play Time
+7–9 minutes
+
+### Setup
 Opening screen shows a colourful playground scene with 6 cartoon children engaged in different activities.  
 Title appears: *"Mind Parts Detective – Can you find all three mind parts at work?"*  
 Avatar guide (friendly cartoon detective character) says: *"Tap each child to discover what their mind is doing right now!"*  
 Three badge slots appear at top: Idea Factory (lightbulb icon), Messenger (heart icon), Action Player (running figure icon).
 
-### Play {#play-1a}
+### Play
 #### Round 1: Playground Scene
 - Player sees 6 children in playground:
   - **Child 1:** Standing still, thought bubble above head showing puzzle pieces.  
@@ -63,29 +66,26 @@ Three badge slots appear at top: Idea Factory (lightbulb icon), Messenger (heart
 - Final set of 6 scenarios blending all three parts.
 - More subtle clues requiring observational inference.
 
-### Scoring {#scoring-1a}
+### Scoring
 - 1 star per correctly identified mind part.  
 - Bonus: 3 stars for collecting all three badge types in each round.  
 - Maximum: 27 stars (18 identifications + 9 bonus stars).  
 - Progress bar shows collection: “Idea Factory: 6/6, Messenger: 6/6, Action Player: 6/6”.
 
-### Win Condition {#win-condition-1a}
+### Win Condition
 Complete all 3 scenes by correctly identifying at least 15 out of 18 mind parts (83% accuracy). Unlock “Master Mind Detective” badge.
 
-### Continuity Note {#continuity-note-1a}
+### Continuity Note
 This game reinforces Lesson 1's core framework. It prepares for Lesson 2–4 by establishing pattern recognition of the three parts, which will be explored individually in subsequent lessons.
-
-### Estimated Play Time {#estimated-play-time-1a}
-7–9 minutes
 
 [⬆ Back to TOC](#table-of-contents)
 
 ---
 
 ## Home Game 1B – Mind Chain Reaction
-> Jump to: [Lesson Objective](#lesson-link--learning-objective-1b) · [Purpose](#purpose-1b) · [Setup](#setup-1b) · [Play](#play-1b) · [Scoring](#scoring-1b) · [Win Condition](#win-condition-1b) · [Continuity Note](#continuity-note-1b) · [Time](#estimated-play-time-1b)
+> Jump to: [Lesson Objective](#lesson-objective-1) · [Purpose](#purpose-1b) · [Setup](#setup-1b) · [Play](#play-1b) · [Scoring](#scoring-1b) · [Win Condition](#win-condition-1b) · [Continuity Note](#continuity-note-1b) · [Time](#estimated-play-time-1b)
 
-### Lesson Link & Learning Objective {#lesson-link--learning-objective-1b}
+### Learning Objective
 **Unit 1, Lesson 1: How Our Minds Work**  
 Learning Objective: Explain how the three parts work together in a specific situation. Describe the three parts of the mind at work in another person during an observed activity.
 
