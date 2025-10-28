@@ -1,4 +1,4 @@
-# MindMaster Grade 1 – Unit 1: How Our Minds Work
+# MindMaster Grade 1 – Unit 1: What is Psychology?
 **Home Game Flow Outline – Lesson 2: Thinking - Our Mind's Idea Factory**
 
 ---
@@ -217,3 +217,4 @@ Lesson 2 strengthens the learner’s understanding of the **Idea Factory**, the 
 
 *Document version: Lesson 2 only (Home Games 2A & 2B)*  
 *For cross-unit alignment and quick navigation to all game flow outlines, see the [Home Games Overview](../README.md) in the `practice/home-games` directory.*
+
