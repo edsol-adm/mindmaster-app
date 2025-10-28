@@ -103,7 +103,7 @@ Avatar guide (friendly robot character named "Linky") says: *"Let's build mind c
 Playing field shows three empty slots in a horizontal chain: [Empty] → [Empty] → [Empty].  
 Below are 3 draggable cards, each labelled with an icon and text.
 
-### Play {#play-1b}
+### Play 
 #### Level 1: Simple 3-Part Chain (5 scenarios)
 **Scenario 1:** “Maya at the Park”  
 - Cards provided:
@@ -134,17 +134,17 @@ Below are 3 draggable cards, each labelled with an icon and text.
   - Path A: Think “I should ask nicely” → Feel hopeful → Ask politely.  
   - Path B: Think “I want it now” → Feel frustrated → Grab it.
 
-### Scoring {#scoring-1b}
+### Scoring 
 - 3 stars per correctly sequenced chain on first try.  
 - 2 stars on second try.  
 - 1 star on third try.  
 - Bonus: 5 stars for completing Level 3.  
 - Maximum: 50 stars.
 
-### Win Condition {#win-condition-1b}
+### Win Condition 
 Complete all 10 scenarios with at least 25 stars total. Unlock “Chain Master” badge and animated flowchart showing “My Mind in Action.”
 
-### Continuity Note {#continuity-note-1b}
+### Continuity Note 
 Builds directly on Lesson 1’s concept of three interconnected parts. Prepares for Lessons 2–4 by showing how each part influences the others, which will be explored individually in later lessons.
 
 [⬆ Back to TOC](#table-of-contents)
