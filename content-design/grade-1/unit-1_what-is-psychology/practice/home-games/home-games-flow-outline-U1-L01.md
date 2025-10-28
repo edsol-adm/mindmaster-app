@@ -1,4 +1,4 @@
-# MindMaster Grade 1 – Unit 1: How Our Minds Work
+# MindMaster Grade 1 – Unit 1: What is Psychology?
 **Home Game Flow Outline – Lesson 1: How Our Minds Work**
 
 ---
