@@ -4,69 +4,76 @@
 
 ## Table of Contents
 - [Home Game 1A – Mind Parts Detective](#home-game-1a--mind-parts-detective)
-  - [Lesson Link & Learning Objective](#lesson-link--learning-objective-1a)
-  - [Game File Name](#game-file-name-1a)
-  - [Game Format](#game-format-1a)
-  - [Purpose](#purpose-1a)
-  - [Setup](#setup-1a)
-  - [Play](#play-1a)
-  - [Scoring](#scoring-1a)
-  - [Win Condition](#win-condition-1a)
-  - [Continuity Note](#continuity-note-1a)
-  - [Estimated Play Time](#estimated-play-time-1a)
 - [Home Game 1B – Mind Chain Reaction](#home-game-1b--mind-chain-reaction)
-  - [Lesson Link & Learning Objective](#lesson-link--learning-objective-1b)
-  - [Game File Name](#game-file-name-1b)
-  - [Game Format](#game-format-1b)
-  - [Purpose](#purpose-1b)
-  - [Setup](#setup-1b)
-  - [Play](#play-1b)
-  - [Scoring](#scoring-1b)
-  - [Win Condition](#win-condition-1b)
-  - [Continuity Note](#continuity-note-1b)
-  - [Estimated Play Time](#estimated-play-time-1b)
 - [How Lesson 1 Fits into the Full Learning Arc](#how-lesson-1-fits-into-the-full-learning-arc)
 
 ---
 
 ## Home Game 1A – Mind Parts Detective
+> Jump to: [Lesson Objective](#lesson-link--learning-objective-1a) · [Purpose](#purpose-1a) · [Setup](#setup-1a) · [Play](#play-1a) · [Scoring](#scoring-1a) · [Win Condition](#win-condition-1a) · [Continuity Note](#continuity-note-1a) · [Time](#estimated-play-time-1a)
 
 ### Lesson Link & Learning Objective {#lesson-link--learning-objective-1a}
 **Unit 1, Lesson 1: How Our Minds Work**  
 Learning Objective: Identify the three parts of the mind—Thinking, Feeling, and Doing—and give one example of each from daily life. Recognize which part of the mind is active in common scenarios.
 
-### Game File Name {#game-file-name-1a}
-`hg-01.01-01.html`
-
-### Game Format {#game-format-1a}
-Scene Explorer (Hidden Object)
-
 ### Purpose {#purpose-1a}
 Reinforce recognition of the three mind parts (Thinking, Feeling, Doing) by observing animated characters in everyday scenarios and identifying which part is actively working in each moment.
 
+### Game File Name & Format
+`hg-01.01-01.html` — Scene Explorer (Hidden Object)
+
 ### Setup {#setup-1a}
-Opening screen shows a colourful playground scene with six cartoon children engaged in different activities.  
-Title: *"Mind Parts Detective – Can you find all three mind parts at work?"*  
-A friendly avatar guide introduces the task and the three badge slots appear: Idea Factory (lightbulb icon), Messenger (heart icon), Action Player (running figure icon).
+Opening screen shows a colourful playground scene with 6 cartoon children engaged in different activities.  
+Title appears: *"Mind Parts Detective – Can you find all three mind parts at work?"*  
+Avatar guide (friendly cartoon detective character) says: *"Tap each child to discover what their mind is doing right now!"*  
+Three badge slots appear at top: Idea Factory (lightbulb icon), Messenger (heart icon), Action Player (running figure icon).
 
 ### Play {#play-1a}
-- Round 1: Playground Scene with 6 children, each showing a different mind part at work.  
-  - Tap → Zoom animation → Choice or auto-identification depending on scenario.  
-  - Correct answers trigger star collection and badge glow.
-- Round 2: Classroom Scene (unlocked after Round 1) with more complex scenarios.
-- Round 3: Home Scene (unlocked after Round 2) with mixed scenarios.
+#### Round 1: Playground Scene
+- Player sees 6 children in playground:
+  - **Child 1:** Standing still, thought bubble above head showing puzzle pieces.  
+    → Player taps Child 1 → Zoom animation → Text appears: *"Alex is thinking about how to solve the puzzle. Which mind part? A) Idea Factory B) Messenger C) Action Player"*  
+    → Player selects A → Correct! *"Yes! Alex's Idea Factory is working on a problem."* Star appears, Idea Factory badge glows.
+
+  - **Child 2:** Smiling widely, jumping with arms up.  
+    → Player taps Child 2 → *"Jamie feels really happy! The Messenger is sending joy signals."* (Auto-identified, no choice needed)
+
+  - **Child 3:** Speaking to another child, speech bubble visible.  
+    → Player taps Child 3 → *"Sam is talking to a friend. Which mind part can others see? A) Idea Factory B) Messenger C) Action Player"*  
+    → Player selects C → Correct! *"Right! Sam's Action Player is speaking."* Action Player badge glows.
+
+  - **Child 4:** Sitting with furrowed brow, looking at broken toy.  
+    → Player taps Child 4 → Text appears: *"Taylor is feeling upset about their broken toy. The Messenger is sending a sad signal."* (Auto-identified)
+
+  - **Child 5:** Running across playground.  
+    → Player taps Child 5 → *"Chris is running fast! Which mind part can others see?"* → Correct: Action Player.
+
+  - **Child 6:** Pointing at something, excited expression.  
+    → Player taps Child 6 → *"Jordan sees something exciting! Which mind part is working?"* → Correct: Messenger.
+
+- Player collects stars and activates glowing badges for each correct identification.
+
+#### Round 2: Classroom Scene
+- Unlocks after Round 1.
+- 6 different scenarios, slightly more challenging identifications.
+- Mix of Thinking (planning, remembering), Feeling (nervous, excited), and Doing (gestures, moving).
+
+#### Round 3: Home Scene
+- Unlocks after Round 2.
+- Final set of 6 scenarios blending all three parts.
+- More subtle clues requiring observational inference.
 
 ### Scoring {#scoring-1a}
-- 1 star per correctly identified mind part  
-- Bonus stars for collecting all three badge types per round  
-- Maximum: 27 stars  
-- Progress bar tracks badge collection
+- 1 star per correctly identified mind part.  
+- Bonus: 3 stars for collecting all three badge types in each round.  
+- Maximum: 27 stars (18 identifications + 9 bonus stars).  
+- Progress bar shows collection: “Idea Factory: 6/6, Messenger: 6/6, Action Player: 6/6”.
 
 ### Win Condition {#win-condition-1a}
-Complete all 3 scenes with at least 15 correct identifications (83% accuracy) to unlock the “Master Mind Detective” badge.
+Complete all 3 scenes by correctly identifying at least 15 out of 18 mind parts (83% accuracy). Unlock “Master Mind Detective” badge.
 
 ### Continuity Note {#continuity-note-1a}
-This game reinforces Lesson 1’s core framework. It prepares for Lessons 2–4 by establishing pattern recognition of the three parts, which will be explored individually in subsequent lessons.
+This game reinforces Lesson 1's core framework. It prepares for Lesson 2–4 by establishing pattern recognition of the three parts, which will be explored individually in subsequent lessons.
 
 ### Estimated Play Time {#estimated-play-time-1a}
 7–9 minutes
@@ -76,43 +83,67 @@ This game reinforces Lesson 1’s core framework. It prepares for Lessons 2–4 
 ---
 
 ## Home Game 1B – Mind Chain Reaction
+> Jump to: [Lesson Objective](#lesson-link--learning-objective-1b) · [Purpose](#purpose-1b) · [Setup](#setup-1b) · [Play](#play-1b) · [Scoring](#scoring-1b) · [Win Condition](#win-condition-1b) · [Continuity Note](#continuity-note-1b) · [Time](#estimated-play-time-1b)
 
 ### Lesson Link & Learning Objective {#lesson-link--learning-objective-1b}
 **Unit 1, Lesson 1: How Our Minds Work**  
 Learning Objective: Explain how the three parts work together in a specific situation. Describe the three parts of the mind at work in another person during an observed activity.
 
-### Game File Name {#game-file-name-1b}
-`hg-01.01-02.html`
-
-### Game Format {#game-format-1b}
-Cause & Effect Chains (Sequence Builder with Animation)
-
 ### Purpose {#purpose-1b}
 Demonstrate how the three mind parts work together as a connected system by building cause-and-effect chains and observing the sequential flow from internal processes to observable actions.
 
+### Game File Name & Format
+`hg-01.01-02.html` — Cause & Effect Chains (Sequence Builder with Animation)
+
 ### Setup {#setup-1b}
-Opening screen shows animated gears representing the three mind parts.  
-Friendly avatar (Linky) introduces the task: *"Let's build mind chains! Put the parts in the right order to see what happens."*
+Opening screen shows title *"Mind Chain Reaction"* with animated gears representing the three mind parts connecting.  
+Avatar guide (friendly robot character named "Linky") says: *"Let's build mind chains! Put the parts in the right order to see what happens."*  
+Playing field shows three empty slots in a horizontal chain: [Empty] → [Empty] → [Empty].  
+Below are 3 draggable cards, each labelled with an icon and text.
 
 ### Play {#play-1b}
-- **Level 1:** Simple 3-part chains (5 scenarios).  
-- **Level 2:** 4-part chains (3 scenarios).  
-- **Level 3:** Multiple pathways showing how different thoughts and feelings can lead to different actions.  
-- Players drag and drop cards into the correct sequence.  
-- Correct order triggers animated flow (Idea Factory → Messenger → Action Player).
+#### Level 1: Simple 3-Part Chain (5 scenarios)
+**Scenario 1:** “Maya at the Park”  
+- Cards provided:
+  - “Maya sees her friend” (observation/context – fixed in position)  
+  - “Idea Factory thinks: I want to play!” (THINKING)  
+  - “Messenger feels happy & excited” (FEELING)  
+  - “Action Player runs over and waves” (DOING)  
+- Correct order: Thinking → Feeling → Doing.  
+- When placed correctly:
+  - Thought bubble appears above Maya’s head (Idea Factory)  
+  - Heart glows on Maya’s chest (Messenger)  
+  - Maya character animates running and waving (Action Player)  
+  - Chain lights up with connecting arrows.
+
+**Other scenarios:**  
+- Leo and the Broken Toy → Thinking (remembers toy was special) → Feeling (sad) → Doing (tears form).  
+- Zara Solving a Puzzle → Thinking (plans next move) → Feeling (determined) → Doing (places puzzle piece).  
+- Jin Hears Thunder → Feeling (scared) → Thinking (might be dangerous) → Doing (runs inside).  
+- Ava at Snack Time → Feeling (hungry) → Thinking (what to eat) → Doing (reaches for apple).
+
+#### Level 2: 4-Part Chain with Choice (3 scenarios)
+- Includes situation card + 3 mind parts.  
+- Player must sequence all 4 correctly.
+
+#### Level 3: Multiple Pathways (2 scenarios)
+- Same situation, different valid thought-feeling-action paths.  
+- Example: “You want a toy someone else has”
+  - Path A: Think “I should ask nicely” → Feel hopeful → Ask politely.  
+  - Path B: Think “I want it now” → Feel frustrated → Grab it.
 
 ### Scoring {#scoring-1b}
-- 3 stars for correct sequencing on first try  
-- 2 stars on second try  
-- 1 star on third try  
-- Bonus: 5 stars for completing Level 3  
-- Maximum: 50 stars
+- 3 stars per correctly sequenced chain on first try.  
+- 2 stars on second try.  
+- 1 star on third try.  
+- Bonus: 5 stars for completing Level 3.  
+- Maximum: 50 stars.
 
 ### Win Condition {#win-condition-1b}
-Complete all 10 scenarios with at least 25 stars to unlock the “Chain Master” badge.
+Complete all 10 scenarios with at least 25 stars total. Unlock “Chain Master” badge and animated flowchart showing “My Mind in Action.”
 
 ### Continuity Note {#continuity-note-1b}
-Builds directly on Lesson 1’s concept of the three interconnected parts. Prepares for later lessons by showing how each part influences the others, which will be explored in more depth individually.
+Builds directly on Lesson 1’s concept of three interconnected parts. Prepares for Lessons 2–4 by showing how each part influences the others, which will be explored individually in later lessons.
 
 ### Estimated Play Time {#estimated-play-time-1b}
 8–10 minutes
@@ -136,4 +167,4 @@ Lesson 1 lays the **foundation of the Thinking–Feeling–Doing framework**. Th
 ---
 
 *Document version: Lesson 1 only (Home Games 1A & 1B)*  
-*For Unit 1 overview and cross-lesson alignment, refer to `unit1-home-game-overview.md`.*
+*For cross-unit alignment and quick navigation to all game flow outlines, see the [Home Games Overview](../README.md) in the `practice/home-games` directory.*
