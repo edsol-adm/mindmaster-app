@@ -459,6 +459,16 @@ Player completes all 6 experiments by guiding Maya through full recovery sequenc
 
 ---
 
+## Continuity Note
+
+This game introduces the full mistake-recovery sequence in a structured, experiment-based format. Students revisit everyday situations from home and school, but now analyse them as "lab experiments" where actions, intentions, and effects can be compared. The Recovery Sequence poster (TRY → NOTICE → MAKE IT RIGHT → TRY DIFFERENTLY) turns mistakes into visible feedback loops rather than fixed failures.
+
+Sam the Scientist and Maya connect this game back to earlier Unit 9 home games. The ripples and chains from Lessons 1 and 2 now appear as patterns that sometimes go off track, while Lesson 3's intentional action selection is stress-tested when choices don't work as hoped. By logging each experiment as data and practising recovery strategies, students normalise mistakes as part of learning—laying conceptual groundwork for Home Game 4B, where they focus specifically on the mechanics of meaningful apologies and relationship repair.
+
+[⬆ Back to TOC](#table-of-contents)
+
+---
+
 ## HOME GAME 4B - The Apology Architect
 > Jump to: [Setup](#setup) · [Play](#play) · [Scoring](#scoring) · [Win Condition](#win-condition) · [Continuity Note](#continuity-note)
 
@@ -802,6 +812,8 @@ Player completes all 6 scenarios by building apologies (any quality level accept
 ### Continuity Note
 
 This game completes Unit 9's home game sequence by focusing on the "Make It Right" step of mistake recovery (from Game 4A). The apology construction mechanic provides concrete skill practice-students learn exactly what makes apologies effective versus ineffective. Sam, Maya, Leo, and Zoe all appear together, showing relationship repair in action. The bridge metaphor ties to earlier ripple/chain metaphors from Games 1-3. This final game synthesizes the entire unit: actions create effects, small actions accumulate, we choose intentionally, and when choices don't work, we recover through meaningful repair. Students now have a complete action-impact framework grounded in psychology science.
+
+[⬆ Back to TOC](#table-of-contents)
 
 ---
 
