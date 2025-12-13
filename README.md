@@ -3,7 +3,7 @@
 
 > **Note on naming:**  
 > This project was originally developed under the name **MindMaster**.  
-> It has since been renamed **PowerMind** to reflect its focus on building **mental resilience through psychology literacy**—strengthening learners’ confidence, self-efficacy, and independence by helping them understand how their minds work.  
+> It has since been renamed **PowerMind** to reflect its focus on building **mental resilience through psychology literacy**, strengthening learners’ confidence, self-efficacy, and independence by helping them understand how their minds work.  
 > You may see both names used in this repository; they refer to the same project.
 
 ---
@@ -87,4 +87,5 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
+
 
