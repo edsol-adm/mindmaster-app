@@ -6,6 +6,30 @@ It is not the final technical design. Advanced features will be built in the Bet
 
 ---
 
+## Live Platform Development (In Progress)
+
+Alongside this Alpha prototype, we have begun integrating PowerMind content into a live web platform:
+
+👉 https://www.powermind-ai.com
+
+This website represents **ongoing platform development** toward the Beta phase.  
+At present, it includes **Unit 1, Lesson 1** content only and is intended to demonstrate:
+
+- early platform architecture
+- content rendering on a live domain
+- future direction for integrated navigation and user experience
+
+> ⚠️ **Important:**  
+> The live website does **not yet replace** the Alpha Student Home experience.  
+> The Student Home page remains the most complete and coherent way to explore:
+> - the full Grade 1 curriculum structure
+> - all gamified Practice activities
+> - the intended Explore → Practice → Reflect roadmap
+
+As development progresses, the live platform will progressively absorb and replace the standalone HTML prototype.
+
+---
+
 ## How to run
 - **Start with the Student Home page:**  
   👉 https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/student-home.html
