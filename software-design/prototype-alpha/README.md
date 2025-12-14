@@ -18,6 +18,7 @@ At present, it includes **Unit 1, Lesson 1** content only and is intended to dem
 - early platform architecture
 - content rendering on a live domain
 - future direction for integrated navigation and user experience
+- progressive web architecture (PWA) to support responsive, device-agnostic access and future offline-capable deployment
 
 > ⚠️ **Important:**  
 > The live website does **not yet replace** the Alpha Student Home experience.  
