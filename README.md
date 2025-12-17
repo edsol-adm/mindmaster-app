@@ -69,6 +69,19 @@ MindMaster’s learning design is grounded in three principles:
 
 ---
 
+### Project Status (Active Development)
+
+- **PWA implementation for Android (Unit 01 reference build):**  
+  Converting the existing web prototype into a Progressive Web App, using Unit 01 as the reference implementation. This establishes deployment, navigation, and device-integration patterns required to scale reliably across all 10 units.
+
+- **AI interaction prototyping within Unit 01:**  
+  Integrating early-stage AI behaviours into selected screens and games in Unit 01, including lesson summaries, guided practice, and reflection prompts. This phase validates how AI-supported guidance and adaptive feedback can be embedded consistently before scaling to the full curriculum.
+
+- **Curriculum-wide lesson plan review for reflection and summary design:**  
+  Reviewing lesson plans across all units to finalise pedagogical requirements for lesson summary screens and home reflection screens, ensuring cognitive alignment, consistency, and readiness for full product development.
+
+---
+
 ### Next Development Stage (Beta, 2026)
 The Beta prototype will integrate the three AI components into a unified, data-driven learning experience:
 
@@ -87,5 +100,6 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
+
 
 
