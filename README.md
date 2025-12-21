@@ -17,13 +17,15 @@ This repository brings together the **curriculum framework**, **Alpha-stage prot
 
 ---
 
-### Repository Map (Reviewer Guide)
+### Repository Map
+
+This repository is organised so that the **content-design/** and **software-design/** folders contain the active, evolving work of PowerMind, including the development of the core curriculum, learning design, system architecture, and playable prototypes.
 
 | Folder | Purpose |
 |------|---------|
-| **content-design/** | **Primary Stage 2 review folder.** Full psychology literacy curriculum and learning design materials, including Grade 1–6 scope and sequence, unit structures, learning outcomes, and pedagogical rationale. |
-| **software-design/** | **Primary Stage 2 review folder.** Technical architecture, Alpha prototype, navigation standards, and system design documentation. Includes playable HTML prototype demonstrating the Explore → Practise → Reflect learning flow. |
-| **unicef-venture-fund-2025-submission/** | **Stage 1 (EOI) submission only.** Archived documents submitted during the UNICEF Venture Fund Stage 1 Expression of Interest. Provided for reference and transparency. |
+| **content-design/** | Full psychology literacy curriculum and learning design materials, including grade-level scope and sequence, unit structures, learning outcomes, and pedagogical rationale. |
+| **software-design/** | Technical architecture, navigation standards, and Alpha-stage prototype files, including playable HTML prototypes demonstrating the Explore → Practise → Reflect learning flow. |
+| **unicef-venture-fund-2025-submission/** | Archived documentation from the UNICEF Venture Fund Stage 1 (EOI), retained for reference and transparency. |
 
 ---
 
@@ -100,6 +102,7 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
+
 
 
 
