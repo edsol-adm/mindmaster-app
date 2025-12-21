@@ -16,31 +16,35 @@ At this stage, the key question was:
 Prototype Alpha v2 introduced **executable functionality**, while remaining deliberately constrained in scope.
 
 ### 1. Functional offline HTML prototype
-- Browser-based HTML5 activities
-- Designed to run fully offline
+- Browser-based HTML5 activities packaged as a **single-file, offline prototype**
+- Designed to run fully without internet connectivity
 - No backend services or server components
 - No user accounts or authentication
 
+**Reference artefact:**  
+The file `mindmaster_prototype_v2.html` is included in this directory to illustrate the functional scope of Prototype Alpha v2.  
+It is provided as a **reference artefact only**, is **not maintained**, and has been **superseded by Prototype Alpha v3**.
+
 ### 2. Core navigation structure
-- Menu screen
+- Menu screen with levels, units, and locked lessons
 - Level and unit selection
-- Entry point into a playable lesson
+- Entry point into one playable lesson (Level 2 → Unit 4 → Lesson 1)
 
 Navigation was intentionally simple to test baseline comprehension.
 
 ### 3. Limited content scope
-- Structural representation of multiple units and levels
+- Structural representation of multiple levels and units
 - One complete, playable lesson
-- Early implementation of the Explore → Practice → Reflect flow
+- Early implementation of the Explore → Practice → Reflect learning flow
 
 ### 4. Basic interaction and feedback logic
-- Core interaction types (click, drag, match, select)
+- Core interaction types (tap, select, sort, drag-and-drop)
 - Immediate correctness feedback
-- Simple practice scoring logic
+- Simple practice and completion logic
 
 ### 5. Local state simulation
-- Browser local storage used to simulate session state
-- No cloud sync or data persistence across devices
+- Browser local storage used to simulate session completion
+- No cloud sync or persistence across devices
 - No analytics or reporting pipeline
 
 ---
@@ -120,7 +124,7 @@ As a result of v2 testing:
 Prototype Alpha v2 is **complete and closed**.
 
 It is documented here to demonstrate the iterative development process under a Rapid Application Development (RAD) approach.  
-The v2 build is not maintained as an executable artefact, as it was superseded by Prototype Alpha v3.
+The included HTML file is retained solely for transparency and historical reference.
 
 ---
 
@@ -131,4 +135,3 @@ The v2 build is not maintained as an executable artefact, as it was superseded b
 - **v3** — Engagement, instructional clarity, and classroom viability  
 
 The current contents of the `prototype-alpha/` root directory represent **Prototype Alpha v3**, incorporating learnings from v1 and v2.
-
