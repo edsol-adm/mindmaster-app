@@ -17,13 +17,13 @@ This repository brings together the **curriculum framework**, **Alpha-stage prot
 
 ---
 
-### Repository Map
+### Repository Map (Reviewer Guide)
 
 | Folder | Purpose |
-|---------|----------|
-| **content-design/** | Full **psychology literacy curriculum** and documentation — Grade 1–6 spiral sequence, unit descriptions, learning outcomes, and theoretical comparison with SEL. |
-| **software-design/** | Core **technical design files** — including Alpha prototype (`prototype-alpha/`), navigation standards, technical diagrams, and interface documentation. <br>→ See detailed instructions and live links in [`software-design/prototype-alpha/README.md`](software-design/prototype-alpha/README.md). |
-| **unicef-venture-fund-2025-submission/** | All documentation submitted under the **UNICEF Venture Fund Stage 1 (EOI)** for transparency and reference. |
+|------|---------|
+| **content-design/** | **Primary Stage 2 review folder.** Full psychology literacy curriculum and learning design materials, including Grade 1–6 scope and sequence, unit structures, learning outcomes, and pedagogical rationale. |
+| **software-design/** | **Primary Stage 2 review folder.** Technical architecture, Alpha prototype, navigation standards, and system design documentation. Includes playable HTML prototype demonstrating the Explore → Practise → Reflect learning flow. |
+| **unicef-venture-fund-2025-submission/** | **Stage 1 (EOI) submission only.** Archived documents submitted during the UNICEF Venture Fund Stage 1 Expression of Interest. Provided for reference and transparency. |
 
 ---
 
@@ -100,6 +100,7 @@ The Beta prototype will integrate the three AI components into a unified, data-d
 
 ### License
 MIT License © 2025 EdSol Technology (Thailand) Co., Ltd.
+
 
 
 
