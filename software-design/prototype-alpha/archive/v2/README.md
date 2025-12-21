@@ -49,19 +49,6 @@ Navigation was intentionally simple to test baseline comprehension.
 
 ---
 
-## What v2 Did *Not* Include
-
-To keep the scope appropriate for this stage, Prototype Alpha v2 did **not** include:
-- Polished visual design or animations
-- Audio prompts or rich feedback
-- Classroom sync or teacher dashboards
-- Learning analytics or reporting
-- Home learning mode
-- AI functionality
-- PWA packaging or installability
-
----
-
 ## What Was Tested in v2
 
 Testing focused on **functional feasibility and usability**, not learning outcomes.
