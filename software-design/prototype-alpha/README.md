@@ -30,7 +30,7 @@ The website currently includes a **basic login screen** to support exploration o
 - Student
 - Teacher
 
-**Password (for both roles):powermind
+**Password (for both roles): powermind
 
 > ⚠️ **Important:**  
 > The live website does **not yet replace** the Alpha Student Home experience.  
