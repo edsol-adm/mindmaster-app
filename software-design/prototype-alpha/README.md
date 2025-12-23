@@ -8,19 +8,29 @@ It is not the final technical design. Advanced features will be built in subsequ
 
 ---
 
-## Live Platform Development (In Progress)
+## Live Platform Development (Alpha v4 – In Progress)
 
-Alongside this Alpha prototype, we have begun integrating PowerMind content into a live web platform:
+Alongside the Alpha v3 prototype documented in this repository, we have begun **Alpha v4 development**, focused on migrating PowerMind content into a live web platform:
 
 👉 https://www.powermind-ai.com
 
-This website represents **ongoing platform development** toward the Beta phase.  
+This website represents **ongoing Alpha v4 platform development** toward the Beta phase.  
 At present, it includes **Unit 1, Lesson 1** content only and is intended to demonstrate:
 
 - early platform architecture
 - content rendering on a live domain
 - future direction for integrated navigation and user experience
 - progressive web architecture (PWA) to support responsive, device-agnostic access and future offline-capable deployment
+
+### Login access
+
+The website currently includes a **basic login screen** to support exploration of the platform structure.
+
+**Login roles**
+- Student
+- Teacher
+
+**Password (for both roles):powermind
 
 > ⚠️ **Important:**  
 > The live website does **not yet replace** the Alpha Student Home experience.  
