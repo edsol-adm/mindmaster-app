@@ -1,8 +1,10 @@
-# MindMaster – Alpha Curriculum Prototype (Software Design)
+# MindMaster – Alpha Prototype (Software Design)
+
+**Current iteration:** Alpha v3 – Curriculum & Pedagogy Validation Prototype
 
 MindMaster is a psychology literacy app that builds children’s resilience by turning knowledge into self-efficacy and everyday problem-solving skills.  
 This Alpha prototype validates the **psychology literacy curriculum and pedagogy** with children and teachers.  
-It is not the final technical design. Advanced features will be built in the Beta stage under a Rapid Application Development (RAD) approach.
+It is not the final technical design. Advanced features will be built in subsequent Alpha iterations and the Beta stage under a Rapid Application Development (RAD) approach.
 
 ---
 
