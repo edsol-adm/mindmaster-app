@@ -10,36 +10,42 @@ It is not the final technical design. Advanced features will be built in subsequ
 
 ## Live Platform Development (Alpha v4 – In Progress)
 
-Alongside the Alpha v3 prototype documented in this repository, we have begun **Alpha v4 development**, focused on migrating PowerMind content into a live web platform:
+Alongside the Alpha v3 prototype documented in this repository, we have begun **Alpha v4 development**, focused on translating validated PowerMind curriculum content into a **live web environment**:
 
 👉 https://www.powermind-ai.com
 
-This website represents **ongoing Alpha v4 platform development** toward the Beta phase.  
-At present, it includes **Unit 1, Lesson 1** content only and is intended to demonstrate:
+Alpha v4 is **not a new curriculum iteration**.  
+It is an early platform exploration that builds directly on the concepts, pedagogy, and structure validated in Alpha v3.
 
-- early platform architecture
-- content rendering on a live domain
-- future direction for integrated navigation and user experience
-- progressive web architecture (PWA) to support responsive, device-agnostic access and future offline-capable deployment
+At present, the live site includes **Unit 1, Lesson 1 only** and is intended to demonstrate:
+
+- basic content rendering on a live domain  
+- early navigation structure  
+- initial platform scaffolding for future development  
 
 ### Login access
 
-The website currently includes a **basic login screen** to support exploration of the platform structure.
+The website includes a simple login screen to support exploration of the platform structure.
 
-**Login roles**
-- Student
-- Teacher
+**Visible login roles**
+- Student  
+- Teacher  
+- EdSol Admin (internal use only)
 
-**Password (for both roles): powermind
+**Password (for Student and Teacher roles):** `powermind`
 
-> ⚠️ **Important:**  
-> The live website does **not yet replace** the Alpha Student Home experience.  
+The **EdSol Admin** login is an internal administrative entry point used during development.  
+It is not part of the learner or teacher experience and is not within the scope of Alpha v3 validation.
+
+> ⚠️ **Important**  
+> The live Alpha v4 website does **not replace** the Alpha v3 Student Home experience.  
+>  
 > The Student Home page remains the most complete and coherent way to explore:
-> - the full Grade 1 curriculum structure
-> - all gamified Practice activities
-> - the intended Explore → Practice → Reflect roadmap
+> - the full Grade 1 curriculum structure  
+> - all gamified Practice activities  
+> - the intended Explore → Practice → Reflect learning roadmap  
 
-As development progresses, the live platform will progressively absorb and replace the standalone HTML prototype.
+As development progresses, selected elements of the live platform will progressively absorb and replace the standalone HTML prototype.
 
 ---
 
