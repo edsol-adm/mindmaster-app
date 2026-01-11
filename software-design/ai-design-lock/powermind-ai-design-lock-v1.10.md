@@ -36,7 +36,7 @@ NOTE ON BETA - where the beta will differ from alpha there is a summary of the d
 17. [Safety & Governance](#safety--governance)
 18. [Design Principles (Non-Negotiable)](#design-principles-nonnegotiable)
 
-## ****1\. Purpose & Framing****
+## 1. Purpose & Framing
 
 Mimi is an educational support system, not a conversational agent.
 
@@ -1288,3 +1288,4 @@ Backend must reject with **400** when:
   - Backend must ignore it (do not use it for generation)
 
   - Do not reject the request for this reason.
+
