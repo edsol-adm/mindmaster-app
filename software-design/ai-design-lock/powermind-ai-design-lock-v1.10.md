@@ -76,7 +76,7 @@ Outside of these two cases:
 
 **Beta note - no change**
 
-## ****2\. Page Types****
+## 2. Page Types
 
 - Every screen declares exactly one page_type.  
     A screen may not change page_type during a session.
@@ -97,7 +97,7 @@ Canonical examples:
 
 Beta note - no change
 
-## 3\. Chat Interfaces & Interaction Mechanics
+## 3. Chat Interfaces & Interaction Mechanics
 
 ### 3.1 Main Mimi Chatbox - Visual & Interaction Mechanics
 
@@ -170,7 +170,7 @@ The Main Mimi Chatbox is **disabled and unavailable** when:
 - It never sends messages without a user-initiated request.
 - All proactive Mimi behavior occurs **outside** this chatbox (Guided Reflection, Pop Quiz).
 
-## ****3.2 Guided Reflection Chatbox - Visual & Interaction Mechanics****
+### 3.2 Guided Reflection Chatbox – Visual & Interaction Mechanics
 
 **Purpose**  
 The Guided Reflection Chatbox is a **separate, scripted Mimi interface** used only during Guided Home Reflection. It delivers a linear, controlled interaction and replaces the Main Mimi Chatbox entirely while active. It is proactive.
@@ -240,7 +240,7 @@ The Guided Reflection Chatbox is a **separate, scripted Mimi interface** used on
 - Guided Reflection and pop quiz are the **only proactive Mimi chat interfaces**
 - All prompts during Guided Reflection are system-initiated.
 
-## ****3.3 Pop Quiz Panel - Visual & Interaction Mechanics (Baseline)****
+### 3.3 Pop Quiz Panel – Visual & Interaction Mechanics (Baseline)
 
 **Purpose**  
 Pop Quiz is a proactive recall check that appears on **nav screens only**. It is a separate panel (not inside Mimi chat) and is not user-selectable as a mode.
@@ -305,7 +305,7 @@ Pop Quiz is a proactive recall check that appears on **nav screens only**. It is
 
 - Mimi visibility is defined by #pmAiPanel\[aria-hidden="false"\]. Pop Quiz obeys a strict "never open while Mimi visible" rule via **queueing** (both on the initial 15s trigger and the post-close cooldown reopen).
 
-## ****4\. AI Functions (SYSTEM-WIDE, backend-enforced)****
+## 4. AI Functions (System-Wide, Backend-Enforced)
 
 This design lock supports exactly seven AI functions  
 No others are permitted.
@@ -322,7 +322,7 @@ Any other function name or variant, or any unmapped mode, is invalid and must be
 
 Beta note - no change
 
-## ****5\. Canonical Function → Mode Mapping****
+## 5. Canonical Function → Mode Mapping
 
 - This mapping is the single source of truth for canonical AI function names and backend mode validation.
 - Frontend UI exposure and initiation rules are defined separately and may further restrict what is visible or user-selectable.
@@ -341,7 +341,7 @@ Beta note - no change
 
 **Beta note - no change**
 
-## ****6\. Function Availability Matrix (CANONICAL) -****
+## 6. Function Availability Matrix (Canonical)
 
 - This table is the single source of truth for backend permission by page_type.
 - Frontend UI exposure, initiation, and timing are governed by separate rules in this document.
@@ -369,7 +369,7 @@ The availability matrix defines backend permission only. Pop Quiz must never be 
 
 **On lesson summary screens (**learn_ls**), user questions are routed by intent. If a question relates to the current lesson topic, Mimi must respond using Topic Explanation . If a question does not relate to the lesson topic, Mimi may answer it once as Ask Psych per revealed lesson section. After responding, Mimi must encourage the user to continue the lesson. The allowance resets only when the user reveals the next section.**
 
-## ****7\. Folder structure****
+## 7. Folder Structure
 
 powermind-ai-website/
 
@@ -585,7 +585,7 @@ powermind-ai-website/
 
 │
 
-## 8\. Site Guide - app entry guide only (site_guide.json)
+## 8. Site Guide – App Entry Guide (site_guide.json) 
 
 ### Purpose
 
@@ -637,7 +637,7 @@ powermind-ai-website/
 
 ## Beta note - no change
 
-## ****9\. Nav Guide - in lesson guide (nav_guide.json)****
+## 9. Nav Guide – In-Lesson Guide (nav_guide.json) 
 
 ### Purpose
 
@@ -703,7 +703,7 @@ Answers:
 
 1\. addition of station AI Tutor
 
-## ****10\. Explain Topic (\*-summary.json)****
+10. Explain Topic (*-summary.json)
 
 Explain Topic provides **science and concept explanations**, not task procedures or rules. It does not provide answers to general psychology questions that do not relate to the current lesson.
 
@@ -791,7 +791,7 @@ Beta note:
 
 **1\. at least 2 learn_ls questions will be allowed - but after each response Mimi encourages user to continue lesson**
 
-## ****11\. Task Help (\*-gameflow.json)****
+## 11. Task Help (*-gameflow.json)
 
 Task Help is for a single purpose only: to support understanding **the overall procedure for playing a task (game/quiz) and its rules** . It does **not** explain the science or meaning of the task. Science explanations are handled via **Topic Explanation**.
 
@@ -889,7 +889,7 @@ Backend must reject:
 
 Beta note - no change
 
-## ****12\. Ask Psychology - general psychology interface (through open AI)****
+## 12. Ask Psychology – general psychology interface (through open AI)
 
 ### Purpose
 
@@ -1013,7 +1013,7 @@ instruction =
 
 '"I can explain how this works in general, but I can't tell someone what to do personally."';
 
-## 13\. Home Reflection - Mimi-Guided Activity (\*-reflection.json)
+## 13. Home Reflection – Mimi-Guided Activity (*-reflection.json)
 
 **Purpose**  
 Home Reflection is one of **only two locations** in the system where Mimi may lead a **scripted, linear interaction** and proactively present prompts.
@@ -1144,7 +1144,7 @@ source constraint:
 - The backend does **not** infer phase from timing, content, or navigation history.
 - After quiz handover, Mimi must only respond to **user-initiated** requests permitted by the matrix.
 
-## 14\. Pop Quiz (\*-popquiz.json)
+## 14. Pop Quiz (*-popquiz.json)
 
 **Purpose**  
 Pop Quiz is a **proactive recall check** that tests learner understanding of topics from the **current lesson**. It draws questions from \*-popquiz.json. These are mcq style questions with 4 answer options. Uses a dedicated UI layout distinct from other modes while remaining within the nav screen context.
@@ -1215,7 +1215,7 @@ Pop Quiz is **never user-selectable**.
 
 3\. mimi can only ask questions related to the sections of the lesson summary that user has revealed. Pop quiz will remain deactivated until user goes into lesson summary.
 
-## 15\. Content Sources (System-Wide)
+## 15. Content Sources (System-Wide)
 
 ### Scope (System-Wide Only)
 
@@ -1264,7 +1264,7 @@ Lesson science or concept content must not be duplicated across multiple sources
 For lesson topics, **lesson summary (**\*-summary.json**) is the single source of truth**.  
 Other sources may reference lesson concepts **only as already defined** in the lesson summary and must not introduce new instructional content.
 
-## **16\. Backend Enforcement**
+## 16. Backend Enforcement
 
 Backend must reject with **400** when:
 
@@ -1286,5 +1286,3 @@ Backend must reject with **400** when:
   - Backend must ignore it (do not use it for generation)
 
   - Do not reject the request for this reason.
-
-
