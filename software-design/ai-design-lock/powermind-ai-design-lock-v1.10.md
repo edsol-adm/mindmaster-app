@@ -14,27 +14,25 @@ NOTE ON BETA - where the beta will differ from alpha there is a summary of the d
 
 ## Table of Contents
 
-1. [Purpose & Framing](#purpose--framing)
-2. [Page Types](#page-types)
-3. [Chat Interfaces & Interaction Mechanics](#chat-interfaces--interaction-mechanics)
-   - [Main Mimi Chatbox](#main-mimi-chatbox)
-   - [Guided Reflection Chatbox](#guided-reflection-chatbox)
-   - [Pop Quiz Panel](#pop-quiz-panel)
-4. [AI Functions (System-Wide)](#ai-functions-system-wide)
-5. [Canonical Function → Mode Mapping](#canonical-function--mode-mapping)
-6. [Function Availability Matrix](#function-availability-matrix)
-7. [Folder Structure](#folder-structure)
-8. [Site Guide – App Entry Guide](#site-guide--app-entry-guide)
-9. [Nav Guide – In-Lesson Guide](#nav-guide--inlesson-guide)
-10. [Explain Topic (Lesson Summary)](#explain-topic-lesson-summary)
-11. [Task Help (Games & Quizzes)](#task-help-games--quizzes)
-12. [Ask Psychology – General Interface](#ask-psychology--general-interface)
-13. [Home Reflection — Mimi-Guided Activity](#home-reflection--mimiguided-activity)
-14. [Pop Quiz (Recall Checks)](#pop-quiz-recall-checks)
-15. [Content Sources (System-Wide Rules)](#content-sources-systemwide-rules)
-16. [Backend Enforcement](#backend-enforcement)
-17. [Safety & Governance](#safety--governance)
-18. [Design Principles (Non-Negotiable)](#design-principles-nonnegotiable)
+1. [1. Purpose & Framing](#1-purpose--framing)
+2. [2. Page Types](#2-page-types)
+3. [3. Chat Interfaces & Interaction Mechanics](#3-chat-interfaces--interaction-mechanics)
+   - [3.1 Main Mimi Chatbox](#31-main-mimi-chatbox--visual--interaction-mechanics)
+   - [3.2 Guided Reflection Chatbox](#32-guided-reflection-chatbox--visual--interaction-mechanics)
+   - [3.3 Pop Quiz Panel](#33-pop-quiz-panel--visual--interaction-mechanics-baseline)
+4. [4. AI Functions (System-Wide, Backend-Enforced)](#4-ai-functions-system-wide-backend-enforced)
+5. [5. Canonical Function → Mode Mapping](#5-canonical-function--mode-mapping)
+6. [6. Function Availability Matrix (Canonical)](#6-function-availability-matrix-canonical)
+7. [7. Folder Structure](#7-folder-structure)
+8. [8. Site Guide – App Entry Guide](#8-site-guide--app-entry-guide)
+9. [9. Nav Guide – In-Lesson Guide](#9-nav-guide--in-lesson-guide)
+10. [10. Explain Topic (*-summary.json)](#10-explain-topic--summaryjson)
+11. [11. Task Help (*-gameflow.json)](#11-task-help--gameflowjson)
+12. [12. Ask Psychology – General Psychology Interface](#12-ask-psychology--general-psychology-interface)
+13. [13. Home Reflection – Mimi-Guided Activity](#13-home-reflection--mimi-guided-activity)
+14. [14. Pop Quiz (*-popquiz.json)](#14-pop-quiz--popquizjson)
+15. [15. Content Sources (System-Wide)](#15-content-sources-system-wide)
+16. [16. Backend Enforcement](#16-backend-enforcement)
 
 ## 1. Purpose & Framing
 
@@ -1288,4 +1286,5 @@ Backend must reject with **400** when:
   - Backend must ignore it (do not use it for generation)
 
   - Do not reject the request for this reason.
+
 
