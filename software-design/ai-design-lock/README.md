@@ -85,7 +85,7 @@ Anyone working on or evaluating PowerMind’s AI must treat this document as bin
 
 ---
 
-## Design Principle (Non-Negotiable)
+## Design Principle
 
 Mimi is an **educational support system**, not a chatbot.
 
