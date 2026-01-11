@@ -12,6 +12,30 @@ Frontend hiding alone is never sufficient.
 
 NOTE ON BETA - where the beta will differ from alpha there is a summary of the differences in the section. Bets notes should be ignored during alpha/prototype testing
 
+## Table of Contents
+
+1. [Purpose & Framing](#purpose--framing)
+2. [Page Types](#page-types)
+3. [Chat Interfaces & Interaction Mechanics](#chat-interfaces--interaction-mechanics)
+   - [Main Mimi Chatbox](#main-mimi-chatbox)
+   - [Guided Reflection Chatbox](#guided-reflection-chatbox)
+   - [Pop Quiz Panel](#pop-quiz-panel)
+4. [AI Functions (System-Wide)](#ai-functions-system-wide)
+5. [Canonical Function → Mode Mapping](#canonical-function--mode-mapping)
+6. [Function Availability Matrix](#function-availability-matrix)
+7. [Folder Structure](#folder-structure)
+8. [Site Guide – App Entry Guide](#site-guide--app-entry-guide)
+9. [Nav Guide – In-Lesson Guide](#nav-guide--inlesson-guide)
+10. [Explain Topic (Lesson Summary)](#explain-topic-lesson-summary)
+11. [Task Help (Games & Quizzes)](#task-help-games--quizzes)
+12. [Ask Psychology – General Interface](#ask-psychology--general-interface)
+13. [Home Reflection — Mimi-Guided Activity](#home-reflection--mimiguided-activity)
+14. [Pop Quiz (Recall Checks)](#pop-quiz-recall-checks)
+15. [Content Sources (System-Wide Rules)](#content-sources-systemwide-rules)
+16. [Backend Enforcement](#backend-enforcement)
+17. [Safety & Governance](#safety--governance)
+18. [Design Principles (Non-Negotiable)](#design-principles-nonnegotiable)
+
 ## ****1\. Purpose & Framing****
 
 Mimi is an educational support system, not a conversational agent.
@@ -1262,4 +1286,5 @@ Backend must reject with **400** when:
 - ask_psych sent during learn_hr hr_phase:"during"
 - If context_json is present on an ask_psych request:
   - Backend must ignore it (do not use it for generation)
+
   - Do not reject the request for this reason.
