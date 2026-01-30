@@ -17,8 +17,14 @@ Integrated prototype consolidating validated curriculum, pedagogy, and system de
 **Status:**  
 Active reference for reviewers, partners, and funders.
 
-📂 Start here:  
+📂 Canonical documentation:  
 `/software-design/prototype-alpha/v5/README.md`
+
+🌐 Live preview (Alpha v5):  
+https://www.powermind-ai.com
+
+The live site reflects the current Alpha v5 iteration and is provided for demonstration and review purposes.  
+It is not a production release.
 
 If you are reviewing PowerMind for the first time, **v5 is the correct entry point**.
 
@@ -91,3 +97,4 @@ This approach supports:
 ---
 
 For questions about a specific Alpha version, open the README.md inside that version’s folder.
+
