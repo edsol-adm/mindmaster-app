@@ -63,18 +63,18 @@ From here, learners can:
 
 Each game corresponds to the **Practice** activity of Lesson 1 in its unit.
 
-| Unit & Topic | Gamified Practice | Direct Link |
-|-------------|------------------|-------------|
-| Unit 1 – What is Psychology? | 🏁 Balloon Race, 🚗 Carpool | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/balloon-race.html / https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/carpool.html |
-| Unit 2 – Exploring Our Senses | 🐘 Sound Safari | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/senses.html |
-| Unit 3 – Basic Attention and Focus | 🔦 Brain Spotlight, 🧩 Shadow Match | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/attention.html / https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/attention2.html |
-| Unit 4 – How Memory Works | 🧠 Memory Flip, 👀 What’s Missing? | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/memory.html / https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/memory2.html |
-| Unit 5 – Imagination and Storytelling | 🌈 Story Tangle | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/storytime.html |
-| Unit 6 – What Are Feelings? | 🌿 Feeling Finder | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/emotions.html |
-| Unit 7 – Family and Friendship Dynamics | 🍎 Good Apple, Bad Apple | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/good-apple-bad-apple.html |
-| Unit 8 – Problem-Solving Basics | 🪞 Magic Looking Glass | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/magic-looking-glass.html |
-| Unit 9 – Our Actions and Impact | 🧱 Domino Choices | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/domino-choices.html |
-| Unit 10 – Teamwork and Cooperation | 🧑‍🤝‍🧑 Maze Mates | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/teamwork.html |
+| Unit & Topic | Gamified Practice (Game Title) | Direct Link |
+|--------------|-------------------------------|-------------|
+| Unit 1 – What is Psychology? | 🏁 Balloon Race, 🚗 Carpool | [Balloon Race](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/balloon-race.html) / [Carpool](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/carpool.html) |
+| Unit 2 – Exploring Our Senses | 🐘 Sound Safari | [Sound Safari](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/senses.html) |
+| Unit 3 – Basic Attention and Focus | 🔦 Brain Spotlight, 🧩 Shadow Match | [Brain Spotlight](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/attention.html) / [Shadow Match](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/attention2.html) |
+| Unit 4 – How Memory Works | 🧠 Memory Flip, 👀 What’s Missing? | [Memory Flip](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/memory.html) / [What’s Missing?](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/memory2.html) |
+| Unit 5 – Imagination and Storytelling | 🌈 Story Tangle | [Story Tangle](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/storytime.html) |
+| Unit 6 – What Are Feelings? | 🌿 Feeling Finder | [Feeling Finder](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/emotions.html) |
+| Unit 7 – Family and Friendship Dynamics | 🍎 Good Apple, Bad Apple | [Good Apple, Bad Apple](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/good-apple-bad-apple.html) |
+| Unit 8 – Problem-Solving Basics | 🪞 Magic Looking Glass | [Magic Looking Glass](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/magic-looking-glass.html) |
+| Unit 9 – Our Actions and Impact | 🧱 Domino Choices | [Domino Choices](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/domino-choices.html) |
+| Unit 10 – Teamwork and Cooperation | 🧑‍🤝‍🧑 Maze Mates | [Maze Mates](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/v3/teamwork.html) |
 
 ---
 
