@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ls-01.01</title>
+<style>
+  :root{
+    --bg-pink:#F8BBD0;
+    --text:#111827;
+    --card:#FFF9C4;
+    --cta:#22C55E;
+    --ctaText:#0b2b14;
+    --shadow:0 2px 6px rgba(0,0,0,0.08);
+    --option:#ffffff;
+    --optionBorder:#e5e7eb;
+    --optionHover:#f3f4f6;
+    --wrong:#ef4444;
+    --right:#16a34a;
+  }
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    background: #F8BBD0 url("../../assets/images/ls-01.01-back.webp") center / cover no-repeat fixed;
+    color:var(--text);
+    line-height:1.6;
+    font-size:18px;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  @media (min-width:900px){
+    body{font-size:20px}
+  }
+  .logo-wrap{
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:10;
+  }
+  .logo{
+    width:128px;
+    height:auto;
+    display:block;
+  }
+  .mimi{
+    display:block;
+    width:110px;
+    height:auto;
+    margin-top:8px;
+  }
+  @media (min-width:900px){
+    .logo{width:160px}
+    .mimi{width:120px}
+    .logo-wrap{top:24px; right:24px}
+  }
+
+  .return-wrap{
+    position:fixed;
+    top:16px;
+    left:16px;
+    z-index:11;
+  }
+  .return-btn{
+    display:inline-block;
+    background:#111827;
+    color:#ffffff;
+    text-decoration:none;
+    font-weight:700;
+    padding:12px 16px;
+    border-radius:9999px;
+    box-shadow:var(--shadow);
+  }
+  .return-btn:focus-visible{
+    outline:3px solid #ffffff;
+    outline-offset:2px;
+  }
+  @media (min-width:900px){
+    .return-wrap{top:24px; left:24px}
+    .return-btn{padding:12px 18px}
+  }
+
+  .page{
+    min-height:100%;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:96px 20px 48px;
+  }
+  .col{
+    width:100%;
+    max-width:720px;
+  }
+  h1,h2{
+    margin:0 0 12px 0;
+    line-height:1.25;
+  }
+  h1{font-size:clamp(1.5rem, 2.5vw, 2rem)}
+  h2{font-size:clamp(1.25rem, 2.2vw, 1.6rem)}
+  .bold-line{
+    font-weight:700;
+    margin:24px 0 8px 0;
+  }
+  p{margin:0 0 14px 0}
+  ul{margin:0 0 14px 1.2rem; padding:0}
+  .cta-wrap{
+    display:flex;
+    justify-content:center;
+    margin:18px 0 28px;
+  }
+  .btn{
+    display:inline-block;
+    background:var(--cta);
+    color:var(--ctaText);
+    text-decoration:none;
+    font-weight:700;
+    padding:14px 22px;
+    border-radius:9999px;
+    box-shadow:var(--shadow);
+    transform:translateY(0);
+    transition:transform .06s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn:active{transform:translateY(0); filter:brightness(.98)}
+  .btn:focus-visible{
+    outline:3px solid var(--ctaText);
+    outline-offset:2px;
+  }
+
+  .cq-head{
+    text-align:center;
+    margin:28px 0 14px 0;
+  }
+  .cards{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  .card{
+    background:var(--card);
+    padding:16px;
+    border-radius:12px;
+    box-shadow:var(--shadow);
+  }
+  .qblock{
+    background:rgba(255,255,255,0.5);
+    padding:16px;
+    border-radius:12px;
+    box-shadow:var(--shadow);
+  }
+
+  /* MCQ styles */
+  .mcq-card{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .progress{
+    font-weight:700;
+    letter-spacing:.2px;
+  }
+  .qtext b{font-weight:800}
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .option{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:var(--option);
+    border:2px solid var(--optionBorder);
+    padding:12px 14px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+  }
+  .option:hover{background:var(--optionHover)}
+  .option:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+  }
+  .option:focus-visible{
+    outline:3px solid #111827;
+    outline-offset:2px;
+  }
+  .feedback{
+    min-height:1.2em;
+    font-weight:700;
+  }
+  .feedback.wrong{color:var(--wrong)}
+  .feedback.right{color:var(--right)}
+  .next-wrap{
+    display:flex;
+    justify-content:flex-end;
+  }
+  .next-btn{
+    background:#111827;
+    color:#fff;
+    border:none;
+    padding:10px 16px;
+    border-radius:9999px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+  }
+  .next-btn:focus-visible{
+    outline:3px solid #fff;
+    outline-offset:2px;
+  }
+
+  .done{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .small-back{
+    display:inline-block;
+    font-size:.95rem;
+    padding:8px 12px;
+    border-radius:9999px;
+    background:#111827;
+    color:#fff;
+    text-decoration:none;
+    width:max-content;
+    box-shadow:var(--shadow);
+  }
+  .small-back:focus-visible{
+    outline:3px solid #fff;
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+  <div class="logo-wrap">
+    <img class="logo" src="../../assets/images/mindmaster-logo.png" alt="MindMaster logo">
+    <img class="mimi" src="../../assets/images/mimi.webp" alt="Mimi assistant">
+  </div>
+
+  <div class="return-wrap">
+    <a class="return-btn" href="../lesson-01.01.html">Return to the park</a>
+  </div>
+
+  <main class="page">
+    <div class="col">
+      <div class="qblock">
+      <h1>Unit 1 – What is Psychology?</h1>
+
+      <h2>Lesson Summary – Lesson 1 (Introduction to Psychology)</h2>
+
+      <div class="bold-line">Lesson Summary (Explore + Practice)</div>
+
+      <p>Psychology is the science of the mind and behavior. That means psychologists try to understand what people think, how they feel, and why they act the way they do. Sometimes psychology looks at things we can see on the outside, like actions. Other times it studies things on the inside, like thoughts and emotions that we cannot see directly.</p>
+      <p>One way psychologists do this is through experiments. An experiment is a way to test an idea about how people behave. A famous example is the Marshmallow Test. In this experiment, young children were given one marshmallow. They were told that if they waited and did not eat it, they would get a second marshmallow later. Some children ate the marshmallow right away, while others waited for the bigger reward.</p>
+      <p>The Marshmallow Test showed how people’s thoughts and decisions (like wanting more later) affect their actions (waiting or eating). It also taught us that self-control—being able to wait for a reward—is an important part of psychology.</p>
+
+      <ul>
+        <li>Why do we feel nervous before a test?</li>
+        <li>Why do we laugh at funny videos?</li>
+        <li>Why do we sometimes make good choices, and other times act on impulse?</li>
+      </ul>
+
+      <p>Psychology helps answer these questions by studying the connection between thinking, feeling, and acting.</p>
+      <p>Watch the video: marshmallow-test.mp4 (or “Marshmallow Test” on YouTube). As you watch, notice what choices the children make and how those choices show their self-control.</p>
+      </div>
+
+      <div class="cta-wrap">
+        <a class="btn" href="../../assets/mindmaster-screens/home-lesson-summary-activity/marshmallow-test.mp4">Watch video: Marshmallow Test</a>
+      </div>
+
+      <h2 class="cq-head">Comprehension Questions</h2>
+
+      <section class="cards" aria-label="Comprehension Questions">
+        <article class="card mcq-card" id="mcq-card">
+          <div class="progress" id="progressText" aria-live="polite"></div>
+          <div class="qtext" id="qText"></div>
+          <div class="options" id="options"></div>
+          <div class="feedback" id="feedback" aria-live="polite"></div>
+          <div class="next-wrap" id="nextWrap" hidden>
+            <button class="next-btn" id="nextBtn" type="button">Next question</button>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+<script>
+(function(){
+  const QUESTIONS = [
+    {
+      q: "Q1. What is psychology the study of?",
+      options: [
+        {t:"A. Weather patterns", c:false},
+        {t:"B. Ancient history", c:false},
+        {t:"C. Plant growth only", c:false},
+        {t:"D. The mind and behavior", c:true}
+      ]
+    },
+    {
+      q: "Q2. In the Marshmallow Test, what choice did the children have to make?",
+      options: [
+        {t:"A. Which toy to play with", c:false},
+        {t:"B. Whether to run a race", c:false},
+        {t:"C. Eat one marshmallow now or wait for two later", c:true},
+        {t:"D. Whether to share candy with a friend", c:false}
+      ]
+    },
+    {
+      q: "Q3. What does the experiment teach us about self-control?",
+      options: [
+        {t:"A. The tastiest kind of marshmallow", c:false},
+        {t:"B. The best way to study math", c:false},
+        {t:"C. That children always make the same choice", c:false},
+        {t:"D. Being able to wait for a reward", c:true}
+      ]
+    },
+    {
+      q: "Q4. Can you think of a time when you chose now vs. later?",
+      options: [
+        {t:"A. Eat a cookie now or get two after dinner", c:true},
+        {t:"B. Picking your favorite color", c:false},
+        {t:"C. Brushing your teeth", c:false},
+        {t:"D. Watching a movie trailer", c:false}
+      ]
+    },
+    {
+      q: "Q5. Why study thoughts and feelings we can’t see?",
+      options: [
+        {t:"A. Because they’re easier to see than actions", c:false},
+        {t:"B. Because scientists don’t like actions", c:false},
+        {t:"C. To avoid running experiments", c:false},
+        {t:"D. They influence actions even if invisible", c:true}
+      ]
+    }
+  ];
+
+  const LS_KEY = "ls0101_progress";
+  const card = document.getElementById("mcq-card");
+  const qText = document.getElementById("qText");
+  const optionsWrap = document.getElementById("options");
+  const feedback = document.getElementById("feedback");
+  const nextWrap = document.getElementById("nextWrap");
+  const nextBtn = document.getElementById("nextBtn");
+  const progressText = document.getElementById("progressText");
+
+  let index = 0;
+  try {
+    const saved = localStorage.getItem(LS_KEY);
+    if (saved !== null) {
+      const n = parseInt(saved,10);
+      if (!Number.isNaN(n) && n >= 0 && n < QUESTIONS.length) index = n;
+    }
+  } catch(e){}
+
+  function saveProgress(i){
+    try { localStorage.setItem(LS_KEY, String(i)); } catch(e){}
+  }
+
+  function clearChildren(el){
+    while(el.firstChild) el.removeChild(el.firstChild);
+  }
+
+  function setFeedback(msg, kind){
+    feedback.textContent = msg || "";
+    feedback.classList.remove("wrong","right");
+    if (kind) feedback.classList.add(kind);
+  }
+
+  function disableAllOptions(){
+    const btns = optionsWrap.querySelectorAll("button.option");
+    btns.forEach(b=>b.disabled = true);
+  }
+
+  function disableOtherOptions(correctBtn){
+    const btns = optionsWrap.querySelectorAll("button.option");
+    btns.forEach(b=>{
+      if (b !== correctBtn) b.disabled = true;
+    });
+  }
+
+  function renderQuestion(){
+    nextWrap.hidden = true;
+    setFeedback("", null);
+    const total = QUESTIONS.length;
+    progressText.textContent = "Question " + (index+1) + " of " + total;
+
+    const q = QUESTIONS[index];
+    qText.innerHTML = '<span><b>' + q.q.split(". ")[0] + '.</b> ' + q.q.split(". ").slice(1).join(". ") + '</span>';
+
+    clearChildren(optionsWrap);
+
+    q.options.forEach((opt, i)=>{
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option";
+      btn.textContent = opt.t;
+      btn.addEventListener("click", ()=>{
+        if (opt.c){
+          setFeedback("Nice! You found it.", "right");
+          disableOtherOptions(btn);
+          nextWrap.hidden = false;
+          nextBtn.focus();
+        } else {
+          setFeedback("Not quite—try again!", "wrong");
+          btn.disabled = true;
+        }
+      });
+      optionsWrap.appendChild(btn);
+    });
+  }
+
+  function renderDone(){
+    card.innerHTML = `
+      <div class="done">
+        <div style="font-weight:800; font-size:1.1rem;">You did it—great job!</div>
+        <div>Head back to Lesson 01.01 and tap Home Games.</div>
+        <a class="small-back" href="../lesson-01.01.html">Back to Lesson 01.01</a>
+      </div>
+    `;
+    try { localStorage.removeItem(LS_KEY); } catch(e){}
+  }
+
+  nextBtn.addEventListener("click", ()=>{
+    index++;
+    if (index < QUESTIONS.length){
+      saveProgress(index);
+      renderQuestion();
+      const first = optionsWrap.querySelector("button.option");
+      if (first) first.focus();
+    } else {
+      renderDone();
+    }
+  });
+
+  renderQuestion();
+})();
+</script>
+</body>
+</html>
