@@ -1,142 +1,151 @@
-# MindMaster – Alpha Prototype (Software Design)
+# 🧠 MindMaster – Alpha v3 Prototype  
+**Curriculum & Pedagogy Validation (Software Design)**
 
-**Current iteration:** Alpha v3 – Curriculum & Pedagogy Validation Prototype
-
-MindMaster is a psychology literacy app that builds children’s resilience by turning knowledge into self-efficacy and everyday problem-solving skills.  
-This Alpha prototype validates the **psychology literacy curriculum and pedagogy** with children and teachers.  
-It is not the final technical design. Advanced features will be built in subsequent Alpha iterations and the Beta stage under a Rapid Application Development (RAD) approach.
-
----
-
-## Live Platform Development (Alpha v4 – In Progress)
-
-Alongside the Alpha v3 prototype documented in this repository, we have begun **Alpha v4 development**, focused on translating validated PowerMind curriculum content into a **live web environment**:
-
-👉 https://www.powermind-ai.com
-
-Alpha v4 is **not a new curriculum iteration**.  
-It is an early platform exploration that builds directly on the concepts, pedagogy, and structure validated in Alpha v3.
-
-At present, the live site includes **Unit 1, Lesson 1 only** and is intended to demonstrate:
-
-- basic content rendering on a live domain  
-- early navigation structure  
-- initial platform scaffolding for future development  
-
-### Login access
-
-The website includes a simple login screen to support exploration of the platform structure.
-
-**Visible login roles**
-- Student  
-- Teacher  
-- EdSol Admin (internal use only)
-
-**Password (for Student and Teacher roles):** `powermind`
-
-The **EdSol Admin** login is an internal administrative entry point used during development.  
-It is not part of the learner or teacher experience and is not within the scope of Alpha v3 validation.
-
-> ⚠️ **Important**  
-> The live Alpha v4 website does **not replace** the Alpha v3 Student Home experience.  
->  
-> The Student Home page remains the most complete and coherent way to explore:
-> - the full Grade 1 curriculum structure  
-> - all gamified Practice activities  
-> - the intended Explore → Practice → Reflect learning roadmap  
-
-As development progresses, selected elements of the live platform will progressively absorb and replace the standalone HTML prototype.
+**Status:** Archived Alpha iteration  
+**Version:** Alpha v3  
+**Purpose:** Curriculum and pedagogy validation with children and teachers
 
 ---
 
-## How to run
-- **Start with the Student Home page:**  
-  👉 https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/student-home.html
+## What Alpha v3 Is
 
-- From the Student Home page, learners can access their roadmap and gamified practice.  
-- You can also open individual games directly (see table below).
+Alpha v3 is a standalone HTML-based prototype developed to validate the psychology literacy curriculum, learning flow, and gamified pedagogy of MindMaster (now PowerMind) for Grade 1 learners.
 
-> 🧩 **Note:** Each game corresponds to the *Practice* activity in **Lesson 1** of its unit.  
-> The Student Home screen shows four lessons per unit, but only Lesson 1 includes 1-2 gamified activities in this Alpha release.
+This iteration focuses on one core question:
 
-| Unit & Topic | Gamified Practice (Game Title) | Direct Link |
-|--------------|-------------------------------|-------------|
-| Unit 1 – What is Psychology? | 🏁 Balloon Race, 🚗 Carpool | [Balloon Race](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/balloon-race.html) / [Carpool](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/carpool.html) |
-| Unit 2 – Exploring Our Senses | 🐘 Sound Safari | [Sound Safari](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/senses.html) |
-| Unit 3 – Basic Attention and Focus | 🔦 Brain Spotlight, 🧩 Shadow Match | [Brain Spotlight](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/attention.html) / [Shadow Match](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/attention2.html) |
-| Unit 4 – How Memory Works | 🧠 Memory Flip, 👀 What’s Missing? | [Memory Flip](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/memory.html) / [What’s Missing?](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/memory2.html) |
-| Unit 5 – Imagination and Storytelling | 🌈 Story Tangle | [Story Tangle](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/storytime.html) |
-| Unit 6 – What Are Feelings? | 🌿 Feeling Finder | [Feeling Finder](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/emotions.html) |
-| Unit 7 – Family and Friendship Dynamics | 🍎 Good Apple, Bad Apple | [Good Apple, Bad Apple](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/good-apple-bad-apple.html) |
-| Unit 8 – Problem-Solving Basics | 🪞 Magic Looking Glass | [Magic Looking Glass](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/magic-looking-glass.html) |
-| Unit 9 – Our Actions and Impact | 🧱 Domino Choices | [Domino Choices](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/domino-choices.html) |
-| Unit 10 – Teamwork and Cooperation | 🧑‍🤝‍🧑 Maze Mates | [Maze Mates](https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/teamwork.html) |
+> Do children meaningfully understand and apply psychology literacy concepts when taught through structured lessons and gamified practice?
+
+Alpha v3 intentionally prioritises curriculum design and pedagogy over production-grade technical architecture.
 
 ---
 
-## Video fallbacks
-If a gamified practice does not load, you can view a video demonstration.
+## What Alpha v3 Is Not
 
-| Unit & Topic | Game Title | Video Link |
-|--------------|------------|------------|
-| Unit 1 – What is Psychology? | Balloon Race | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4) |
-| Unit 2 – Exploring Our Senses | Sound Safari | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4) |
-| Unit 3 – Basic Attention and Focus | Brain Spotlight, Shadow Match | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4) |
-| Unit 4 – How Memory Works | Memory Flip, What’s Missing? | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4) |
-| Unit 5 – Imagination and Storytelling | Story Tangle | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_story-sequencing_storytime.mp4) |
-| Unit 6 – What Are Feelings? | Feeling Finder | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4) |
-| Unit 7 – Family and Friendship | Good Apple, Bad Apple | *Coming soon* |
-| Unit 8 – Problem-Solving Basics | Magic Looking Glass | *Coming soon* |
-| Unit 9 – Our Actions and Impact | Domino Choices | *Coming soon* |
-| Unit 10 – Teamwork and Cooperation | Maze Mates | [Watch](https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_teamwork-cooperation_teamwork.mp4) |
+- ❌ Not a live production platform  
+- ❌ Not a complete app experience  
+- ❌ Not a technical architecture reference  
+- ❌ Not representative of final UI or UX polish  
+
+Advanced features such as analytics, dashboards, offline-first support, and AI-supported Explore and Reflection flows are out of scope for this iteration.
 
 ---
 
-## Curriculum and Gamified Practice (Alpha Prototype)
+## Relationship to Later Versions (Context Only)
 
-Each Grade 1 unit introduces a **core psychology literacy concept**, structured to follow how children naturally develop psychological understanding—from recognising their inner world, to managing focus, memory, emotions, relationships, and social problem-solving.
+Alpha v3 informed all subsequent PowerMind development.
 
-| # | Unit Title | Core Concept |
-|---|------------|--------------|
-| 1 | **What is Psychology?** | Minds have three connected parts — Thinking, Feeling, and Doing — that shape how we experience and act in the world. |
-| 2 | **Exploring Our Senses** | The senses are the “doorways” of the mind, gathering different types of information that shape perception and understanding. |
-| 3 | **Basic Attention and Focus** | Attention works like a spotlight — selecting what to notice, learn, and remember. It can be trained and supported. |
-| 4 | **How Memory Works** | Memory is a flexible tool for collecting, keeping, and bringing back information to make sense of past and present. |
-| 5 | **Imagination and Storytelling** | Imagination is the mind’s playground; storytelling gives it structure, allowing us to explore, plan, and share ideas. |
-| 6 | **What Are Feelings?** | Feelings are information messengers that help us understand ourselves and our world. |
-| 7 | **Family and Friendship Dynamics** | Relationships are systems we can understand, nurture, and navigate through kindness, trust, and cooperation. |
-| 8 | **Problem-Solving Basics** | Problem-solving integrates thinking and feeling to find constructive pathways through everyday dilemmas. |
-| 9 | **Our Actions and Impact** | Our choices have effects on others and the environment — awareness builds responsibility. |
-| 10 | **Teamwork and Cooperation** | Working together requires turn-taking, fairness, shared goals, and respect. |
+Later iterations (Alpha v4 onwards) translate validated Alpha v3 curriculum and pedagogy into live environments. They do not introduce new curriculum concepts.
 
-👉 For the full Grade 1 curriculum outline with detailed unit descriptions and learning outcomes, see [Grade 1 Curriculum Outline](https://github.com/edsol-adm/mindmaster-app/blob/main/content-design/grade-1/unit-description-and-learning-outcomes-grade1.md).
+Alpha v3 should be treated as the pedagogical reference point for the PowerMind system.
 
 ---
 
-## Roadmap logic
+## How to Explore Alpha v3
 
-The **student-home.html** screen ties everything into a coherent flow:
+### ▶️ Recommended entry point
 
-- **Explore** – Lesson summaries that introduce key concepts (future chatbot).  
-- **Practice** – Gamified Practice activities (this Alpha).  
-- **Reflection** – Prompts that help children connect learning to their own experiences (future chatbot).
+Start with the **Student Home** screen, which presents the intended learning roadmap:
 
-This roadmap models **knowledge → application → reflection**, ensuring children not only learn concepts but also apply them to build resilience.
+https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/student-home.html
 
----
+From here, learners can:
+- 📘 view the full Grade 1 curriculum structure  
+- 🧭 navigate units and lessons  
+- 🎮 access all available gamified Practice activities  
 
-## Assets
-All images and audio are stored in the `assets/` subfolders:
-- `assets/attention/` → sprites for the Attention games  
-- `assets/emotions/` → positive/negative emotions  
-- `assets/thoughts/` → positive/negative thoughts  
-- `assets/audio/` → background music & sound effects  
+> ℹ️ Note  
+> Each unit displays four lessons, but only **Lesson 1 includes gamified practice** in Alpha v3.  
+> This was sufficient to validate pedagogy and concept comprehension.
 
 ---
 
-## Next steps
-- **Beta Prototype**: advanced app features (teacher dashboards, analytics, offline-first design, chatbot Explore & Reflection).  
-- **Iterative RAD testing**: multiple cycles of user testing and refinement.  
-- **User testing**: This Alpha has already been piloted with children and teachers. A feedback summary will be uploaded here.
+## 🎮 Gamified Practice Activities (Alpha v3)
+
+Each game corresponds to the **Practice** activity of Lesson 1 in its unit.
+
+| Unit & Topic | Gamified Practice | Direct Link |
+|-------------|------------------|-------------|
+| Unit 1 – What is Psychology? | 🏁 Balloon Race, 🚗 Carpool | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/balloon-race.html / https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/carpool.html |
+| Unit 2 – Exploring Our Senses | 🐘 Sound Safari | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/senses.html |
+| Unit 3 – Basic Attention and Focus | 🔦 Brain Spotlight, 🧩 Shadow Match | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/attention.html / https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/attention2.html |
+| Unit 4 – How Memory Works | 🧠 Memory Flip, 👀 What’s Missing? | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/memory.html / https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/memory2.html |
+| Unit 5 – Imagination and Storytelling | 🌈 Story Tangle | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/storytime.html |
+| Unit 6 – What Are Feelings? | 🌿 Feeling Finder | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/emotions.html |
+| Unit 7 – Family and Friendship Dynamics | 🍎 Good Apple, Bad Apple | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/good-apple-bad-apple.html |
+| Unit 8 – Problem-Solving Basics | 🪞 Magic Looking Glass | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/magic-looking-glass.html |
+| Unit 9 – Our Actions and Impact | 🧱 Domino Choices | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/domino-choices.html |
+| Unit 10 – Teamwork and Cooperation | 🧑‍🤝‍🧑 Maze Mates | https://edsol-adm.github.io/mindmaster-app/software-design/prototype-alpha/teamwork.html |
 
 ---
+
+## 🎥 Video Demonstrations (Fallback)
+
+If a gamified activity does not load, video walkthroughs are available.
+
+| Unit | Game | Video |
+|-----|------|-------|
+| Unit 1 | 🏁 Balloon Race / 🚗 Carpool | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_intro-to-psychology_carpool.mp4 |
+| Unit 2 | 🐘 Sound Safari | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_sensory-exploration_senses.mp4 |
+| Unit 3 | 🔦 Brain Spotlight / 🧩 Shadow Match | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_basics-of-attention-and-focus_attention.mp4 |
+| Unit 4 | 🧠 Memory Flip / 👀 What’s Missing? | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_memory-basics_memory.mp4 |
+| Unit 5 | 🌈 Story Tangle | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_story-sequencing_storytime.mp4 |
+| Unit 6 | 🌿 Feeling Finder | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_understanding-emotions_emotions.mp4 |
+| Unit 10 | 🧑‍🤝‍🧑 Maze Mates | https://github.com/edsol-adm/mindmaster-app/raw/refs/heads/main/software-design/prototype-alpha/videos_alpha/alpha_teamwork-cooperation_teamwork.mp4 |
+
+---
+
+## 📚 Curriculum Scope Validated in Alpha v3
+
+Alpha v3 validates the full Grade 1 psychology literacy curriculum across ten units.
+
+| Unit | Core Concept |
+|-----|--------------|
+| 1 | Thinking, Feeling, and Doing form an interconnected system |
+| 2 | Senses are the mind’s information gateways |
+| 3 | Attention selects what we notice and learn |
+| 4 | Memory is flexible and trainable |
+| 5 | Imagination enables planning and meaning-making |
+| 6 | Feelings are information messengers |
+| 7 | Relationships are systems that can be understood |
+| 8 | Problems can be approached systematically |
+| 9 | Actions create effects |
+| 10 | Cooperation requires shared goals and roles |
+
+Full curriculum documentation:  
+https://github.com/edsol-adm/mindmaster-app/blob/main/content-design/grade-1/unit-description-and-learning-outcomes-grade1.md
+
+---
+
+## 🧭 Learning Roadmap Logic (Alpha v3)
+
+The Alpha v3 prototype models a three-part learning sequence:
+
+1. **Explore** – concept introduction  
+2. **Practice** – gamified activities  
+3. **Reflect** – conceptual reflection prompts  
+
+This structure operationalises the theory of change:
+
+**Knowledge → Application → Self-efficacy**
+
+---
+
+## 🗂️ Assets
+
+All assets used in Alpha v3 are stored locally:
+
+- `assets/attention/`  
+- `assets/emotions/`  
+- `assets/thoughts/`  
+- `assets/audio/`  
+
+---
+
+## 🚀 Post–Alpha v3 Direction
+
+- Translation of validated curriculum into live platforms (Alpha v4+)  
+- AI-supported Explore and Reflection flows  
+- Teacher dashboards and learning analytics  
+- Continued iterative testing under a Rapid Application Development approach  
+
+Alpha v3 remains the canonical reference for curriculum and pedagogy validation.
